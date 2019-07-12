@@ -1,28 +1,59 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <BaseFormFilter
+      :formConfig="formConfig"
+      @query="handleQuery"
+    />
+
+    <!-- <BaseForm
+      ref="baseForm"
+      :formConfig="formConfig"
+    /> -->
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
   name: 'app',
-  components: {
-    HelloWorld
+  data() {
+    return {
+      formConfig: [
+        {
+          prop: 'Name',
+          label: '成语名',
+          itemConfig: {
+            props: {
+              maxlength: 20,
+            },
+          },
+        }, 
+        {
+          prop: 'Antonym',
+          label: '反义词',
+        },
+        {
+          prop: 'Construction',
+          label: '造句',
+        },
+        {
+          prop: 'Allusion',
+          label: '典故',
+        },
+        {
+          prop: 'Source',
+          label: '出处',
+        },
+        {
+          prop: 'Label',
+          label: '标签',
+        },
+      ],
+    }
+  },
+  methods: {
+    handleQuery(e) {
+      console.log(e)
+    }
   }
 }
 </script>
-
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
