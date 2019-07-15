@@ -88,20 +88,14 @@ export default {
       }, {});
     },
   },
-  watch: {
-    allConfig: {
-      handler() {
-        this.initModel();
-      },
-      deep: true
-    }
-  },
   methods: {
+    updateModel(prop, value) {
+      this.model[prop] = value;
+    },
     initModel() {
-      this.model = this.allConfig.reduce((prev, cur) => {
-        prev[cur.prop] = (cur.itemConfig && cur.itemConfig.value) || '';
-        return prev;
-      }, {});
+      this.allConfig.forEach(({prop, itemConfig}) => {
+        this.$set(this.model, prop, (itemConfig && itemConfig.value) || '');
+      });
     },
     getData(needValidate = true) {
       if (needValidate) {
@@ -187,7 +181,6 @@ export default {
       {
         props: {
           model,
-          rules,
           labelWidth,
           inline,
         },
