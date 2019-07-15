@@ -46,9 +46,30 @@ export default {
     rules() {
       const rules = {};
       return this.formConfig.reduce((prev, cur) => {
+        if (cur.required) {
+          if (!cur.rules || !cur.rules instanceof Array) {
+            cur.rules = [
+              {
+                required: true,
+                message: `${cur.label}不为空`
+              }
+            ]
+          } else if (cur.rules instanceof Array) {
+            if (!cur.rules.filter((rule) => {
+              return rule.required;
+            })) {
+              cur.rules.push({
+                required: true,
+                message: `${cur.label}不为空`
+              });
+            }
+          }
+        }
+
         if (cur.rules) {
           rules[cur.prop] = cur.rules;
         }
+        
         return prev;
       }, rules);
     },
