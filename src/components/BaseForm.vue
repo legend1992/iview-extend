@@ -1,4 +1,5 @@
 <script>
+import _ from 'lodash';
 import baseForm_mixin from '../mixins/baseForm_mixin';
 
 export default {
@@ -97,11 +98,23 @@ export default {
     },
   },
   methods: {
-    getData() {
-      return this.$utils._.cloneDeep(this.model);
+    getData(needValidate = true) {
+      if (needValidate) {
+        if (this.validate()) {
+          return _.cloneDeep(this.model);
+        } else {
+          this.$Message.warning('请将表单填写完整');
+        }
+      } else {
+        return _.cloneDeep(this.model);
+      }
     },
-    validate(fn) {
-      this.$refs.form.validate(fn);
+    validate() {
+      let validate;
+      this.$refs.form.validate((valid) => {
+        validate = valid;
+      });
+      return validate;
     },
     reset() {
       this.moreIsShow = false;
