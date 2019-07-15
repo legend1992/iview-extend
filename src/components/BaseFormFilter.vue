@@ -1,7 +1,10 @@
 <script>
 import _ from 'lodash';
+import baseForm_mixin from '../mixins/baseForm_mixin';
+
 export default {
   name: "BaseFormFilter",
+  mixins: [baseForm_mixin],
   props: {
     /**
      * formConfig: {
@@ -19,71 +22,17 @@ export default {
         },
       }
      *  */
-    formConfig: {
-      type: Array,
-      default: () => [],
-      required: true
-    },
-    labelWidth: {
-      type: Number,
-      default: 80
-    },
     inline: {
       type: Boolean,
       default: true
     }
   },
-  data() {
-    return {
-      // 表单数据
-      model: {},
-    };
-  },
-  watch: {
-    formConfig: {
-      handler() {
-        this.initModel();
-      },
-      deep: true
-    }
-  },
   methods: {
-    initModel() {
-      this.model = this.formConfig.reduce((prev, cur) => {
-        prev[cur.prop] = (cur.itemConfig && cur.itemConfig.value) || '';
-        return prev;
-      }, {});
-    },
     handleQuery() {
       this.$emit('query', _.cloneDeep(this.model));
     },
     handleReset() {
       this.$refs.form.resetFields();
-    },
-    setDefaultConfig(label, config) {
-      if (config === undefined) {
-        config = {
-          tagName: 'Input',
-          props: {
-            placeholder: `请输入${label}`,
-          }
-        };
-      } else {
-        config = Object.assign({
-          tagName: 'Input',
-        }, config);
-        
-        if (config.props === undefined) {
-          config.props = {
-            placeholder: `请输入${label}`,
-          };
-        } else {
-          config.props = Object.assign({
-            placeholder: `请输入${label}`,
-          }, config.props);
-        }
-      }
-      return config;
     },
   },
   created() {
@@ -125,42 +74,9 @@ export default {
         ]
       )
     ];
-    // 渲染控件
-    const renderItem = ({ prop, label, itemConfig: config }) => {
-      config = this.setDefaultConfig(label, config);
-      return [
-        h(config.tagName, {
-          props: {
-            ...config.props,
-            value: this.model[prop]
-          },
-          on: {
-            ...config.on,
-            input: e => {
-              this.model[prop] = e;
-              if (config.on && config.on.input) {
-                config.on.input(e);
-              }
-            }
-          }
-        })
-      ]
-    };
-    // 渲染FormItem
-    const renderFormItem = item =>
-      h(
-        "FormItem",
-        {
-          props: {
-            label: item.label,
-            prop: item.prop
-          }
-        },
-        renderItem(item)
-      );
     // 渲染表单子组件
     const renderFormChilds = () => [
-      this.formConfig.map(item => renderFormItem(item)),
+      this.formConfig.map(item => this.renderFormItem(h, item)),
       renderButtons()
     ];
     const { model, labelWidth, inline } = this;

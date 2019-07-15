@@ -1,6 +1,9 @@
 <script>
+import baseForm_mixin from '../mixins/baseForm_mixin';
+
 export default {
   name: 'BaseForm',
+  mixins: [baseForm_mixin],
   props: {
     /**
      * formConfig: {
@@ -27,15 +30,6 @@ export default {
         ]
       }
      *  */
-    formConfig: {
-      type: Array,
-      default: () => [],
-      required: true,
-    },
-    labelWidth: {
-      type: Number,
-      default: 80,
-    },
     inline: {
       type: Boolean,
       default: false,
@@ -43,8 +37,6 @@ export default {
   },
   data() {
     return {
-      // 表单数据
-      model: {},
       // 是否展示更多
       moreIsShow: false,
     };
@@ -83,21 +75,7 @@ export default {
       return hidePart;
     },
   },
-  watch: {
-    formConfig: {
-      handler() {
-        this.initModel();
-      },
-      deep: true,
-    },
-  },
   methods: {
-    initModel() {
-      this.model = this.formConfig.reduce((model, cur) => {
-        model[cur.prop] = cur.itemConfig.value;
-        return model;
-      }, {});
-    },
     getData() {
       return this.$utils._.cloneDeep(this.model);
     },
@@ -109,39 +87,7 @@ export default {
       this.$refs.form.resetFields();
     },
   },
-  created() {
-    this.initModel();
-  },
   render(h) {
-    // 渲染控件
-    const renderItem = ({ prop, itemConfig: config }) => [
-      h(config.tagName, {
-        props: {
-          ...config.props,
-          value: this.model[prop],
-        },
-        on: {
-          ...config.on,
-          input: (e) => {
-            this.model[prop] = e;
-            if (config.on && config.on.input) {
-              config.on.input(e);
-            }
-          },
-        },
-      }),
-    ];
-    // 渲染FormItem
-    const renderFormItem = item => h(
-      'FormItem',
-      {
-        props: {
-          label: item.label,
-          prop: item.prop,
-        },
-      },
-      renderItem(item),
-    );
     // 渲染展示更多按钮
     const renderShowMoreButton = () => h('div', {
       domProps: {
@@ -170,11 +116,9 @@ export default {
       },
     });
     // 渲染Form默认展示部分
-    const renderDefaultShowPart = () => this.defaultShowPart
-      .filter(item => item.itemConfig.tagName)
-      .map(item => renderFormItem(item));
+    const renderDefaultShowPart = () => this.defaultShowPart.map(item => this.renderFormItem(h, item));
     // 渲染Form默认隐藏部分
-    const renderDefaultHidePart = () => this.defaultHidePart.map(item => renderFormItem(item));
+    const renderDefaultHidePart = () => this.defaultHidePart.map(item => this.renderFormItem(h, item));
     // 渲染Form默认隐藏部分和收起按钮
     const renderDefaultHidePartAndHideMoreButton = () => h(
       'div',
@@ -189,7 +133,7 @@ export default {
         renderHideMoreButton(),
       ],
     );
-    const renderFormChild = () => {
+    const renderFormChilds = () => {
       const formChild = [renderDefaultShowPart()];
       if (this.defaultHidePart.length) {
         formChild.push(renderShowMoreButton(), renderDefaultHidePartAndHideMoreButton());
@@ -210,7 +154,7 @@ export default {
         },
         ref: 'form',
       },
-      renderFormChild(),
+      renderFormChilds(),
     );
   },
 };
