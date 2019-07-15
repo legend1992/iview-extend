@@ -21,6 +21,7 @@ export default {
             ...
           }
         },
+        required: 是否必填,
         rules: 控件校验规则
         [
           {
@@ -45,34 +46,36 @@ export default {
   computed: {
     // 校验规则
     rules() {
-      const rules = {};
       return this.formConfig.reduce((prev, cur) => {
         if (cur.required) {
-          if (!cur.rules || !cur.rules instanceof Array) {
+          if (!cur.rules || !(cur.rules instanceof Array)) {
             cur.rules = [
               {
                 required: true,
                 message: `${cur.label}不为空`
               }
             ]
-          } else if (cur.rules instanceof Array) {
-            if (!cur.rules.filter((rule) => {
+          } else {
+            const [requiredRule] = cur.rules.filter((rule) => {
               return rule.required;
-            })) {
-              cur.rules.push({
+            });
+            if (!requiredRule) {
+              cur.rules.unshift({
                 required: true,
-                message: `${cur.label}不为空`
+                message: `${cur.label}不为空`,
               });
+            } else if (requiredRule.message === undefined) {
+              requiredRule.message = `${cur.label}不为空`;
             }
           }
         }
 
         if (cur.rules) {
-          rules[cur.prop] = cur.rules;
+          prev[cur.prop] = cur.rules;
         }
         
         return prev;
-      }, rules);
+      }, {});
     },
     // 收起的内容开始下标
     hideStartIndex() {
