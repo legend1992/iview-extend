@@ -27,6 +27,14 @@ export default {
       default: true
     }
   },
+  watch: {
+    formConfig: {
+      handler() {
+        this.initModel();
+      },
+      deep: true
+    },
+  },
   methods: {
     handleQuery() {
       this.$emit('query', _.cloneDeep(this.model));

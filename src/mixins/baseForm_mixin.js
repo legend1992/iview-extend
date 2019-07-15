@@ -16,14 +16,6 @@ export default {
       model: {},
     };
   },
-  watch: {
-    formConfig: {
-      handler() {
-        this.initModel();
-      },
-      deep: true
-    }
-  },
   methods: {
     initModel() {
       this.model = this.formConfig.reduce((prev, cur) => {

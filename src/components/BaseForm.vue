@@ -8,7 +8,6 @@ export default {
   props: {
     /**
      * formConfig: {
-     *  hide: true, 值为true表明此元素为默认隐藏开始元素
         prop: 用于FormItem的prop,
         label: 用于FormItem的label,
         itemConfig: 用于FormItem子元素，即具体控件如Input/Select等的配置,
@@ -31,7 +30,15 @@ export default {
           ...
         ]
       }
+
      *  */
+    /**
+     * hideConfig: 配置同formConfig，其内设置的控件将默认隐藏
+     */
+    hideConfig: {
+      type: Array,
+      default: () => [],
+    },
     inline: {
       type: Boolean,
       default: false,
@@ -44,9 +51,12 @@ export default {
     };
   },
   computed: {
+    allConfig() {
+      return this.formConfig.concat(this.hideConfig);
+    },
     // 校验规则
     rules() {
-      return this.formConfig.reduce((prev, cur) => {
+      return this.allConfig.reduce((prev, cur) => {
         if (cur.required) {
           if (!cur.rules || !(cur.rules instanceof Array)) {
             cur.rules = [
@@ -77,30 +87,22 @@ export default {
         return prev;
       }, {});
     },
-    // 收起的内容开始下标
-    hideStartIndex() {
-      return this.formConfig.findIndex(item => item.hide);
-    },
-    defaultShowPart() {
-      let showPart;
-      if (this.hideStartIndex === -1) {
-        showPart = this.formConfig;
-      } else {
-        showPart = this.formConfig.slice(0, this.hideStartIndex);
-      }
-      return showPart;
-    },
-    defaultHidePart() {
-      let hidePart;
-      if (this.hideStartIndex === -1) {
-        hidePart = [];
-      } else {
-        hidePart = this.formConfig.slice(this.hideStartIndex);
-      }
-      return hidePart;
-    },
+  },
+  watch: {
+    allConfig: {
+      handler() {
+        this.initModel();
+      },
+      deep: true
+    }
   },
   methods: {
+    initModel() {
+      this.model = this.allConfig.reduce((prev, cur) => {
+        prev[cur.prop] = (cur.itemConfig && cur.itemConfig.value) || '';
+        return prev;
+      }, {});
+    },
     getData(needValidate = true) {
       if (needValidate) {
         if (this.validate()) {
@@ -153,9 +155,9 @@ export default {
       },
     });
     // 渲染Form默认展示部分
-    const renderDefaultShowPart = () => this.defaultShowPart.map(item => this.renderFormItem(h, item));
+    const renderDefaultShowPart = () => this.formConfig.map(item => this.renderFormItem(h, item));
     // 渲染Form默认隐藏部分
-    const renderDefaultHidePart = () => this.defaultHidePart.map(item => this.renderFormItem(h, item));
+    const renderDefaultHidePart = () => this.hideConfig.map(item => this.renderFormItem(h, item));
     // 渲染Form默认隐藏部分和收起按钮
     const renderDefaultHidePartAndHideMoreButton = () => h(
       'div',
@@ -172,7 +174,7 @@ export default {
     );
     const renderFormChilds = () => {
       const formChild = [renderDefaultShowPart()];
-      if (this.defaultHidePart.length) {
+      if (this.hideConfig.length) {
         formChild.push(renderShowMoreButton(), renderDefaultHidePartAndHideMoreButton());
       }
       return formChild;
