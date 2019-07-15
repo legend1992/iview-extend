@@ -6,7 +6,7 @@ export default {
   name: 'BaseTextarea',
   props: {
     value: {
-      type: String,
+      type: [String, Number],
       default: '',
     },
     autosize: {

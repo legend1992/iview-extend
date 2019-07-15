@@ -1,10 +1,55 @@
+<template>
+  <Form ref="form" :model="model" :label-width="labelWidth">
+    <FormItem
+      v-for="item in formConfigFormat"
+      :key="item.prop"
+      :label="item.label"
+      :prop="item.prop"
+      :rules="rules[item.prop]"
+    >
+      <BaseComponent
+        :tagName="item.itemConfig.tagName"
+        :props="item.itemConfig.props"
+        v-model="model[item.prop]"
+        @input="itemInput($event, item, 'formConfig')"
+      />
+    </FormItem>
+
+    <div
+      v-show="hideConfig.length && !moreIsShow"
+      class="toggle-button"
+      :class="{ hide: this.moreIsShow }"
+      @click="moreIsShow = true;"
+    >点击查看更多内容</div>
+
+    <div
+      v-show="moreIsShow"
+      class="hidePart-wrapper"
+      :class="{ show: this.moreIsShow }"
+    >
+      <FormItem
+        v-for="item in hideConfigFormat"
+        :key="item.prop"
+        :label="item.label"
+        :prop="item.prop"
+        :rules="rules[item.prop]"
+      >
+        <BaseComponent
+          :tagName="item.itemConfig.tagName"
+          :props="item.itemConfig.props"
+          v-model="model[item.prop]"
+          @input="itemInput($event, item, 'hideConfig')"
+        />
+      </FormItem>
+      <div class="toggle-button" @click="moreIsShow = false;">收起</div>
+    </div>
+  </Form>
+</template>
 <script>
-import _ from 'lodash';
-import baseForm_mixin from '../mixins/baseForm_mixin';
+import _ from "lodash";
 
 export default {
-  name: 'BaseForm',
-  mixins: [baseForm_mixin],
+  name: "BaseForm",
   props: {
     /**
      * formConfig: {
@@ -35,74 +80,131 @@ export default {
     /**
      * hideConfig: 配置同formConfig，其内设置的控件将默认隐藏
      */
-    hideConfig: {
+    formConfig: {
       type: Array,
       default: () => [],
+      required: true
+    },
+    labelWidth: {
+      type: Number,
+      default: 80
+    },
+    hideConfig: {
+      type: Array,
+      default: () => []
     },
     inline: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   data() {
     return {
+      model: {},
+      formConfigOriginal: _.cloneDeep(this.formConfig),
+      hideConfigOriginal: _.cloneDeep(this.hideConfig),
       // 是否展示更多
       moreIsShow: false,
     };
   },
   computed: {
-    allConfig() {
-      return this.formConfig.concat(this.hideConfig);
+    formConfigFormat() {
+      return this.configFormat(_.cloneDeep(this.formConfig));
+    },
+    hideConfigFormat() {
+      return this.configFormat(_.cloneDeep(this.hideConfig));
     },
     // 校验规则
     rules() {
-      return this.allConfig.reduce((prev, cur) => {
-        if (cur.required) {
-          if (!cur.rules || !(cur.rules instanceof Array)) {
-            cur.rules = [
-              {
-                required: true,
-                message: `${cur.label}不为空`
-              }
-            ]
-          } else {
-            const [requiredRule] = cur.rules.filter((rule) => {
-              return rule.required;
-            });
-            if (!requiredRule) {
-              cur.rules.unshift({
-                required: true,
-                message: `${cur.label}不为空`,
-              });
-            } else if (requiredRule.message === undefined) {
-              requiredRule.message = `${cur.label}不为空`;
-            }
-          }
-        }
-
-        if (cur.rules) {
-          prev[cur.prop] = cur.rules;
-        }
-        
-        return prev;
-      }, {});
+      const { formConfigFormat, hideConfigFormat, setDefaultRules } = this;
+      return {
+        ...formConfigFormat.reduce(setDefaultRules, {}),
+        ...hideConfigFormat.reduce(setDefaultRules, {}),
+      };
     },
   },
   methods: {
-    updateModel(prop, value) {
-      this.model[prop] = value;
-    },
-    initModel() {
-      this.allConfig.forEach(({prop, itemConfig}) => {
-        this.$set(this.model, prop, (itemConfig && itemConfig.value) || '');
+    configFormat(configs) {
+      configs.forEach((item) => {
+        const { prop, label, itemConfig } = item;
+        item.itemConfig = this.setDefaultItemConfig(label, itemConfig);
+        this.$set(this.model, prop, (itemConfig && itemConfig.value) || "");
       });
+
+      return configs;
+    },
+    setDefaultRules(prev, cur) {
+      if (cur.required) {
+        if (!cur.rules || !(cur.rules instanceof Array)) {
+          cur.rules = [
+            {
+              required: true,
+              message: `${cur.label}不为空`
+            }
+          ];
+        } else {
+          const [requiredRule] = cur.rules.filter(rule => {
+            return rule.required;
+          });
+          if (!requiredRule) {
+            cur.rules.unshift({
+              required: true,
+              message: `${cur.label}不为空`
+            });
+          } else if (requiredRule.message === undefined) {
+            requiredRule.message = `${cur.label}不为空`;
+          }
+        }
+      }
+
+      if (cur.rules) {
+        prev[cur.prop] = cur.rules;
+      }
+
+      return prev;
+    },
+    // 为formConfig/hideConfig设置默认itemConfig
+    setDefaultItemConfig(label, config) {
+      if (config === undefined) {
+        config = {
+          tagName: 'Input',
+          props: {
+            placeholder: `请输入${label}`,
+          }
+        };
+      } else {
+        config = Object.assign({
+          tagName: 'Input',
+        }, config);
+        
+        if (config.props === undefined) {
+          config.props = {
+            placeholder: `请输入${label}`,
+          };
+        } else {
+          config.props = Object.assign({
+            placeholder: `请输入${label}`,
+          }, config.props);
+        }
+      }
+      return config;
+    },
+    // 控件输入，更新源数据formConfig/hideConfig
+    itemInput(value, { prop, itemConfig }, type) {
+      this[`${type}Format`].forEach((config) => {
+        if (config.prop === prop) {
+          config.itemConfig.value = value;
+        }
+      });
+      this.$emit(`update:${type}`, this[`${type}Format`]);
+      itemConfig.on && itemConfig.on.input && itemConfig.on.input(value);
     },
     getData(needValidate = true) {
       if (needValidate) {
         if (this.validate()) {
           return _.cloneDeep(this.model);
         } else {
-          this.$Message.warning('请将表单填写完整');
+          this.$Message.warning("请将表单填写完整");
         }
       } else {
         return _.cloneDeep(this.model);
@@ -110,84 +212,17 @@ export default {
     },
     validate() {
       let validate;
-      this.$refs.form.validate((valid) => {
+      this.$refs.form.validate(valid => {
         validate = valid;
       });
       return validate;
     },
     reset() {
       this.moreIsShow = false;
+      this.$emit('update:formConfig', this.formConfigOriginal);
+      this.$emit('update:hideConfig', this.hideConfigOriginal);
       this.$refs.form.resetFields();
-    },
-  },
-  render(h) {
-    // 渲染展示更多按钮
-    const renderShowMoreButton = () => h('div', {
-      domProps: {
-        innerHTML: '点击查看更多内容',
-      },
-      class: {
-        'toggle-button': true,
-        hide: this.moreIsShow,
-      },
-      on: {
-        click: () => {
-          this.moreIsShow = true;
-        },
-      },
-    });
-    // 渲染收起按钮
-    const renderHideMoreButton = () => h('div', {
-      domProps: {
-        innerHTML: '收起',
-      },
-      class: 'toggle-button',
-      on: {
-        click: () => {
-          this.moreIsShow = false;
-        },
-      },
-    });
-    // 渲染Form默认展示部分
-    const renderDefaultShowPart = () => this.formConfig.map(item => this.renderFormItem(h, item));
-    // 渲染Form默认隐藏部分
-    const renderDefaultHidePart = () => this.hideConfig.map(item => this.renderFormItem(h, item));
-    // 渲染Form默认隐藏部分和收起按钮
-    const renderDefaultHidePartAndHideMoreButton = () => h(
-      'div',
-      {
-        class: {
-          'hidePart-wrapper': true,
-          show: this.moreIsShow,
-        },
-      },
-      [
-        renderDefaultHidePart(),
-        renderHideMoreButton(),
-      ],
-    );
-    const renderFormChilds = () => {
-      const formChild = [renderDefaultShowPart()];
-      if (this.hideConfig.length) {
-        formChild.push(renderShowMoreButton(), renderDefaultHidePartAndHideMoreButton());
-      }
-      return formChild;
-    };
-    const {
-      model, rules, labelWidth, inline,
-    } = this;
-    return h(
-      'Form',
-      {
-        props: {
-          model,
-          labelWidth,
-          inline,
-        },
-        ref: 'form',
-      },
-      renderFormChilds(),
-    );
+    }
   },
 };
 </script>

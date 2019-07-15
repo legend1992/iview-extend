@@ -76,8 +76,7 @@ export default {
         {
           props: {
             label: item.label,
-            prop: item.prop,
-            rules: this.rules[item.prop],
+            prop: item.prop
           }
         },
         this.renderItem(h, item)
