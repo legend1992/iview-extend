@@ -3,7 +3,7 @@ import _ from 'lodash';
 import baseForm_mixin from '../mixins/baseForm_mixin';
 
 export default {
-  name: "BaseFormFilter",
+  name: "BaseFilterForm",
   mixins: [baseForm_mixin],
   props: {
     /**
@@ -32,19 +32,23 @@ export default {
       handler() {
         this.initModel();
       },
-      deep: true
+      deep: true,
+      immediate: true,
     },
   },
   methods: {
+    initModel() {
+      this.model = this.formConfig.reduce((prev, cur) => {
+        prev[cur.prop] = (cur.itemConfig && cur.itemConfig.value) || '';
+        return prev;
+      }, {});
+    },
     handleQuery() {
       this.$emit('query', _.cloneDeep(this.model));
     },
     handleReset() {
       this.$refs.form.resetFields();
     },
-  },
-  created() {
-    this.initModel();
   },
   render(h) {
     // 渲染按钮
@@ -82,9 +86,43 @@ export default {
         ]
       )
     ];
+    // 渲染控件
+    const renderItem = ({ prop, label, itemConfig: config }) => {
+      config = this.setDefaultItemConfig(label, config);
+      return [
+        h(config.tagName, {
+          props: {
+            ...config.props,
+            value: this.model[prop],
+          },
+          on: {
+            ...config.on,
+            input: (e) => {
+              this.model[prop] = e;
+              if (config.on && config.on.input) {
+                config.on.input(e);
+              }
+            },
+          },
+        }),
+      ]
+    };
+    // 渲染FormItem
+    const renderFormItem = (item) => {
+      return h(
+        "FormItem",
+        {
+          props: {
+            label: item.label,
+            prop: item.prop
+          }
+        },
+        renderItem(item)
+      )
+    };
     // 渲染表单子组件
     const renderFormChilds = () => [
-      this.formConfig.map(item => this.renderFormItem(h, item)),
+      this.formConfig.map(item => renderFormItem(item)),
       renderButtons()
     ];
     const { model, labelWidth, inline } = this;

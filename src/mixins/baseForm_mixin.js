@@ -17,13 +17,7 @@ export default {
     };
   },
   methods: {
-    initModel() {
-      this.model = this.formConfig.reduce((prev, cur) => {
-        prev[cur.prop] = (cur.itemConfig && cur.itemConfig.value) || '';
-        return prev;
-      }, {});
-    },
-    setDefaultConfig(label, config) {
+    setDefaultItemConfig(label, config) {
       if (config === undefined) {
         config = {
           tagName: 'Input',
@@ -48,42 +42,5 @@ export default {
       }
       return config;
     },
-    // 渲染控件
-    renderItem(h, { prop, label, itemConfig: config }) {
-      config = this.setDefaultConfig(label, config);
-      return [
-        h(config.tagName, {
-          props: {
-            ...config.props,
-            value: this.model[prop],
-          },
-          on: {
-            ...config.on,
-            input: (e) => {
-              this.model[prop] = e;
-              if (config.on && config.on.input) {
-                config.on.input(e);
-              }
-            },
-          },
-        }),
-      ]
-    },
-    // 渲染FormItem
-    renderFormItem(h, item) {
-      return h(
-        "FormItem",
-        {
-          props: {
-            label: item.label,
-            prop: item.prop
-          }
-        },
-        this.renderItem(h, item)
-      )
-    },
-  },
-  created() {
-    this.initModel();
   },
 };

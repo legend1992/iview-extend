@@ -47,9 +47,11 @@
 </template>
 <script>
 import _ from "lodash";
+import baseForm_mixin from '../mixins/baseForm_mixin';
 
 export default {
   name: "BaseForm",
+  mixins: [baseForm_mixin],
   props: {
     /**
      * formConfig: {
@@ -80,15 +82,6 @@ export default {
     /**
      * hideConfig: 配置同formConfig，其内设置的控件将默认隐藏
      */
-    formConfig: {
-      type: Array,
-      default: () => [],
-      required: true
-    },
-    labelWidth: {
-      type: Number,
-      default: 80
-    },
     hideConfig: {
       type: Array,
       default: () => []
@@ -100,7 +93,6 @@ export default {
   },
   data() {
     return {
-      model: {},
       formConfigOriginal: _.cloneDeep(this.formConfig),
       hideConfigOriginal: _.cloneDeep(this.hideConfig),
       // 是否展示更多
