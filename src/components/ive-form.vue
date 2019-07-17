@@ -50,7 +50,7 @@ import _ from "lodash";
 import baseForm_mixin from '../mixins/baseForm_mixin';
 
 export default {
-  name: "BaseForm",
+  name: "ive-form",
   mixins: [baseForm_mixin],
   props: {
     /**

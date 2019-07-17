@@ -26,7 +26,7 @@
 import _ from "lodash";
 
 export default {
-  name: 'editModal',
+  name: 'ive-edit-modal',
   props: {
     id: {
       type: [String, Number],

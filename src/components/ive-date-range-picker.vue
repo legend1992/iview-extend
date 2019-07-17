@@ -20,7 +20,7 @@
 
 <script>
 export default {
-  name: 'BaseDateRangePicker',
+  name: 'ive-date-range-picker',
   props: {
     value: {
       type: Array,

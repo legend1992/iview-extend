@@ -14,7 +14,7 @@
 </template>
 <script>
 export default {
-  name: 'BasePage',
+  name: 'ive-page',
   props: {
     total: {
       type: Number,

@@ -9,7 +9,7 @@
 </template>
 <script>
 export default {
-  name: 'BaseRadio',
+  name: 'ive-radio',
   props: {
     value: {
       default: '',

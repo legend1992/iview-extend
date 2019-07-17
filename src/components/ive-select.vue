@@ -17,7 +17,7 @@
 </template>
 <script>
 export default {
-  name: 'BaseSelect',
+  name: 'ive-select',
   props: {
     value: {
       default: '',

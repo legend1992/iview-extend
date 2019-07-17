@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'BaseBreadcrumb',
+  name: 'ive-bread-crumb',
   computed: {
     titleList() {
       const titleList = [];

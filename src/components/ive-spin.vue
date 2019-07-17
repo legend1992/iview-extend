@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: 'BaseSpin',
+  name: 'ive-spin',
 };
 </script>
 <style lang="scss" scoped>

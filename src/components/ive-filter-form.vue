@@ -3,7 +3,7 @@ import _ from 'lodash';
 import baseForm_mixin from '../mixins/baseForm_mixin';
 
 export default {
-  name: "BaseFilterForm",
+  name: "ive-filter-form",
   mixins: [baseForm_mixin],
   props: {
     /**

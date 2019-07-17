@@ -3,7 +3,7 @@
 </template>
 <script>
 export default {
-  name: 'BaseTextarea',
+  name: 'ive-textarea',
   props: {
     value: {
       type: [String, Number],
