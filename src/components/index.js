@@ -5,7 +5,7 @@ const requireComponent = require.context(
   // 是否查询其子目录
   false,
   // 匹配基础组件文件名的正则表达式
-  /ive-[A-Z]\w+\.(vue|js)$/,
+  /ive-[a-z][-\w]+\.(vue|js)$/,
 );
 requireComponent.keys().forEach((fileName) => {
   // 获取组件配置

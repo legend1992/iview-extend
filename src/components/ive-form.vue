@@ -7,7 +7,7 @@
       :prop="item.prop"
       :rules="rules[item.prop]"
     >
-      <BaseComponent
+      <ive-component
         :tagName="item.itemConfig.tagName"
         :props="item.itemConfig.props"
         v-model="model[item.prop]"
@@ -34,7 +34,7 @@
         :prop="item.prop"
         :rules="rules[item.prop]"
       >
-        <BaseComponent
+        <ive-component
           :tagName="item.itemConfig.tagName"
           :props="item.itemConfig.props"
           v-model="model[item.prop]"

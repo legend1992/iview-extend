@@ -5,10 +5,10 @@
     :title="title"
     @on-cancel="$emit('close')"
   >
-    <BaseSpin v-show="loading && id" />
+    <ive-spin v-show="loading && id" />
     <Icon slot="close" type="ios-close"/>
 
-    <BaseForm
+    <ive-form
       ref="baseForm"
       v-if="!loading"
       :formConfig="formConfigCopy"
