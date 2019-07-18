@@ -144,7 +144,6 @@ export default {
 <style lang='scss' scoped>
 form {
   padding: 10px 20px;
-  background: #eee;
 }
 /deep/ {
   .ivu-btn-primary {
