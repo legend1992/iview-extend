@@ -1,12 +1,15 @@
 <template>
   <div>
-    <Row type="flex" justify="space-between">
-      <Button type="primary" @click="modal = true">新增</Button>
+    <Row v-if="actions.add" type="flex" justify="end">
+      <Button type="primary" @click="$emit('showEditModal')">新增</Button>
     </Row>
     <Table border :columns="columns" :data="list" :loading="tableLoading">
       <template slot-scope="{ row }" slot="action">
-        <Button type="primary" size="small" @click="$emit('showEditModal', row._id)">编辑</Button>
-        <Button type="error" size="small" @click="remove(row._id, row.Name)">删除</Button>
+        <Button v-if="actions.edit" type="primary" size="small" @click="$emit('showEditModal', row)">编辑</Button>
+        <Button v-if="actions.remove" type="error" size="small" @click="remove(row)">删除</Button>
+      </template>
+      <template v-for="(slot, key) in $scopedSlots" slot-scope="{ row }" :slot="key">
+        <slot :name="key" :row="row"></slot>
       </template>
     </Table>
     <ive-page
@@ -33,6 +36,14 @@ export default {
     getListApi: {
       type: Function,
       default: null,
+    },
+    actions: {
+      type: Object,
+      default: () => ({
+        add: true,
+        edit: true,
+        remove: true,
+      }),
     }
   },
   data() {
@@ -46,7 +57,7 @@ export default {
       },
     }
   },
-  created() {
+  mounted() {
     if (this.getListApi) {
       this.getList();
     }
@@ -102,4 +113,10 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.ivu-btn {
+  margin-right: 5px;
+  &:last-child {
+      margin-right: 0;
+  }
+}
 </style>
