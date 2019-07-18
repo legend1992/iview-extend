@@ -1,4 +1,6 @@
 import Vue from 'vue';
+import iview from 'iview';
+Vue.use(iview);
 
 const instance = new Vue();
 const methods = ('info confirm').split(' ');
