@@ -4,8 +4,8 @@ Vue.use(iview);
 
 const instance = new Vue();
 const methods = ('info confirm').split(' ');
-function modal() {
-  return modal.confirm();
+function modal(content) {
+  return modal.confirm(content);
 }
 
 function createModal(method, content) {

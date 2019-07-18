@@ -37,6 +37,10 @@ export default {
       type: Function,
       default: null,
     },
+    deleteApi: {
+      type: Function,
+      default: null,
+    },
     actions: {
       type: Object,
       default: () => ({
@@ -60,6 +64,9 @@ export default {
   mounted() {
     if (this.getListApi) {
       this.getList();
+    }
+    if (this.actions.remove && !this.deleteApi && !(this.deleteApi instanceof Function)) {
+      console.error('请传入deleteApi，且必须为函数');
     }
   },
   methods: {
@@ -95,11 +102,11 @@ export default {
       this.pager.pageIndex = index;
       this.getList();
     },
-    async remove(id, Title) {
-      const confirm = await this.$promiseModal.confirm(`确定删除《${Title}》吗？`);
+    async remove({ id }) {
+      const confirm = await this.$iveModal('确定删除吗？');
       if (confirm) {
         try {
-          await this.deleteApi()(id);
+          await this.deleteApi(id);
           this.$Message.success('删除成功');
           confirm.remove();
           this.getList();
