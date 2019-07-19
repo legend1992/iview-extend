@@ -3,15 +3,15 @@
     <DatePicker
       type="date"
       :value="value[0]"
-      :options="options1()"
+      :options="startOptions()"
       :placeholder="placeholder[0]"
       @on-change="change($event, 0)"
     />
-    <span class="separator">-</span>
+    <span class="date-range-separator">-</span>
     <DatePicker
       type="date"
       :value="value[1]"
-      :options="options2()"
+      :options="endOptions()"
       :placeholder="placeholder[1]"
       @on-change="change($event, 1)"
     />
@@ -49,7 +49,7 @@ export default {
       this.currentValue[index] = e;
       this.$emit('input', this.currentValue);
     },
-    options1() {
+    startOptions() {
       return {
         disabledDate: (date) => {
           let disabledDate = date;
@@ -63,7 +63,7 @@ export default {
         },
       };
     },
-    options2() {
+    endOptions() {
       return {
         disabledDate: (date) => {
           let disabledDate = date;
@@ -85,4 +85,3 @@ export default {
   margin: 0 10px;
 }
 </style>
- 

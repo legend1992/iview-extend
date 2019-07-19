@@ -31,7 +31,7 @@ export default {
     },
     getListApi: {
       type: Function,
-      default: null,
+      required: true,
     },
     deleteApi: {
       type: Function,
@@ -62,8 +62,10 @@ export default {
     if (this.getListApi) {
       this.getList();
     }
+
     if (this.actions.remove && !this.deleteApi && !(this.deleteApi instanceof Function)) {
-      console.error('请传入deleteApi，且必须为函数');
+      throw Error('请传入deleteApi，且必须为函数');
+      this.$Message.error('请传入deleteApi，且必须为函数');
     }
   },
   methods: {
@@ -108,7 +110,7 @@ export default {
     async remove(row) {
       const id = row._id || row.id;
       const confirm = await this.$iveModal('确定删除吗？');
-      if (confirm) {
+      if (confirm && this.deleteApi && this.deleteApi instanceof Function) {
         try {
           await this.deleteApi(id);
           this.$Message.success('删除成功');
@@ -118,6 +120,9 @@ export default {
           confirm.remove();
           this.$Message.error(e);
         }
+      } else if (confirm) {
+        throw Error('请传入deleteApi，且必须为函数');
+        this.$Message.error('请传入deleteApi，且必须为函数');
       }
     },
   }
