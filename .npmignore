@@ -1,4 +1,6 @@
 .*
+./src/main.js
+./src/App.vue
 /node_modules
 package-lock.json
 webpack.config.js

@@ -1,6 +1,6 @@
 {
   "name": "iview-extend-aiback",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -45,5 +45,6 @@
   "browserslist": [
     "> 1%",
     "last 2 versions"
-  ]
+  ],
+  "license": "MIT"
 }

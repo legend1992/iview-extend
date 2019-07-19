@@ -1,11 +1,11 @@
 <template>
-  <Form ref="form" :model="model" :label-width="labelWidth">
+  <Form class="ive-edit-form" ref="form" :model="model" :label-width="labelWidth">
     <FormItem
       v-for="item in formConfigFormat"
       :key="item.prop"
       :label="item.label"
       :prop="item.prop"
-      :rules="rules[item.prop]"
+      :rules="item.rules"
     >
       <ive-component
         :tagName="item.itemConfig.tagName"
@@ -32,7 +32,7 @@
         :key="item.prop"
         :label="item.label"
         :prop="item.prop"
-        :rules="rules[item.prop]"
+        :rules="item.rules"
       >
         <ive-component
           :tagName="item.itemConfig.tagName"
@@ -106,54 +106,43 @@ export default {
     hideConfigFormat() {
       return this.configFormat(_.cloneDeep(this.hideConfig));
     },
-    // 校验规则
-    rules() {
-      const { formConfigFormat, hideConfigFormat, setDefaultRules } = this;
-      return {
-        ...formConfigFormat.reduce(setDefaultRules, {}),
-        ...hideConfigFormat.reduce(setDefaultRules, {}),
-      };
-    },
   },
   methods: {
     configFormat(configs) {
       configs.forEach((item) => {
         const { prop, label, itemConfig } = item;
         item.itemConfig = this.setDefaultItemConfig(label, itemConfig);
+        item.rules = this.setDefaultRules(item);
         this.$set(this.model, prop, (itemConfig && itemConfig.value) || "");
       });
 
       return configs;
     },
-    setDefaultRules(prev, cur) {
-      if (cur.required) {
-        if (!cur.rules || !(cur.rules instanceof Array)) {
-          cur.rules = [
+    setDefaultRules(item) {
+      if (item.required) {
+        if (!item.rules || !(item.rules instanceof Array)) {
+          item.rules = [
             {
               required: true,
-              message: `${cur.label}不为空`
+              message: `${item.label}不为空`
             }
           ];
         } else {
-          const [requiredRule] = cur.rules.filter(rule => {
+          const [requiredRule] = item.rules.filter(rule => {
             return rule.required;
           });
           if (!requiredRule) {
-            cur.rules.unshift({
+            item.rules.unshift({
               required: true,
-              message: `${cur.label}不为空`
+              message: `${item.label}不为空`
             });
           } else if (requiredRule.message === undefined) {
-            requiredRule.message = `${cur.label}不为空`;
+            requiredRule.message = `${item.label}不为空`;
           }
         }
       }
 
-      if (cur.rules) {
-        prev[cur.prop] = cur.rules;
-      }
-
-      return prev;
+      return item.rules;
     },
     // 为formConfig/hideConfig设置默认itemConfig
     setDefaultItemConfig(label, config) {
@@ -216,35 +205,7 @@ export default {
       this.$emit('update:formConfig', this.formConfigOriginal);
       this.$emit('update:hideConfig', this.hideConfigOriginal);
       this.$refs.form.resetFields();
-    }
+    },
   },
 };
 </script>
-<style lang='scss' scoped>
-.toggle-button {
-  text-align: center;
-  cursor: pointer;
-  &:hover {
-    color: #57a3f3;
-  }
-  &.hide {
-    display: none;
-  }
-}
-.hidePart-wrapper {
-  display: none;
-  &.show {
-    display: block;
-  }
-}
-/deep/ {
-  .ivu-form-item-label:after {
-    content: '：';
-    display: inline-block;
-    line-height: 1;
-  }
-  .ivu-form-item-label {
-    padding-right: 0;
-  }
-}
-</style>

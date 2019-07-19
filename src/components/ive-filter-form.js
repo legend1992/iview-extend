@@ -1,9 +1,8 @@
-<script>
 import _ from 'lodash';
 import baseForm_mixin from '../mixins/baseForm_mixin';
 
 export default {
-  name: "ive-filter-form",
+  name: 'ive-filter-form',
   mixins: [baseForm_mixin],
   props: {
     /**
@@ -54,34 +53,34 @@ export default {
     // 渲染按钮
     const renderButtons = () => [
       h(
-        "Row",
+        'Row',
         {
           props: {
-            type: "flex",
-            justify: "end"
+            type: 'flex',
+            justify: 'end'
           }
         },
         [
           h(
-            "Button",
+            'Button',
             {
               props: {
-                type: "primary"
+                type: 'primary'
               },
               on: {
                 click: this.handleQuery
               }
             },
-            "查询"
+            '查询'
           ),
           h(
-            "Button",
+            'Button',
             {
               on: {
                 click: this.handleReset
               }
             },
-            "重置"
+            '重置'
           )
         ]
       )
@@ -110,7 +109,7 @@ export default {
     // 渲染FormItem
     const renderFormItem = (item) => {
       return h(
-        "FormItem",
+        'FormItem',
         {
           props: {
             label: item.label,
@@ -127,38 +126,17 @@ export default {
     ];
     const { model, labelWidth, inline } = this;
     return h(
-      "Form",
+      'Form',
       {
         props: {
           model,
           labelWidth,
           inline
         },
-        ref: "form"
+        class: 'ive-filter-form',
+        ref: 'form'
       },
       renderFormChilds()
     );
   }
 };
-</script>
-<style lang='scss' scoped>
-form {
-  padding: 10px 20px;
-}
-/deep/ {
-  .ivu-btn-primary {
-    margin-right: 5px;
-  }
-  .ivu-form-item {
-    margin-bottom: 12px;
-    .ivu-form-item-label:after {
-      content: "：";
-      display: inline-block;
-      line-height: 1;
-    }
-    .ivu-form-item-label {
-      padding-right: 0;
-    }
-  }
-}
-</style>

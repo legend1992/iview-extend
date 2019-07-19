@@ -14,6 +14,57 @@
   margin-top: 20px;
 }
 
+/* 条件查询表单 */
+.ive-filter-form {
+  padding: 10px 20px;
+  background: #f5f7f9;
+}
+.ive-filter-form .ivu-btn-primary {
+  margin-right: 5px;
+}
+.ive-filter-form .ivu-form-item {
+  margin-bottom: 12px;
+}
+.ive-filter-form .ivu-form-item-label:after {
+  content: '：';
+  display: inline-block;
+  line-height: 1;
+}
+.ive-filter-form .ivu-form-item-label {
+  padding-right: 0;
+}
+
+/* 编辑表单 */
+.ive-edit-form .toggle-button {
+  text-align: center;
+  cursor: pointer;
+}
+.ive-edit-form .toggle-button:hover {
+  color: #57a3f3;
+}
+.ive-edit-form .toggle-button.hide {
+  display: none;
+}
+.ive-edit-form .hidePart-wrapper {
+  display: none;
+}
+.ive-edit-form .hidePart-wrapper.show {
+  display: block;
+}
+.ive-edit-form .ivu-form-item-label:after {
+  content: '：';
+  display: inline-block;
+  line-height: 1;
+}
+.ive-edit-form .ivu-form-item-label {
+  padding-right: 0;
+}
+
+/* 模态框 */
+.ivu-modal-body {
+  position: relative;
+}
+
 /* 加载圈 */
 .ive-spin {
   position: absolute;

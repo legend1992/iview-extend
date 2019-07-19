@@ -8,7 +8,7 @@
     <ive-spin v-show="loading && id" />
     <Icon slot="close" type="ios-close"/>
 
-    <ive-form
+    <ive-edit-form
       ref="baseForm"
       v-if="!loading"
       :formConfig="formConfigCopy"
