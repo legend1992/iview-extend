@@ -1,4 +1,3 @@
-<script>
 export default {
   name: "ive-component",
   props: {
@@ -31,4 +30,3 @@ export default {
     );
   }
 };
-</script>
