@@ -29,10 +29,6 @@ export default {
       type: Array,
       default: () => [],
     },
-    queryParams: {
-      type: Object,
-      default: () => ({}),
-    },
     getListApi: {
       type: Function,
       default: null,
@@ -54,6 +50,7 @@ export default {
     return {
       list: [],
       tableLoading: true,
+      queryParams: {},
       pager: {
         pageIndex: 1,
         pageSize: 30,
@@ -70,13 +67,19 @@ export default {
     }
   },
   methods: {
-    async getList() {
+    async getList(queryParams) {
+      if (queryParams && queryParams instanceof Object) {
+        this.queryParams = queryParams;
+      } else {
+        queryParams = this.queryParams;
+      }
+
       try {
         this.tableLoading = true;
         const reqParams = {
           pageIndex: this.pager.pageIndex,
           pageSize: this.pager.pageSize,
-          ...this.queryParams,
+          ...queryParams,
         };
         const {
           data: {
@@ -102,7 +105,8 @@ export default {
       this.pager.pageIndex = index;
       this.getList();
     },
-    async remove({ id }) {
+    async remove(row) {
+      const id = row._id || row.id;
       const confirm = await this.$iveModal('确定删除吗？');
       if (confirm) {
         try {
