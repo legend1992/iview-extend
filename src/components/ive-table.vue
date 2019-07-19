@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="ive-table">
     <Row v-if="actions.add" type="flex" justify="end">
       <Button type="primary" @click="$emit('showEditModal')">新增</Button>
     </Row>
@@ -128,11 +128,3 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
-.ivu-btn {
-  margin-right: 5px;
-  &:last-child {
-      margin-right: 0;
-  }
-}
-</style>

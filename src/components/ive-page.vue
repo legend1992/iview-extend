@@ -1,16 +1,16 @@
 <template>
-  <Row class="pager-row" type="flex" justify="end">
-      <Page
-        :total="total"
-        :current="pageIndex"
-        :page-size="pageSize"
-        :page-size-opts="pageSizeOpts"
-        :show-total="showTotal"
-        :show-elevator="showElevator"
-        :show-sizer="showSizer"
-        @on-page-size-change="$emit('on-page-size-change', $event)"
-        @on-change="$emit('on-change', $event)"/>
-    </Row>
+  <Row class="ive-pager" type="flex" justify="end">
+    <Page
+      :total="total"
+      :current="pageIndex"
+      :page-size="pageSize"
+      :page-size-opts="pageSizeOpts"
+      :show-total="showTotal"
+      :show-elevator="showElevator"
+      :show-sizer="showSizer"
+      @on-page-size-change="$emit('on-page-size-change', $event)"
+      @on-change="$emit('on-change', $event)"/>
+  </Row>
 </template>
 <script>
 export default {
@@ -47,8 +47,3 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-  .pager-row {
-    margin-top: 20px;
-  }
-</style>

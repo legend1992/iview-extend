@@ -1,5 +1,5 @@
 <template>
-  <Breadcrumb>
+  <Breadcrumb class="ive-bread-crumb">
     <BreadcrumbItem v-for="title in titleList" :key="title">{{title}}</BreadcrumbItem>
   </Breadcrumb>
 </template>
@@ -20,9 +20,3 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
- .ivu-breadcrumb {
-    padding: 0 24px;
-    margin: 12px 0;
-  }
-</style>

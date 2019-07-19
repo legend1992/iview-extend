@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="ive-date-range">
     <DatePicker
       type="date"
       :value="value[0]"
@@ -7,7 +7,7 @@
       :placeholder="placeholder[0]"
       @on-change="change($event, 0)"
     />
-    <span class="date-range-separator">-</span>
+    <span class="separator">-</span>
     <DatePicker
       type="date"
       :value="value[1]"
@@ -80,8 +80,3 @@ export default {
   },
 };
 </script>
-<style lang='scss' scoped>
-.separator {
-  margin: 0 10px;
-}
-</style>
