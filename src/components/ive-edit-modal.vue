@@ -5,12 +5,12 @@
     :title="title"
     @on-cancel="$emit('close')"
   >
-    <ive-spin v-show="loading && id" />
+    <span v-show="loading && id"><ive-spin /></span>
     <Icon slot="close" type="ios-close"/>
 
     <ive-edit-form
       ref="baseForm"
-      v-if="!loading"
+      :labelWidth="labelWidth"
       :formConfig="formConfigCopy"
       @update:formConfig="$emit('update:formConfig', $event)"
     />
@@ -51,6 +51,10 @@ export default {
     editApi: {
       type: Function,
       default: null,
+    },
+    labelWidth: {
+      type: Number,
+      default: 80,
     }
   },
   data() {
@@ -92,6 +96,7 @@ export default {
     },
     async getDetail(id) {
       try {
+        this.loading = true;
         const { data: { data } } = await this.getDetailApi(id);
         this.setFormConfig(data);
       } catch (e) {

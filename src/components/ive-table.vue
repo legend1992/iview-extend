@@ -109,7 +109,7 @@ export default {
     },
     async remove(row) {
       const id = row._id || row.id;
-      const confirm = await this.$iveModal('确定删除吗？');
+      const confirm = await this.$iveModal.confirm('确定删除吗？');
       if (confirm && this.deleteApi && this.deleteApi instanceof Function) {
         try {
           await this.deleteApi(id);
