@@ -47,6 +47,7 @@ export default {
     },
     handleReset() {
       this.$refs.form.resetFields();
+      this.handleQuery();
     },
   },
   render(h) {
