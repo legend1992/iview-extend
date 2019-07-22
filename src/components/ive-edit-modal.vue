@@ -124,10 +124,10 @@ export default {
       });
       this.$emit('update:formConfig', this.formConfigCopy);
     },
-    async submit(o) {
+    async submit(formModel) {
       try {
         this.submitLoading = true;
-        await this.editApi(_.pickBy(o));
+        await this.editApi(formModel);
         this.submitLoading = false;
         this.$Message.success('操作成功');
         this.$emit('success');
