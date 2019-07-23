@@ -1,6 +1,6 @@
 <template>
   <div class="ive-table">
-    <Row v-if="actions.add" type="flex" justify="end">
+    <Row v-if="actions.add" class="add-button-wrapper" type="flex" justify="end">
       <Button type="primary" @click="$emit('showEditModal')">新增</Button>
     </Row>
     <Table border :columns="columns" :data="list" :loading="tableLoading">

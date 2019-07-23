@@ -89,3 +89,7 @@
 .ive-table .ivu-btn:last-child {
   margin-right: 0;
 }
+.ive-table .add-button-wrapper {
+  padding: 5px 10px;
+  background-color: #eee;
+}

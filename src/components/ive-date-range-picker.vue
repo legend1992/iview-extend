@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import _ from "lodash";
 export default {
   name: 'ive-date-range-picker',
   props: {
@@ -41,7 +42,7 @@ export default {
   },
   watch: {
     value(value) {
-      this.currentValue = this.$utils._.cloneDeep(value);
+      this.currentValue = _.cloneDeep(value);
     },
   },
   methods: {
