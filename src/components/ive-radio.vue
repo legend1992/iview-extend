@@ -4,6 +4,7 @@
       v-for="(value, key) in formatOptions"
       :key="key"
       :label="label(value, key)"
+      :disabled="disabled"
     >{{ value }}</Radio>
   </RadioGroup>
 </template>
@@ -27,6 +28,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    }
   },
   computed: {
     formatOptions() {
