@@ -86,8 +86,19 @@ export default {
         ]
       )
     ];
+    const renderTip = (tip) => {
+      if (tip) {
+        return h('ive-icon-tooltip', {
+          props: {
+            content: tip,
+          },
+        });
+      } else {
+        return null;
+      }
+    };
     // 渲染控件
-    const renderItem = ({ prop, label, itemConfig: config }) => {
+    const renderItem = ({ prop, label, tip, itemConfig: config }) => {
       config = this.setDefaultItemConfig(label, config);
       return [
         h(config.tagName, {
@@ -105,6 +116,7 @@ export default {
             },
           },
         }),
+        renderTip(tip),
       ]
     };
     // 渲染FormItem

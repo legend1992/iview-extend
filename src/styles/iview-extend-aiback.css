@@ -68,11 +68,21 @@
 }
 
 /* 提示图标 */
-.ivu-tooltip {
+.ive-tooltip {
   margin-left: 5px;
   font-size: 16px;
   color: #0e72db;
   cursor: pointer;
+}
+.ive-tooltip .ivu-tooltip-popper {
+  transform: translateY(8px);
+}
+.ive-filter-form .ive-tooltip {
+  position: absolute;
+  top: 50%;
+  right: -20px;
+  transform: translateY(-50%);
+  z-index: 1;
 }
 
 /* 模态框 */

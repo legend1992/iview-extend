@@ -1,19 +1,12 @@
 <template>
   <Form class="ive-edit-form" ref="form" :model="model" :label-width="labelWidth">
-    <FormItem
+    <iveFormItem
       v-for="item in formConfigFormat"
       :key="item.prop"
-      :label="item.label"
-      :prop="item.prop"
-      :rules="item.rules"
-    >
-      <ive-component
-        :tagName="item.itemConfig.tagName"
-        :props="item.itemConfig.props"
-        v-model="model[item.prop]"
-        @input="itemInput($event, item, 'formConfig')"
-      />
-    </FormItem>
+      :item="item"
+      v-model="model[item.prop]"
+      @input="itemInput($event, item, 'formConfig')"
+    />
 
     <div
       v-show="hideConfig.length && !moreIsShow"
@@ -27,20 +20,13 @@
       class="hidePart-wrapper"
       :class="{ show: this.moreIsShow }"
     >
-      <FormItem
+      <iveFormItem
         v-for="item in hideConfigFormat"
         :key="item.prop"
-        :label="item.label"
-        :prop="item.prop"
-        :rules="item.rules"
-      >
-        <ive-component
-          :tagName="item.itemConfig.tagName"
-          :props="item.itemConfig.props"
-          v-model="model[item.prop]"
-          @input="itemInput($event, item, 'hideConfig')"
-        />
-      </FormItem>
+        :item="item"
+        v-model="model[item.prop]"
+        @input="itemInput($event, item, 'hideConfig')"
+      />
       <div class="toggle-button" @click="moreIsShow = false;">收起</div>
     </div>
   </Form>
@@ -48,10 +34,14 @@
 <script>
 import _ from "lodash";
 import baseForm_mixin from '../mixins/baseForm_mixin';
+import iveFormItem from './form/form-item.vue';
 
 export default {
   name: "ive-form",
   mixins: [baseForm_mixin],
+  components: {
+    iveFormItem,
+  },
   props: {
     /**
      * formConfig: {
