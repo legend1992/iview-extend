@@ -1,6 +1,6 @@
 <template>
   <div class="ive-table">
-    <Row v-if="actions.add" class="add-button-wrapper" type="flex" justify="end">
+    <Row v-if="actions.add" class="add-button-wrapper" type="flex" justify="start">
       <Button type="primary" @click="$emit('showEditModal')">新增</Button>
     </Row>
     <Table border :columns="columns" :data="list" :loading="tableLoading">
@@ -64,8 +64,8 @@ export default {
     }
 
     if (this.actions.remove && !this.deleteApi && !(this.deleteApi instanceof Function)) {
-      throw Error('请传入deleteApi，且必须为函数');
       this.$Message.error('请传入deleteApi，且必须为函数');
+      throw Error('请传入deleteApi，且必须为函数');
     }
   },
   methods: {
@@ -121,8 +121,8 @@ export default {
           this.$Message.error(e);
         }
       } else if (confirm) {
-        throw Error('请传入deleteApi，且必须为函数');
         this.$Message.error('请传入deleteApi，且必须为函数');
+        throw Error('请传入deleteApi，且必须为函数');
       }
     },
   }

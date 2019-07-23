@@ -54,11 +54,11 @@ export default {
     // 渲染按钮
     const renderButtons = () => [
       h(
-        'Row',
+        'span',
         {
-          props: {
-            type: 'flex',
-            justify: 'end'
+          class: 'button-wrapper',
+          style: {
+            marginLeft: this.labelWidth + 'px',
           }
         },
         [

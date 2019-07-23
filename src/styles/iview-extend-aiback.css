@@ -33,6 +33,9 @@
 .ive-filter-form .ivu-form-item-label {
   padding-right: 0;
 }
+.ive-filter-form .button-wrapper {
+  display: inline-block;
+}
 
 /* 编辑表单 */
 .ive-edit-form .toggle-button {
@@ -58,6 +61,18 @@
 }
 .ive-edit-form .ivu-form-item-label {
   padding-right: 0;
+}
+.ive-edit-form .ivu-form-item-content {
+  display: flex;
+  align-items: center;
+}
+
+/* 提示图标 */
+.ivu-tooltip {
+  margin-left: 5px;
+  font-size: 16px;
+  color: #0e72db;
+  cursor: pointer;
 }
 
 /* 模态框 */
@@ -91,5 +106,5 @@
 }
 .ive-table .add-button-wrapper {
   padding: 5px 10px;
-  background-color: #eee;
+  background-color: #f5f7f9;
 }
