@@ -161,16 +161,10 @@ export default {
       return config;
     },
     // 控件输入，更新源数据formConfig/hideConfig
-    itemInput(value, { prop, itemConfig }, type) {
-      const updateConfig = this[`${type}Format`].map((config) => {
-        if (config.prop === prop) {
-          config.itemConfig.value = value;
-        }
-
-        return config;
-      });
-      this.$emit(`update:${type}`, updateConfig);
-      itemConfig.on && itemConfig.on.input && itemConfig.on.input(value);
+    itemInput(value, item, type) {
+      item.itemConfig.value = value;
+      this.$emit(`update:${type}`, this[`${type}Format`]);
+      item.itemConfig.on && item.itemConfig.on.input && item.itemConfig.on.input(value);
     },
     getData(needValidate = true) {
       if (needValidate) {
