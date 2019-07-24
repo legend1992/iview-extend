@@ -67,6 +67,12 @@
   align-items: center;
 }
 
+/* form-item */
+.ive-form-item .inline-tip {
+  color: #858585;
+  margin-left: 5px;
+}
+
 /* 提示图标 */
 .ive-tooltip {
   margin-left: 5px;

@@ -1,5 +1,6 @@
 <template>
   <FormItem
+    class="ive-form-item"
     :key="item.prop"
     :label="item.label"
     :prop="item.prop"
@@ -11,6 +12,7 @@
       :value="value"
       @input="$emit('input', $event)"
     />
+    <span class="inline-tip" v-if="item.inlineTip">{{ item.inlineTip }}</span>
     <ive-icon-tooltip v-if="item.tip" :content="item.tip" />
   </FormItem>
 </template>
