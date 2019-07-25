@@ -124,3 +124,8 @@
   padding: 5px 10px;
   background-color: #f5f7f9;
 }
+
+/* 确认弹窗 */
+.ivu-modal-confirm-body b {
+  margin: 5px;
+}

@@ -5,8 +5,8 @@
     </Row>
     <Table border :columns="columns" :data="list" :loading="tableLoading">
       <template slot-scope="{ row }" slot="action">
-        <Button v-if="actions.edit" type="primary" size="small" @click="$emit('showEditModal', row)">编辑</Button>
-        <Button v-if="actions.remove" type="error" size="small" @click="remove(row)">删除</Button>
+        <Button v-if="actions.edit" type="primary" size="small" @click="handleShowEditModal(row)">编辑</Button>
+        <Button v-if="actions.remove" type="error" size="small" @click="handleRemove(row)">删除</Button>
       </template>
       <template v-for="(slot, key) in $scopedSlots" slot-scope="{ row }" :slot="key">
         <slot :name="key" :row="row"></slot>
@@ -44,7 +44,15 @@ export default {
         edit: true,
         remove: true,
       }),
-    }
+    },
+    idKey: {
+      type: [String, Number],
+      default: '_id',
+    },
+    deleteKey: {
+      type: String,
+      default: 'title',
+    },
   },
   data() {
     return {
@@ -61,11 +69,6 @@ export default {
   mounted() {
     if (this.getListApi) {
       this.getList();
-    }
-
-    if (this.actions.remove && !this.deleteApi && !(this.deleteApi instanceof Function)) {
-      this.$Message.error('请传入deleteApi，且必须为函数');
-      throw Error('请传入deleteApi，且必须为函数');
     }
   },
   methods: {
@@ -107,9 +110,14 @@ export default {
       this.pager.pageIndex = index;
       this.getList();
     },
-    async remove(row) {
-      const id = row._id || row.id;
-      const confirm = await this.$iveModal.confirm('确定删除吗？');
+    handleShowEditModal(row) {
+      const id = row[this.idKey] || row.id;
+      this.$emit('showEditModal', id, row);
+    },
+    async handleRemove(row) {
+      const id = row[this.idKey] || row.id;
+      const title = row[this.deleteKey] || '';
+      const confirm = await this.$iveModal.confirm(`确定删除<b>${ title }</b>吗？`);
       if (confirm && this.deleteApi && this.deleteApi instanceof Function) {
         try {
           await this.deleteApi(id);
@@ -121,8 +129,7 @@ export default {
           this.$Message.error(e);
         }
       } else if (confirm) {
-        this.$Message.error('请传入deleteApi，且必须为函数');
-        throw Error('请传入deleteApi，且必须为函数');
+        this.$emit('remove', id, confirm, row);
       }
     },
   }
