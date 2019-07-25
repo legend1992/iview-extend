@@ -1,5 +1,5 @@
 <template>
-  <Input :value="value" @input="$emit('input', $event)" type="textarea" :autosize="autosize" :placeholder="placeholder"/>
+  <Input :value="value" @input="$emit('input', $event)" type="textarea" :autosize="autosize" :placeholder="placeholder" :maxlength="maxlength"/>
 </template>
 <script>
 export default {
@@ -19,6 +19,10 @@ export default {
     placeholder: {
       type: String,
       default: '请输入内容',
+    },
+    maxlength: {
+      type: Number,
+      default: 200,
     },
   },
 };
