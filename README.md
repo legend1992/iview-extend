@@ -2,7 +2,7 @@
 
 ## Project setup
 ```
-yarn install
+本项目是基于iview开发，使用前请先Vue.use(iview), import 'iview/dist/styles/iview.css'。再Vue.use(iview-extends2), import '....'
 ```
 
 ### Compiles and hot-reloads for development
