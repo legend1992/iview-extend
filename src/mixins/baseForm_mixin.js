@@ -40,6 +40,11 @@ export default {
           }, config.props);
         }
       }
+
+      if (config.tagName === 'ive-date-range-picker') {
+        config.props.placeholder = ['请输入开始时间', '请输入结束时间'];
+      }
+
       return config;
     },
   },
