@@ -57,7 +57,11 @@ export default {
           if (date) {
             const value = date && date.valueOf();
             const minValue = new Date(this.currentValue[1]);
-            disabledDate = value > minValue || value > this.disabledDate;
+            if (this.disabledDate && this.disabledDate instanceof Date) {
+              disabledDate = value > minValue || value > this.disabledDate;
+            } else {
+              disabledDate = value > minValue;
+            }
           }
 
           return disabledDate;
@@ -71,7 +75,11 @@ export default {
           if (date) {
             const value = date && date.valueOf();
             const maxValue = new Date(this.currentValue[0]) - 86400000;
-            disabledDate = value < maxValue || value > this.disabledDate;
+            if (this.disabledDate && this.disabledDate instanceof Date) {
+              disabledDate = value < maxValue || value > this.disabledDate;
+            } else {
+              disabledDate = value < maxValue;
+            }
           }
 
           return disabledDate;
