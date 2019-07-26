@@ -2,13 +2,14 @@
   <div class="ive-table">
     <Row v-if="actions.add" class="add-button-wrapper" type="flex" justify="start">
       <Button type="primary" @click="$emit('showEditModal')">新增</Button>
+      <slot name="topButtons" />
     </Row>
     <Table border :columns="columns" :data="list" :loading="tableLoading">
       <template slot-scope="{ row }" slot="action">
         <Button v-if="actions.edit" type="primary" size="small" @click="handleShowEditModal(row)">编辑</Button>
         <Button v-if="actions.remove" type="error" size="small" @click="handleRemove(row)">删除</Button>
       </template>
-      <template v-for="(slot, key) in $scopedSlots" slot-scope="{ row }" :slot="key">
+      <template v-for="(slot, key) in tableSlots" slot-scope="{ row }" :slot="key">
         <slot :name="key" :row="row"></slot>
       </template>
     </Table>
@@ -22,6 +23,8 @@
 </template>
 
 <script>
+import _ from 'lodash';
+
 export default {
   name: 'ive-table',
   props: {
@@ -66,6 +69,13 @@ export default {
       },
     }
   },
+  computed: {
+    tableSlots() {
+      const slots = _.cloneDeep(this.$scopedSlots);
+      delete slots.topButtons;
+      return slots;
+    },
+  },
   mounted() {
     if (this.getListApi) {
       this.getList();
@@ -74,9 +84,9 @@ export default {
   methods: {
     async getList(queryParams) {
       if (queryParams && queryParams instanceof Object) {
-        this.queryParams = queryParams;
+        this.queryParams = { ...queryParams };
       } else {
-        queryParams = this.queryParams;
+        queryParams = { ...this.queryParams };
       }
 
       try {
