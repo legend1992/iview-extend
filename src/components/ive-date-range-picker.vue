@@ -3,7 +3,7 @@
     <DatePicker
       type="date"
       :value="value[0]"
-      :options="startOptions()"
+      :options="startOptions"
       :placeholder="placeholder[0]"
       @on-change="change($event, 0)"
     />
@@ -11,7 +11,7 @@
     <DatePicker
       type="date"
       :value="value[1]"
-      :options="endOptions()"
+      :options="endOptions"
       :placeholder="placeholder[1]"
       @on-change="change($event, 1)"
     />
@@ -32,7 +32,7 @@ export default {
       default: () => ['开始日期', '结束日期'],
     },
     disabledDate: {
-      default: () => new Date(),
+      default: () => new Date(new Date() - 24 * 60 * 60 * 1000),
     },
   },
   data() {
@@ -40,25 +40,16 @@ export default {
       currentValue: [],
     };
   },
-  watch: {
-    value(value) {
-      this.currentValue = _.cloneDeep(value);
-    },
-  },
-  methods: {
-    change(e, index) {
-      this.currentValue[index] = e;
-      this.$emit('input', this.currentValue);
-    },
+  computed: {
     startOptions() {
       return {
         disabledDate: (date) => {
-          let disabledDate = date;
+          let disabledDate;
           if (date) {
             const value = date && date.valueOf();
             const minValue = new Date(this.currentValue[1]);
             if (this.disabledDate && this.disabledDate instanceof Date) {
-              disabledDate = value > minValue || value > this.disabledDate;
+              disabledDate = value > minValue || value < this.disabledDate;
             } else {
               disabledDate = value > minValue;
             }
@@ -71,12 +62,12 @@ export default {
     endOptions() {
       return {
         disabledDate: (date) => {
-          let disabledDate = date;
+          let disabledDate;
           if (date) {
             const value = date && date.valueOf();
             const maxValue = new Date(this.currentValue[0]) - 86400000;
             if (this.disabledDate && this.disabledDate instanceof Date) {
-              disabledDate = value < maxValue || value > this.disabledDate;
+              disabledDate = value < maxValue || value < this.disabledDate;
             } else {
               disabledDate = value < maxValue;
             }
@@ -85,6 +76,17 @@ export default {
           return disabledDate;
         },
       };
+    },
+  },
+  watch: {
+    value(value) {
+      this.currentValue = _.cloneDeep(value);
+    },
+  },
+  methods: {
+    change(e, index) {
+      this.currentValue[index] = e;
+      this.$emit('input', this.currentValue);
     },
   },
 };
