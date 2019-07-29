@@ -136,6 +136,9 @@ export default {
         this.$Message.error(e);
       }
     },
+    validateField(prop) {
+      return this.$refs.baseForm.validateField(prop);
+    },
     handleSubmit() {
       if (this.editApi) {
         const reqData = this.$refs.baseForm.getData();

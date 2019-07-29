@@ -184,6 +184,9 @@ export default {
       });
       return validate;
     },
+    validateField(prop) {
+      return this.$refs.form.validateField(prop);
+    },
     reset() {
       this.moreIsShow = false;
       this.$emit('update:formConfig', this.formConfigOriginal);
