@@ -11,6 +11,7 @@
         :accept="accept"
         :max-size="maxSize"
         @on-error="handleError"
+        @on-remove="$emit('on-remove', $event)"
         @on-progress="handleProgress"
         @on-success="handleSuccess"
         @on-exceeded-size="handleExceededSize"
