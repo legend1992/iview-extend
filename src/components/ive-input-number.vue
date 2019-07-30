@@ -11,7 +11,7 @@
 export default {
   name: 'ive-input-number',
   props: {
-    value,
+    value: null,
     max: {
       type: Number,
       default: Infinity,

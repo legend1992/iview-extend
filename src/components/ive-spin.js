@@ -3,19 +3,13 @@ export default {
   functional: true,
   render(h) {
     return h(
-      'span',
-      {},
-      [
-        h(
-          'Spin',
-          {
-            class: 'ive-spin',
-            props: {
-              size: 'large',
-            },
-          },
-        )
-      ]
+      'Spin',
+      {
+        class: 'ive-spin',
+        props: {
+          size: 'large',
+        },
+      },
     )
   }
 };
