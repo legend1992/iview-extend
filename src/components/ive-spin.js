@@ -5,15 +5,17 @@ export default {
     return h(
       'span',
       {},
-      h(
-        'Spin',
-        {
-          class: 'ive-spin',
-          props: {
-            size: 'large',
+      [
+        h(
+          'Spin',
+          {
+            class: 'ive-spin',
+            props: {
+              size: 'large',
+            },
           },
-        },
-      )
+        )
+      ]
     )
   }
 };
