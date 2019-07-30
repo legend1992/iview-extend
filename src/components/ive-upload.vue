@@ -33,7 +33,7 @@ export default {
   props: {
     action: {
       type: String,
-      default: '//jsonplaceholder.typicode.com/posts/',
+      default: '',
     },
     multiple: {
       type: Boolean,
