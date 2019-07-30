@@ -2,6 +2,7 @@
   <Form class="ive-edit-form" ref="form" :model="model" :label-width="labelWidth">
     <iveFormItem
       v-for="item in formConfigFormat"
+      v-show="item.hide !== true"
       :key="item.prop"
       :item="item"
       v-model="model[item.prop]"
@@ -57,6 +58,7 @@ export default {
             ...
           }
         },
+        hide: 是否隐藏,
         required: 是否必填,
         rules: 控件校验规则
         [
