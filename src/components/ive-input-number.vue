@@ -32,7 +32,7 @@ export default {
   },
   watch: {
     value(value) {
-      if (!value && value !== 0 && isNaN(value)) {
+      if (!value && value !== 0 || isNaN(value)) {
         this.cValue = null;
       } else {
         this.cValue = value;
