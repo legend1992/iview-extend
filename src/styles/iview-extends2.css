@@ -129,3 +129,8 @@
 .ivu-modal-confirm-body b {
   margin: 5px;
 }
+
+/* 无数据 */
+.ive-no-data {
+  color: #aaa;
+}
