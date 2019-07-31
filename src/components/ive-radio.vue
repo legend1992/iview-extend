@@ -7,7 +7,7 @@
       :disabled="disabled"
     >{{ value }}</Radio>
   </RadioGroup>
-  <span v-else>{{ noDataMessage }}</span>
+  <span v-else class="ive-no-data">{{ noDataMessage }}</span>
 </template>
 <script>
 export default {
@@ -23,7 +23,7 @@ export default {
     /**
      * parseIntKey: 是否需要将key转换为整型
      * 当将 id为1(整型), name为'名称' 的数据组合为 options: {1: '名称'} 时
-     * id由整型变成了对象options中的字符串，在radio组件中无法正确被选中
+     * id由整型变成了对象options中的字符串，在组件中无法正确被选中
     */
     parseIntKey: {
       type: Boolean,
