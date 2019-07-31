@@ -1,16 +1,10 @@
-import Vue from 'vue';
 import iview from 'iview';
-Vue.use(iview);
-
-const instance = new Vue();
-const methods = ['info', 'confirm'];
+let instance = null;
 const titleMap = {
   info: '信息提示框',
   confirm: '确认框',
 };
-const modal = {};
-
-function createModal(method, content) {
+function initMethod(method, content) {
   return new Promise((resolve) => {
     let options = {
       loading: true,
@@ -29,9 +23,15 @@ function createModal(method, content) {
     instance.$Modal[method](options);
   });
 }
+const createModal = function(Vue) {
+  const modal = {};
+  instance = new Vue();
+  Vue.use(iview);
+  const methods = ['info', 'confirm'];
+  methods.forEach((name) => {
+    modal[name] = content => initMethod(name, content);
+  });
+  return modal;
+};
 
-methods.forEach((name) => {
-  modal[name] = content => createModal(name, content);
-});
-
-export default modal;
+export default createModal;
