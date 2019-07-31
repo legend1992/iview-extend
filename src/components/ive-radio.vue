@@ -1,5 +1,5 @@
 <template>
-  <RadioGroup :value="value" @input="$emit('input', $event)">
+  <RadioGroup v-if="optionsLength" :value="value" @input="$emit('input', $event)">
     <Radio
       v-for="(value, key) in formatOptions"
       :key="key"
@@ -7,6 +7,7 @@
       :disabled="disabled"
     >{{ value }}</Radio>
   </RadioGroup>
+  <span v-else>{{ noDataMessage }}</span>
 </template>
 <script>
 export default {
@@ -31,7 +32,11 @@ export default {
     disabled: {
       type: Boolean,
       default: false,
-    }
+    },
+    noDataMessage: {
+      type: String,
+      default: '无可选数据',
+    },
   },
   computed: {
     formatOptions() {
@@ -46,6 +51,9 @@ export default {
       }
 
       return options;
+    },
+    optionsLength() {
+      return Object.keys(this.formatOptions).length;
     },
   },
   methods: {
