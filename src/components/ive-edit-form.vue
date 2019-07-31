@@ -105,7 +105,7 @@ export default {
         const { prop, label, itemConfig } = item;
         item.itemConfig = this.setDefaultItemConfig(label, itemConfig);
         item.rules = this.setDefaultRules(item);
-        this.$set(this.model, prop, (itemConfig && itemConfig.value) || "");
+        this.$set(this.model, prop, itemConfig && itemConfig.value);
       });
 
       return configs;
@@ -191,8 +191,22 @@ export default {
     },
     reset() {
       this.moreIsShow = false;
-      this.$emit('update:formConfig', this.formConfigOriginal);
-      this.$emit('update:hideConfig', this.hideConfigOriginal);
+      const resetFormConfig = this.formConfigFormat.map((item) => {
+        let originalItem = this.formConfigOriginal.find((oItem) => {
+          return oItem.prop === item.prop;
+        }) || {};
+        item.itemConfig.value = originalItem.itemConfig && originalItem.itemConfig.value;
+        return item;
+      });
+      const resetHideConfig = this.hideConfigFormat.map((item) => {
+        let originalItem = this.hideConfigOriginal.find((oItem) => {
+          return oItem.prop === item.prop;
+        }) || {};
+        item.itemConfig.value = originalItem.itemConfig && originalItem.itemConfig.value;
+        return item;
+      });
+      this.$emit('update:formConfig', resetFormConfig);
+      this.$emit('update:hideConfig', resetHideConfig);
       this.$refs.form.resetFields();
     },
   },
