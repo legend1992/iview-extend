@@ -29,6 +29,10 @@ import _ from 'lodash';
 export default {
   name: 'ive-table',
   props: {
+    filename: {
+      type: String,
+      default: '导出数据',
+    },
     columns: {
       type: Array,
       default: () => [],
@@ -81,7 +85,7 @@ export default {
     },
     exportColumns() {
       const columns = _.cloneDeep(this.columns);
-      columns[0].type = 'selection';
+      columns.unshift({type: 'selection', width: 50});
       return columns;
     },
     topActions() {
@@ -159,7 +163,7 @@ export default {
     },
     showExportModal() {
       this.$refs.table.exportCsv({
-        filename: '导出数据',
+        filename: this.filename,
         columns: this.columns,
         data: this.selectionData,
       });
