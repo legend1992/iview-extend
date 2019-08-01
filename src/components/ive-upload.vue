@@ -10,11 +10,11 @@
         :name="name"
         :accept="accept"
         :max-size="maxSize"
-        @on-error="handleError"
-        @on-remove="$emit('on-remove', $event)"
-        @on-progress="handleProgress"
-        @on-success="handleSuccess"
-        @on-exceeded-size="handleExceededSize"
+        :on-error="handleError"
+        :on-remove="handleRemoveUploadedFile"
+        :on-progress="handleProgress"
+        :on-success="handleSuccess"
+        :on-exceeded-size="handleExceededSize"
       >
         <Button icon="md-add">选择文件</Button>
       </Upload>
@@ -29,6 +29,7 @@
   </div>
 </template>
 <script>
+import _ from "lodash";
 export default {
   name: 'ive-upload',
   props: {
@@ -63,6 +64,8 @@ export default {
   data() {
     return {
       fileList: [],
+      uploadedList: [],
+      uploadedResultList: [],
     }
   },
   methods: {
@@ -73,6 +76,13 @@ export default {
         this.$refs.upload.post(file);
       }
       return false;
+    },
+    handleRemoveUploadedFile(file, fileList) {
+      const fileIndex = this.uploadedList.findIndex((item) => item === file);
+      this.uploadedList.splice(fileIndex, 1);
+      this.uploadedResultList.splice(fileIndex, 1);
+      const value = this.uploadedResultList.length ? _.cloneDeep(this.uploadedResultList) : null;
+      this.$emit('input', value);
     },
     handleRemove(index) {
       this.fileList.splice(index, 1);
@@ -86,8 +96,11 @@ export default {
     handleProgress($event) {
       this.$emit('on-progress', $event);
     },
-    handleSuccess($event) {
-      this.$emit('on-success', $event);
+    handleSuccess(result, file, fileList) {
+      this.uploadedResultList.push(result);
+      this.uploadedList = [...fileList];
+      this.$emit('input', _.cloneDeep(this.uploadedResultList));
+      this.$emit('on-success', result);
     },
     handleExceededSize($event) {
       this.$emit('on-exceeded-size', $event);
