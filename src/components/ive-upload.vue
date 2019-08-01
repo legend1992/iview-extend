@@ -10,6 +10,7 @@
         :name="name"
         :accept="accept"
         :max-size="maxSize"
+        :show-upload-list="false"
         :on-error="handleError"
         :on-remove="handleRemoveUploadedFile"
         :on-progress="handleProgress"
@@ -18,6 +19,7 @@
       >
         <Button icon="md-add">选择文件</Button>
       </Upload>
+      <span class="fileUrl">{{ fileUrl }}</span>
       <Button v-if="uploadByManual" icon="ios-cloud-upload-outline" @click="handleUpload">点击上传</Button>
     </Row>
     <ul v-if="uploadByManual && fileList.length" class="ivu-upload-list manual-upload-list">
@@ -39,7 +41,7 @@ export default {
     },
     multiple: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     data: {
       type: Object,
@@ -66,6 +68,7 @@ export default {
       fileList: [],
       uploadedList: [],
       uploadedResultList: [],
+      fileUrl: '',
     }
   },
   methods: {
@@ -77,12 +80,15 @@ export default {
       }
       return false;
     },
+    // handleRemoveUploadedFile(file, fileList) {
+    //   const fileIndex = this.uploadedList.findIndex((item) => item === file);
+    //   this.uploadedList.splice(fileIndex, 1);
+    //   this.uploadedResultList.splice(fileIndex, 1);
+    //   const value = this.uploadedResultList.length ? _.cloneDeep(this.uploadedResultList) : null;
+    //   this.$emit('input', value);
+    // },
     handleRemoveUploadedFile(file, fileList) {
-      const fileIndex = this.uploadedList.findIndex((item) => item === file);
-      this.uploadedList.splice(fileIndex, 1);
-      this.uploadedResultList.splice(fileIndex, 1);
-      const value = this.uploadedResultList.length ? _.cloneDeep(this.uploadedResultList) : null;
-      this.$emit('input', value);
+      this.$emit('input', null);
     },
     handleRemove(index) {
       this.fileList.splice(index, 1);
@@ -96,10 +102,15 @@ export default {
     handleProgress($event) {
       this.$emit('on-progress', $event);
     },
+    // handleSuccess(result, file, fileList) {
+    //   this.uploadedResultList.push(result);
+    //   this.uploadedList = [...fileList];
+    //   this.$emit('input', _.cloneDeep(this.uploadedResultList));
+    //   this.$emit('on-success', result);
+    // },
     handleSuccess(result, file, fileList) {
-      this.uploadedResultList.push(result);
-      this.uploadedList = [...fileList];
-      this.$emit('input', _.cloneDeep(this.uploadedResultList));
+      this.fileUrl = result;
+      this.$emit('input', result);
       this.$emit('on-success', result);
     },
     handleExceededSize($event) {
