@@ -1,10 +1,11 @@
 <template>
   <div class="ive-table">
-    <Row v-if="actions.add" class="add-button-wrapper" type="flex" justify="start">
-      <Button type="primary" @click="$emit('showEditModal')">新增</Button>
-      <slot name="topButtons" />
+    <Row v-if="topActions" class="add-button-wrapper" type="flex" justify="start">
+      <Button v-if="actions.add" type="primary" @click="$emit('showEditModal')">新增</Button>
+      <Button v-if="actions.export" type="primary" size="small" @click="showExportModal">导出</Button>
+      <Button v-if="actions.import" type="primary" size="small" @click="showImportModal">导入</Button>
     </Row>
-    <Table border :columns="columns" :data="list" :loading="tableLoading">
+    <Table border ref="table" :columns="actions.export ? exportColumns : columns" :data="list" :loading="tableLoading" @on-selection-change="changeChose">
       <template slot-scope="{ row }" slot="action">
         <Button v-if="actions.edit" type="primary" size="small" @click="handleShowEditModal(row)">编辑</Button>
         <Button v-if="actions.remove" type="error" size="small" @click="handleRemove(row)">删除</Button>
@@ -46,6 +47,8 @@ export default {
         add: true,
         edit: true,
         remove: true,
+        export: false,
+        import: false,
       }),
     },
     idKey: {
@@ -62,6 +65,7 @@ export default {
       list: [],
       tableLoading: true,
       queryParams: {},
+      selectionData: [],
       pager: {
         pageIndex: 1,
         pageSize: 30,
@@ -74,6 +78,14 @@ export default {
       const slots = _.cloneDeep(this.$scopedSlots);
       delete slots.topButtons;
       return slots;
+    },
+    exportColumns() {
+      const columns = _.cloneDeep(this.columns);
+      columns[0].type = 'selection';
+      return columns;
+    },
+    topActions() {
+      return this.actions.add || this.actions.export || this.actions.import;
     },
   },
   mounted() {
@@ -142,6 +154,21 @@ export default {
         this.$emit('remove', id, confirm, row);
       }
     },
+    changeChose(selectionData) {
+      this.selectionData = selectionData;
+    },
+    showExportModal() {
+      this.$refs.table.exportCsv({
+        filename: '导出数据',
+        columns: this.columns,
+        data: this.selectionData,
+      });
+      this.$refs.table.selectAll(false);
+    },
+    showImportModal() {
+      this.importModal = true;
+    },
+
   }
 };
 </script>
