@@ -9,10 +9,10 @@
     @on-query-change="queryChanged"
   >
     <Option
-      v-for="(value, key) in formatOptions"
+      v-for="(value, key) in options"
       :key="key"
-      :value="parseIntValue(value, key)"
-    >{{value}}</Option>
+      :value="formatValue(key)"
+    >{{ value }}</Option>
   </Select>
 </template>
 <script>
@@ -52,33 +52,15 @@ export default {
       default: false,
     },
   },
-  computed: {
-    formatOptions() {
-      let options = {};
-      /* 当this.options为数组时，将其转换为object，以在模板中统一 */
-      if (this.options instanceof Array) {
-        this.options.forEach((option) => {
-          options[option] = option;
-        });
-      } else {
-        options = { ...this.options };
-      }
-
-      return options;
-    },
-  },
   methods: {
     queryChanged(e) {
       this.$emit('queryChanged', e);
     },
-    parseIntValue(value, key) {
-      let newKey = key;
-      if (this.options instanceof Array) {
-        newKey = value;
-      } else if (this.parseIntKey) {
-        newKey = parseInt(key, 10);
+    formatValue(value) {
+      if (this.parseIntKey) {
+        value = parseInt(value, 10);
       }
-      return newKey;
+      return value;
     },
   },
 };

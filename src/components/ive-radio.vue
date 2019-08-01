@@ -1,9 +1,9 @@
 <template>
   <RadioGroup v-if="optionsLength" :value="value" @input="$emit('input', $event)">
     <Radio
-      v-for="(value, key) in formatOptions"
+      v-for="(value, key) in options"
       :key="key"
-      :label="label(value, key)"
+      :label="formatLabel(key)"
       :disabled="disabled"
     >{{ value }}</Radio>
   </RadioGroup>
@@ -39,32 +39,22 @@ export default {
     },
   },
   computed: {
-    formatOptions() {
-      let options = {};
-      /* 当this.options为数组时，将其转换为object，以在模板中统一 */
-      if (this.options instanceof Array) {
-        this.options.forEach((option) => {
-          options[option] = option;
-        });
-      } else {
-        options = { ...this.options };
-      }
-
-      return options;
-    },
     optionsLength() {
-      return Object.keys(this.formatOptions).length;
+      let length = 0;
+      if (this.options instanceof Array) {
+        length = this.options.length;
+      } else {
+        length = Object.keys(this.options).length;
+      }
+      return length;
     },
   },
   methods: {
-    label(value, key) {
-      let label = key;
-      if (this.options instanceof Array) {
-        label = value;
-      } else if (this.parseIntKey) {
-        label = parseInt(key, 10);
+    formatLabel(key) {
+      if (this.parseIntKey) {
+        key = parseInt(key, 10);
       }
-      return label;
+      return key;
     },
   },
 };
