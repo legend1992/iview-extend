@@ -134,3 +134,10 @@
 .ive-no-data {
   color: #aaa;
 }
+
+.fileUrl {
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
