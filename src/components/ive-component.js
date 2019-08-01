@@ -5,9 +5,7 @@ export default {
       type: String,
       default: 'Input',
     },
-    value: {
-      default: '',
-    },
+    value: undefined,
     props: {
       type: Object,
       default: () => ({}),
