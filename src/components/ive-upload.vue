@@ -35,6 +35,7 @@ import _ from "lodash";
 export default {
   name: 'ive-upload',
   props: {
+    value: undefined,
     action: {
       type: String,
       default: '',
@@ -70,6 +71,11 @@ export default {
       uploadedResultList: [],
       fileUrl: '',
     }
+  },
+  watch: {
+    value(value) {
+      this.fileUrl = value;
+    },
   },
   methods: {
     pickFile (file) {
