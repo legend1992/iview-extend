@@ -7,7 +7,11 @@
       :item="item"
       v-model="model[item.prop]"
       @input="itemInput($event, item, 'formConfig')"
-    />
+    >
+      <template v-if="$scopedSlots[item.slot]">
+        <slot :name="item.slot" />
+      </template>
+    </iveFormItem>
 
     <div
       v-show="hideConfig.length && !moreIsShow"

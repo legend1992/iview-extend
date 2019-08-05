@@ -1,6 +1,6 @@
 <template>
   <div class="ui-list">
-    <ive-filter-form
+    <!-- <ive-filter-form
       :formConfig="formConfig"
       @query="handleQuery"
     />
@@ -17,7 +17,7 @@
         <Button @click="showEditModal">导入</Button>
         <Button>导出</Button>
       </template>
-    </ive-table>
+    </ive-table> -->
 
     <ive-edit-modal
       :id="id"
@@ -29,29 +29,36 @@
       :editApi="editApi()"
       @close="hideEditModal"
       @success="editSuccess"
-    />
+    >
+      <template slot="appkey">
+        <span slot="prepend">xxx</span>
+      </template>
+    </ive-edit-modal>
     
-    <ive-upload
+    <!-- <ive-upload
       action="//jsonplaceholder.typicode.com/posts/"
       accept="image/gif, image/jpeg"
       name="name"
       :data="uploadData"
-    />
+    /> -->
 
-    <ive-spin v-if="false" />
+    <!-- <ive-spin v-if="false" /> -->
 
     <ive-edit-form
       ref="baseForm"
       :labelWidth="110"
       :formConfig.sync="formConfigEdit"
     >
+      <template slot="appkey">
+        <span slot="prepend">xxx</span>
+      </template>
     </ive-edit-form>
 
-    <ive-radio />
+    <!-- <ive-radio />
     <ive-select :value="2" :options="options" :parseIntKey="true"/>
     <ive-checkbox-group v-model="checkboxValue" :options="options1" />
     <Button @click="getCheckBoxValue">获取checkbox值</Button>
-    <Button @click="remove">删除测试</Button>
+    <Button @click="remove">删除测试</Button> -->
   </div>
 </template>
 
@@ -170,6 +177,7 @@ export default {
         {
           prop: 'appkey',
           label: '端appkey',
+          slot: 'appkey',
           itemConfig: {
             props: {
               maxlength: 512,

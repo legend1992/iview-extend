@@ -8,12 +8,19 @@
     <span v-show="loading && id"><ive-spin /></span>
     <Icon slot="close" type="ios-close"/>
 
+    <slot name="prepend" />
     <ive-edit-form
       ref="baseForm"
       :labelWidth="labelWidth"
       :formConfig="formConfigCopy"
       @update:formConfig="$emit('update:formConfig', $event)"
-    />
+    >
+      <template v-for="(slot, key) in formSlots" :slot="key">
+        <slot :name="key" />
+      </template>
+    </ive-edit-form>
+    <slot />
+    <slot name="append" />
 
     <div slot="footer">
       <Button @click="$emit('close')">取消</Button>
@@ -81,6 +88,12 @@ export default {
   },
   created() {
     this.init();
+  },
+  computed: {
+    formSlots() {
+      let { prepend, append, default: defaulta, ...formSlots } = this.$scopedSlots;
+      return formSlots;
+    },
   },
   methods: {
     reset() {

@@ -11,7 +11,9 @@
       :props="item.itemConfig.props"
       :value="value"
       @input="$emit('input', $event)"
-    />
+    >
+      <slot />
+    </ive-component>
     <span class="inline-tip" v-if="item.inlineTip">{{ item.inlineTip }}</span>
     <ive-icon-tooltip v-if="item.tip" :content="item.tip" />
   </FormItem>

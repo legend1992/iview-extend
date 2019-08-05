@@ -12,7 +12,39 @@ export default {
     }
   },
   render(h) {
-    const { tagName, value, props } = this;
+    const {
+      tagName,
+      value,
+      props,
+      $slots: {
+        default: defaultSlots,
+      },
+    } = this;
+    const renderSlots = () => {
+      let slots = [];
+      if (defaultSlots && defaultSlots.length) {
+        defaultSlots.forEach((defaultSlot) => {
+          const {
+            tag,
+            text,
+            children,
+            data: {
+              slot: slotName,
+            },
+          } = defaultSlot;
+          slots.push(
+            h(
+              tag,
+              {
+                slot: slotName,
+              },
+              children || text,
+            )
+          );
+        });
+      }
+      return slots;
+    };
     return h(
       tagName,
       {
@@ -24,7 +56,7 @@ export default {
           input: (e) => this.$emit('input', e),
         },
       },
-      this.$slots.default,
+      renderSlots(),
     );
   }
 };
