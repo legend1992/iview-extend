@@ -32,15 +32,17 @@ export default {
               slot: slotName,
             },
           } = defaultSlot;
-          slots.push(
-            h(
-              tag,
-              {
-                slot: slotName,
-              },
-              children || text,
-            )
-          );
+          if (children || text) {
+            slots.push(
+              h(
+                tag,
+                {
+                  slot: slotName,
+                },
+                children || text,
+              )
+            );
+          }
         });
       }
       return slots;
