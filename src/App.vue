@@ -19,7 +19,7 @@
       </template>
     </ive-table> -->
 
-    <ive-edit-modal
+    <!-- <ive-edit-modal
       :id="id"
       :modal="modal"
       :labelWidth="110"
@@ -33,18 +33,31 @@
       <template slot="appkey">
         <span slot="prepend">xxx</span>
       </template>
-    </ive-edit-modal>
+    </ive-edit-modal> -->
     
-    <!-- <ive-upload
+    <ive-upload
       action="//jsonplaceholder.typicode.com/posts/"
       accept="image/gif, image/jpeg"
       name="name"
       :data="uploadData"
-    /> -->
+      :max-size="124"
+      :resolutionRatio="{
+        width: {
+          min: 800,
+          max: 1600,
+        },
+        height: {
+          max: 1600,
+          min: 601,
+        },
+      }"
+      @on-exceeded-size="handleExceededSize"
+      @resolution-ratio-error="handleRRError"
+    />
 
     <!-- <ive-spin v-if="false" /> -->
 
-    <ive-edit-form
+    <!-- <ive-edit-form
       ref="baseForm"
       :labelWidth="110"
       :formConfig.sync="formConfigEdit"
@@ -52,7 +65,7 @@
       <template slot="appkey">
         <span slot="prepend">xxx</span>
       </template>
-    </ive-edit-form>
+    </ive-edit-form> -->
 
     <!-- <ive-radio />
     <ive-select :value="2" :options="options" :parseIntKey="true"/>
@@ -230,8 +243,8 @@ export default {
               parseIntKey: true,
             },
             on: {
-              input: (e) => {
-                console.log(e)
+              input: () => {
+                // console.log(e)
               },
             },
           },
@@ -252,7 +265,6 @@ export default {
             },
             on: {
               input: (e) => {
-                console.log(e);
                 if (e === '1') {
                   this.formConfigEdit[4].itemConfig.props.disabled = true;
                   this.formConfigEdit[4].inlineTip = '该模板未web化';
@@ -278,64 +290,70 @@ export default {
     };
   },
   methods: {
-    getCheckBoxValue() {
-      console.log(this.checkboxValue)
+    // getCheckBoxValue() {
+    //   console.log(this.checkboxValue)
+    // },
+    // handleQuery(e) {
+    //   console.log(e);
+    // },
+    // getListApi() {
+    //   return () => {
+    //     return {
+    //       data: {
+    //         data: this.tableData,
+    //       },
+    //     };
+    //   };
+    // },
+    // getDetailApi() {
+    //   return (id) => {
+    //     return {
+    //       data: {
+    //         data: this.tableData.filter((item) => item.id === id)[0],
+    //       },
+    //     };
+    //   };
+    // },
+    // editApi() {
+    //   return () => {};
+    // },
+    // showEditModal(a, b) {
+    //   console.log(a, b);
+    //   this.modal = true;
+    //   this.id = a;
+    // },
+    // hideEditModal() {
+    //   this.modal = false;
+    // },
+    // editSuccess() {
+    //   this.modal = false;
+    // },
+    // handleRemove(a, b, c) {
+    //   console.log(a, b, c);
+    //   setTimeout(() => {
+    //     b.remove();
+    //   }, 2000);
+    // },
+    // handleUpload() {
+    //   console.log('upload')
+    // },
+    // handleError($event) {
+    //   console.log($event)
+    // },
+    // handleProgress($event) {
+    //   console.log($event)
+    // },
+    // handleSuccess($event) {
+    //   console.log($event)
+    // },
+    // remove() {
+    //   this.$iveModal.confirm('xxx');
+    // },
+    handleExceededSize() {
+      // this.$Message.warning('图片尺寸超出限制');
     },
-    handleQuery(e) {
-      console.log(e);
-    },
-    getListApi() {
-      return () => {
-        return {
-          data: {
-            data: this.tableData,
-          },
-        };
-      };
-    },
-    getDetailApi() {
-      return (id) => {
-        return {
-          data: {
-            data: this.tableData.filter((item) => item.id === id)[0],
-          },
-        };
-      };
-    },
-    editApi() {
-      return () => {};
-    },
-    showEditModal(a, b) {
-      console.log(a, b);
-      this.modal = true;
-      this.id = a;
-    },
-    hideEditModal() {
-      this.modal = false;
-    },
-    editSuccess() {
-      this.modal = false;
-    },
-    handleRemove(a, b, c) {
-      console.log(a, b, c);
-      setTimeout(() => {
-        b.remove();
-      }, 2000);
-    },
-    handleUpload() {
-      console.log('upload')
-    },
-    handleError($event) {
-      console.log($event)
-    },
-    handleProgress($event) {
-      console.log($event)
-    },
-    handleSuccess($event) {
-      console.log($event)
-    },
-    remove() {
-      this.$iveModal.confirm('xxx');
+    handleRRError(e) {
+      this.$Message.warning(e);
     }
   },
 };
