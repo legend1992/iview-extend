@@ -19,7 +19,7 @@
       </template>
     </ive-table> -->
 
-    <!-- <ive-edit-modal
+    <ive-edit-modal
       :id="id"
       :modal="modal"
       :labelWidth="110"
@@ -33,7 +33,7 @@
       <template slot="appkey">
         <span slot="prepend">xxx</span>
       </template>
-    </ive-edit-modal> -->
+    </ive-edit-modal>
     
     <ive-upload
       action="//jsonplaceholder.typicode.com/posts/"
@@ -72,6 +72,7 @@
     <ive-checkbox-group v-model="checkboxValue" :options="options1" />
     <Button @click="getCheckBoxValue">获取checkbox值</Button>
     <Button @click="remove">删除测试</Button> -->
+    <Button @click="modal = true">弹窗</Button>
   </div>
 </template>
 
@@ -83,6 +84,11 @@ export default {
       options: {
         0: 'xxx',
         1: 'yyy',
+        2: 'zzz',
+        3: 'aaa',
+        4: 'bbb',
+        5: 'ccc',
+        6: 'ddd',
       },
       options1: [0,1,2],
       uploadData: {
@@ -213,8 +219,24 @@ export default {
           prop: 'intent',
           label: '意图名',
           itemConfig: {
+            tagName: 'ive-upload',
             props: {
               maxlength: 128,
+              resolutionRatio: {
+                width: {
+                  min: 800,
+                  max: 1600,
+                },
+                height: {
+                  max: 1600,
+                  min: 601,
+                },
+              }
+            },
+            on: {
+              handleErrorrrrr: (e) => {
+                console.log(e);
+              },
             },
           },
           required: true,
@@ -254,11 +276,23 @@ export default {
           label: '模板Id',
           itemConfig: {
             tagName: 'ive-select',
-            value: 0,
+            value: [0],
             props: {
+              // multiple: true,
+              maxTagSelect: 5,
+              maxTagCount: 2,
+              maxTagPlaceholder(num) {
+                return 'more '+ num;
+              },
+              disabled: true,
               options: {
                 0: 'xxx',
                 1: 'yyy',
+                2: 'zzz',
+                3: 'aaa',
+                4: 'bbb',
+                5: 'ccc',
+                6: 'ddd',
               },
               // options: [1,2,3],
               parseIntKey: true,
@@ -290,70 +324,70 @@ export default {
     };
   },
   methods: {
-    // getCheckBoxValue() {
-    //   console.log(this.checkboxValue)
-    // },
-    // handleQuery(e) {
-    //   console.log(e);
-    // },
-    // getListApi() {
-    //   return () => {
-    //     return {
-    //       data: {
-    //         data: this.tableData,
-    //       },
-    //     };
-    //   };
-    // },
-    // getDetailApi() {
-    //   return (id) => {
-    //     return {
-    //       data: {
-    //         data: this.tableData.filter((item) => item.id === id)[0],
-    //       },
-    //     };
-    //   };
-    // },
-    // editApi() {
-    //   return () => {};
-    // },
-    // showEditModal(a, b) {
-    //   console.log(a, b);
-    //   this.modal = true;
-    //   this.id = a;
-    // },
-    // hideEditModal() {
-    //   this.modal = false;
-    // },
-    // editSuccess() {
-    //   this.modal = false;
-    // },
-    // handleRemove(a, b, c) {
-    //   console.log(a, b, c);
-    //   setTimeout(() => {
-    //     b.remove();
-    //   }, 2000);
-    // },
-    // handleUpload() {
-    //   console.log('upload')
-    // },
-    // handleError($event) {
-    //   console.log($event)
-    // },
-    // handleProgress($event) {
-    //   console.log($event)
-    // },
-    // handleSuccess($event) {
-    //   console.log($event)
-    // },
-    // remove() {
-    //   this.$iveModal.confirm('xxx');
-    // },
+    getCheckBoxValue() {
+      console.log(this.checkboxValue)
+    },
+    handleQuery(e) {
+      console.log(e);
+    },
+    getListApi() {
+      return () => {
+        return {
+          data: {
+            data: this.tableData,
+          },
+        };
+      };
+    },
+    getDetailApi() {
+      return (id) => {
+        return {
+          data: {
+            data: this.tableData.filter((item) => item.id === id)[0],
+          },
+        };
+      };
+    },
+    editApi() {
+      return () => {};
+    },
+    showEditModal(a, b) {
+      console.log(a, b);
+      this.modal = true;
+      this.id = a;
+    },
+    hideEditModal() {
+      this.modal = false;
+    },
+    editSuccess() {
+      this.modal = false;
+    },
+    handleRemove(a, b, c) {
+      console.log(a, b, c);
+      setTimeout(() => {
+        b.remove();
+      }, 2000);
+    },
+    handleUpload() {
+      console.log('upload')
+    },
+    handleError($event) {
+      console.log($event)
+    },
+    handleProgress($event) {
+      console.log($event)
+    },
+    handleSuccess($event) {
+      console.log($event)
+    },
+    remove() {
+      this.$iveModal.confirm('xxx');
+    },
     handleExceededSize() {
       // this.$Message.warning('图片尺寸超出限制');
     },
     handleRRError(e) {
-      this.$Message.warning(e);
+      // this.$Message.warning(e);
     }
   },
 };
