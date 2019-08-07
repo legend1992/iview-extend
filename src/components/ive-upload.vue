@@ -143,7 +143,7 @@ export default {
           if (!result) {
             this.$refs.upload.post(file);
           } else {
-            this.$Message && this.$Message instanceof Function && this.$Message(result);
+            this.$Message.warning(result);
             this.$emit('resolution-ratio-error', result);
           }
         };
