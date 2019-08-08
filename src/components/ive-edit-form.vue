@@ -171,85 +171,86 @@ export default {
     },
   },
   render(h) {
-    // 渲染控件
-    const renderItem = ({ prop, label, inlineTip, tip, itemConfig: config, slot }, type) => {
-      const renderInlineTip = (inlineTip) => h('span', {
-        class: 'inline-tip',
-      }, inlineTip);
-      const renderTip = (tip) => h('ive-icon-tooltip', {
-        props: {
-          content: tip,
-        },
-      });
-      const renderSlots = () => {
-        const defaultSlots = this.$slots[slot];
-        let slots = [];
-        if (defaultSlots && defaultSlots.length) {
-          defaultSlots.forEach((defaultSlot) => {
-            const {
-              tag,
-              text,
-              children,
-              data: {
-                slot: slotName,
-              },
-            } = defaultSlot;
-            if (children || text) {
-              slots.push(
-                h(
-                  tag,
-                  {
-                    slot: slotName,
-                  },
-                  children || text,
-                )
-              );
-            }
-          });
-        }
-        return slots;
-      };
-      return [
-        h(config.tagName, {
-          props: {
-            ...config.props,
-            value: this.model[prop],
-          },
-          on: {
-            ...config.on,
-            input: (value) => {
-              this.model[prop] = value;
-              config.value = value;
-              this.$emit(`update:${type}`, this[`${type}Format`]);
-              config.on && config.on.input && config.on.input(value);
-            },
-          },
-        }, renderSlots()),
-        inlineTip ? renderInlineTip(inlineTip) : null,
-        tip ? renderTip(tip) : null,
-      ];
-    };
-    // 渲染FormItem
-    const renderFormItem = (item, type = 'formConfig') => {
-      const { hide, label, prop, rules } = item;
-      return h(
-        'FormItem',
-        {
-          class: {
-            hide: hide,
-            'ive-form-item': true,
-          },
-          props: {
-            label,
-            prop,
-            rules,
-          },
-        },
-        renderItem(item, type),
-      );
-    };
     // 渲染表单子组件
     const renderFormChilds = () => {
+      // 渲染FormItem
+      const renderFormItem = (item, type = 'formConfig') => {
+        // 渲染控件
+        const renderItem = ({ prop, label, inlineTip, tip, itemConfig: config, slot }, type) => {
+          const renderInlineTip = (inlineTip) => h('span', {
+            class: 'inline-tip',
+          }, inlineTip);
+          const renderTip = (tip) => h('ive-icon-tooltip', {
+            props: {
+              content: tip,
+            },
+          });
+          const renderSlots = () => {
+            const defaultSlots = this.$slots[slot];
+            let slots = [];
+            if (defaultSlots && defaultSlots.length) {
+              defaultSlots.forEach((defaultSlot) => {
+                const {
+                  tag,
+                  text,
+                  children,
+                  data: {
+                    slot: slotName,
+                  },
+                } = defaultSlot;
+                if (children || text) {
+                  slots.push(
+                    h(
+                      tag,
+                      {
+                        slot: slotName,
+                      },
+                      children || text,
+                    )
+                  );
+                }
+              });
+            }
+            return slots;
+          };
+          return [
+            h(config.tagName, {
+              props: {
+                ...config.props,
+                value: this.model[prop],
+              },
+              on: {
+                ...config.on,
+                input: (value) => {
+                  this.model[prop] = value;
+                  config.value = value;
+                  this.$emit(`update:${type}`, this[`${type}Format`]);
+                  config.on && config.on.input && config.on.input(value);
+                },
+              },
+            }, renderSlots()),
+            inlineTip ? renderInlineTip(inlineTip) : null,
+            tip ? renderTip(tip) : null,
+          ];
+        };
+        const { hide, label, prop, rules } = item;
+        return h(
+          'FormItem',
+          {
+            class: {
+              hide: hide,
+              'ive-form-item': true,
+            },
+            props: {
+              label,
+              prop,
+              rules,
+            },
+          },
+          renderItem(item, type),
+        );
+      };
+      // 渲染隐藏部分
       const renderHidePart = () => {
         if (!this.hideConfig.length) {
           return [];
