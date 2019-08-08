@@ -175,7 +175,7 @@ export default {
       // 渲染FormItem
       const renderFormItem = (item, type = 'formConfig') => {
         // 渲染控件
-        const renderItem = ({ prop, label, inlineTip, tip, itemConfig: config, slot }, type) => {
+        const renderItem = ({ prop, inlineTip, tip, itemConfig: config, slot }, type) => {
           const renderInlineTip = (inlineTip) => h('span', {
             class: 'inline-tip',
           }, inlineTip);
