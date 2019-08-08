@@ -2,18 +2,19 @@
   <div class="ive-table">
     <Row v-if="topActions" class="add-button-wrapper" type="flex" justify="start">
       <Button v-if="actions.add" type="primary" @click="$emit('showEditModal')">新增</Button>
-      <Button v-if="actions.export" type="primary" size="small" @click="exportData">导出</Button>
-      <Button v-if="actions.import" type="primary" size="small" @click="importData">导入</Button>
+      <Button v-if="actions.export" type="primary" @click="exportData">导出</Button>
+      <Button v-if="actions.import" type="primary" @click="importData">导入</Button>
     </Row>
+
     <ive-import-data
+      v-if="actions.import"
       :importModal="importModal"
       :importApi="importApi"
       @upload-success="uploadSuccess"
       @close="handleClose"
-    >
+    />
 
-    </ive-import-data>
-    <Table border ref="table" :columns="actions.export ? exportColumns : columns" :data="list" :loading="tableLoading" @on-selection-change="changeChose">
+    <Table border ref="table" :columns="actions.export ? exportColumns : columns" :data="list" :loading="tableLoading" @on-selection-change="changeChoose">
       <template slot-scope="{ row }" slot="action">
         <Button v-if="actions.edit" type="primary" size="small" @click="handleShowEditModal(row)">编辑</Button>
         <Button v-if="actions.remove" type="error" size="small" @click="handleRemove(row)">删除</Button>
@@ -22,6 +23,7 @@
         <slot :name="key" :row="row"></slot>
       </template>
     </Table>
+
     <ive-page
       :total="pager.count"
       :pageIndex="pager.pageIndex"
@@ -37,13 +39,8 @@ import _ from 'lodash';
 export default {
   name: 'ive-table',
   props: {
-    uploadSuccess: {
-      type: Function,
-      required: true,
-    },
     importApi: {
       type: Function,
-      required: true,
     },
     filename: {
       type: String,
@@ -140,6 +137,7 @@ export default {
         this.list = data;
         this.pager.count = count;
       } catch (e) {
+        console.error(e);
         this.tableLoading = false;
         this.$Message.error(e);
       }
@@ -175,13 +173,13 @@ export default {
         this.$emit('remove', id, confirm, row);
       }
     },
-    changeChose(selectionData) {
+    changeChoose(selectionData) {
       this.selectionData = selectionData;
     },
     exportData() {
       if (this.selectionData.length === 0) {
         this.$Message.warning('至少选择一条内容导出！')
-        return
+        return;
       }
       this.$refs.table.exportCsv({
         filename: this.filename,
@@ -195,6 +193,10 @@ export default {
     },
     handleClose() {
       this.importModal = false;
+    },
+    uploadSuccess() {
+      this.handleClose();
+      this.$emit('upload-success');
     },
   }
 };

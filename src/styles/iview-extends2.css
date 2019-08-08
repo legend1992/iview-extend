@@ -131,6 +131,17 @@
   margin: 5px;
 }
 
+/* 导入数据弹窗 */
+.import-modal .ivu-modal-footer {
+  text-align: center;
+}
+.import-modal .file-wrapper {
+  line-height: 24px;
+}
+.import-modal .file-wrapper .delete {
+  float: right;
+}
+
 /* 无数据 */
 .ive-no-data {
   color: #aaa;

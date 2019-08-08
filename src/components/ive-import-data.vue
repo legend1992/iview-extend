@@ -1,30 +1,28 @@
 <template>
   <Modal
+    class="import-modal"
     title="导入详情"
+    :mask-closable="false"
     :value="importModal"
     @input="$emit('close')"
   >
-
-  <Upload
-      multiple
-      width=240
+    <Upload
       ref="upload"
       action=""
-      accept='application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      :accept="accept"
       :format="format"
       :show-upload-list="false"
       :before-upload="handleUpload"
     >
       <Button icon="ios-cloud-upload-outline">选择导入文件</Button>
     </Upload>
-    <div v-if="uploadFile.length !== 0">上传文件: {{ uploadFile[0].name }}
-      <Button type="text" size="small" @click.stop="remove" >x</Button>
+    <div v-show="hasFile" class="file-wrapper">上传文件: {{ uploadFile[0] && uploadFile[0].name }}
+      <Button class="delete" type="text" size="small" title="删除" @click.stop="remove">X</Button>
     </div>
-    <div slot="footer" >
-      <Button type="primary" @click="upload('yes')">覆盖导入：相同的字段直接覆盖</Button>
-      <Button type="primary" @click="upload('no')">跳过导入：相同的字段不导入</Button>
+    <div slot="footer">
+      <Button type="error" :disabled="!hasFile" :title="exportButtonTitle" @click="upload('yes')">覆盖导入：唯一字段相同时直接覆盖</Button>
+      <Button type="primary" :disabled="!hasFile" :title="exportButtonTitle" @click="upload('no')">跳过导入：唯一字段相同时不导入</Button>
     </div>
-    
   </Modal>
 </template>
 
@@ -33,12 +31,18 @@ export default {
   nmae: 'ive-import-data',
   data() {
     return {
-      file: [],
       uploadFile: [],
-      format: ['xls','xlsx'],
     }
   },
   props: {
+    accept: {
+      type: String,
+      default: 'application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    },
+    format: {
+      type: Array,
+      default: () => ['xls','xlsx'],
+    },
     importModal: {
       type: Boolean,
       default: false,
@@ -48,25 +52,33 @@ export default {
       required: true,
     },
   },
+  computed: {
+    hasFile() {
+      return this.uploadFile.length !== 0;
+    },
+    exportButtonTitle() {
+      return this.hasFile ? '点击导入' : '请先选择文件';
+    },
+  },
   methods: {
-    handleUpload(file) {
-      const keyID = Math.random().toString().substr(2);
-      file.keyID = keyID;
-      this.file.push(file);
-      this.uploadFile.push(file);
-
-      if (this.format.length) {
+    formatCheck(file) {
+      let checked = true;
+      if (this.format && this.format.length) {
         const fileFormat = file.name.split('.').pop().toLocaleLowerCase();
-        const checked = this.format.some(item => item.toLocaleLowerCase() === fileFormat);
+        checked = this.format.some(item => item.toLocaleLowerCase() === fileFormat);
         if (!checked) {
           this.$Notice.warning({
             title: '上传文件格式错误',
-            desc: file.name + '的文件格式是不正确的,请选择xls和xlsx文件。'
+            desc: `${file.name}的文件格式是不正确的,请选择${this.format.toString()}格式的文件`
           });
-          this.remove();
         }
       }
-
+      return checked;
+    },
+    handleUpload(file) {
+      if (this.formatCheck(file)) {
+        this.uploadFile = [file];
+      }
       return false;
     },
     async upload(cover) {
@@ -82,16 +94,13 @@ export default {
         formData.append('cover', cover);
         await this.importApi(formData);
         this.$emit('upload-success');
-        this.remove();
-        this.$emit('close');
       } catch(error) {
         this.$Message.warning({
           content: error,
           duration: 3
         });
-        this.remove();
       }
-     
+      this.remove();
     },
     remove() {
       this.uploadFile = [];
