@@ -1,52 +1,10 @@
-<template>
-  <Form class="ive-edit-form" ref="form" :model="model" :label-width="labelWidth">
-    <iveFormItem
-      v-for="item in formConfigFormat"
-      v-show="item.hide !== true"
-      :key="item.prop"
-      :item="item"
-      v-model="model[item.prop]"
-      @input="itemInput($event, item, 'formConfig')"
-    >
-      <template v-if="$scopedSlots[item.slot]">
-        <slot :name="item.slot" />
-      </template>
-    </iveFormItem>
-
-    <div
-      v-show="hideConfig.length && !moreIsShow"
-      class="toggle-button"
-      :class="{ hide: this.moreIsShow }"
-      @click="moreIsShow = true;"
-    >点击查看更多内容</div>
-
-    <div
-      v-show="moreIsShow"
-      class="hidePart-wrapper"
-      :class="{ show: this.moreIsShow }"
-    >
-      <iveFormItem
-        v-for="item in hideConfigFormat"
-        :key="item.prop"
-        :item="item"
-        v-model="model[item.prop]"
-        @input="itemInput($event, item, 'hideConfig')"
-      />
-      <div class="toggle-button" @click="moreIsShow = false;">收起</div>
-    </div>
-  </Form>
-</template>
 <script>
 import _ from "lodash";
 import baseForm_mixin from '../mixins/baseForm_mixin';
-import iveFormItem from './form/form-item.vue';
 
 export default {
   name: "ive-form",
   mixins: [baseForm_mixin],
-  components: {
-    iveFormItem,
-  },
   props: {
     /**
      * formConfig: {
@@ -63,6 +21,8 @@ export default {
           }
         },
         hide: 是否隐藏,
+        tip: 右侧图标提示,
+        inlineTip: 直接行内提示,
         required: 是否必填,
         rules: 控件校验规则
         [
@@ -154,23 +114,19 @@ export default {
           tagName: 'Input',
         }, config);
         
+        let defaultProps = {
+          placeholder: `请输入${label}`,
+        };
+        if (config.tagName === 'ive-date-range-picker') {
+          defaultProps = {};
+        }
         if (config.props === undefined) {
-          config.props = {
-            placeholder: `请输入${label}`,
-          };
+          config.props = defaultProps;
         } else {
-          config.props = Object.assign({
-            placeholder: `请输入${label}`,
-          }, config.props);
+          config.props = Object.assign(defaultProps, config.props);
         }
       }
       return config;
-    },
-    // 控件输入，更新源数据formConfig/hideConfig
-    itemInput(value, item, type) {
-      item.itemConfig.value = value;
-      this.$emit(`update:${type}`, this[`${type}Format`]);
-      item.itemConfig.on && item.itemConfig.on.input && item.itemConfig.on.input(value);
     },
     getData(needValidate = true) {
       if (needValidate) {
@@ -213,6 +169,155 @@ export default {
       this.$emit('update:hideConfig', resetHideConfig);
       this.$refs.form.resetFields();
     },
+  },
+  render(h) {
+    // 渲染控件
+    const renderItem = ({ prop, label, inlineTip, tip, itemConfig: config, slot }, type) => {
+      const renderInlineTip = (inlineTip) => h('span', {
+        class: 'inline-tip',
+      }, inlineTip);
+      const renderTip = (tip) => h('ive-icon-tooltip', {
+        props: {
+          content: tip,
+        },
+      });
+      const renderSlots = () => {
+        const defaultSlots = this.$slots[slot];
+        let slots = [];
+        if (defaultSlots && defaultSlots.length) {
+          defaultSlots.forEach((defaultSlot) => {
+            const {
+              tag,
+              text,
+              children,
+              data: {
+                slot: slotName,
+              },
+            } = defaultSlot;
+            if (children || text) {
+              slots.push(
+                h(
+                  tag,
+                  {
+                    slot: slotName,
+                  },
+                  children || text,
+                )
+              );
+            }
+          });
+        }
+        return slots;
+      };
+      return [
+        h(config.tagName, {
+          props: {
+            ...config.props,
+            value: this.model[prop],
+          },
+          on: {
+            ...config.on,
+            input: (value) => {
+              this.model[prop] = value;
+              config.value = value;
+              this.$emit(`update:${type}`, this[`${type}Format`]);
+              config.on && config.on.input && config.on.input(value);
+            },
+          },
+        }, renderSlots()),
+        inlineTip ? renderInlineTip(inlineTip) : null,
+        tip ? renderTip(tip) : null,
+      ];
+    };
+    // 渲染FormItem
+    const renderFormItem = (item, type = 'formConfig') => {
+      const { hide, label, prop, rules } = item;
+      return h(
+        'FormItem',
+        {
+          class: {
+            hide: hide,
+            'ive-form-item': true,
+          },
+          props: {
+            label,
+            prop,
+            rules,
+          },
+        },
+        renderItem(item, type),
+      );
+    };
+    // 渲染表单子组件
+    const renderFormChilds = () => {
+      const renderHidePart = () => {
+        if (!this.hideConfig.length) {
+          return [];
+        }
+        // 渲染展示更多按钮
+        const renderShowMoreButton = () => h('div', {
+          class: {
+            'toggle-button': true,
+            hide: this.moreIsShow,
+          },
+          on: {
+            click: () => {
+              this.moreIsShow = true;
+            },
+          },
+        }, '点击查看更多内容');
+        
+        // 渲染默认隐藏部分和收起按钮
+        const renderHidePartWrapper = () => {
+          // 渲染收起按钮
+          const renderHideMoreButton = () => h('div', {
+            class: 'toggle-button',
+            on: {
+              click: () => {
+                this.moreIsShow = false;
+              },
+            },
+          }, '收起');
+
+          return h(
+            'div',
+            {
+              class: {
+                'hidePart-wrapper': true,
+                show: this.moreIsShow,
+              },
+            },
+            [
+              this.hideConfigFormat.map(item => renderFormItem(item, 'hideConfig')),
+              renderHideMoreButton(),
+            ],
+          );
+        };
+
+        return [
+          renderShowMoreButton(),
+          renderHidePartWrapper(),
+        ];
+      };
+
+      return [
+        this.formConfigFormat.map(item => renderFormItem(item)),
+        ...renderHidePart(),
+      ];
+    };
+    const { model, labelWidth } = this;
+    return h(
+      'Form',
+      {
+        props: {
+          model,
+          labelWidth,
+        },
+        class: 'ive-edit-form',
+        ref: 'form'
+      },
+      renderFormChilds(),
+    );
   },
 };
 </script>

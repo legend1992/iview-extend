@@ -1,3 +1,7 @@
+.hide {
+  display: none;
+}
+
 /* 面包屑 */
 .ive-bread-crumb {
   padding: 0 24px;
@@ -44,9 +48,6 @@
 }
 .ive-edit-form .toggle-button:hover {
   color: #57a3f3;
-}
-.ive-edit-form .toggle-button.hide {
-  display: none;
 }
 .ive-edit-form .hidePart-wrapper {
   display: none;
