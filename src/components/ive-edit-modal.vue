@@ -13,7 +13,9 @@
       ref="baseForm"
       :labelWidth="labelWidth"
       :formConfig="formConfigCopy"
+      :hideConfig="hideConfigCopy"
       @update:formConfig="$emit('update:formConfig', $event)"
+      @update:hideConfig="$emit('update:hideConfig', $event)"
     >
       <template v-for="(slot, key) in formSlots" :slot="key">
         <slot :name="key" />
@@ -51,6 +53,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    hideConfig: {
+      type: Array,
+      default: () => [],
+    },
     getDetailApi: {
       type: Function,
       default: null,
@@ -69,6 +75,7 @@ export default {
       loading: true,
       submitLoading: false,
       formConfigCopy: _.cloneDeep(this.formConfig),
+      hideConfigCopy: _.cloneDeep(this.hideConfig),
     };
   },
   watch: {
@@ -84,7 +91,13 @@ export default {
         this.formConfigCopy = _.cloneDeep(e);
       },
       deep: true,
-    }
+    },
+    hideConfig: {
+      handler(e) {
+        this.hideConfigCopy = _.cloneDeep(e);
+      },
+      deep: true,
+    },
   },
   created() {
     this.init();
@@ -111,7 +124,8 @@ export default {
       try {
         this.loading = true;
         const { data: { data } } = await this.getDetailApi(id);
-        this.setFormConfig(data);
+        this.setFormConfig('formConfig', data);
+        this.setFormConfig('hideConfig', data);
       } catch (e) {
         this.$Message.error(e);
       }
@@ -124,8 +138,9 @@ export default {
 
       return reqData;
     },
-    setFormConfig(data = {}) {
-      this.formConfigCopy = this.formConfigCopy.map((item) => {
+    setFormConfig(config, data = {}) {
+      const configName = `${config}Copy`;
+      this[configName] = this[configName].map((item) => {
         if (item.itemConfig && item.itemConfig instanceof Object) {
           item.itemConfig.value = data[item.prop];
         } else {
@@ -135,7 +150,7 @@ export default {
         }
         return item;
       });
-      this.$emit('update:formConfig', this.formConfigCopy);
+      this.$emit(`update:${config}`, this[configName]);
     },
     async submit(formModel) {
       try {
