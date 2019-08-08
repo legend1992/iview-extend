@@ -196,6 +196,7 @@ export default {
     },
     uploadSuccess() {
       this.handleClose();
+      this.getList();
       this.$emit('upload-success');
     },
   }
