@@ -179,6 +179,10 @@ export default {
       this.selectionData = selectionData;
     },
     exportData() {
+      if (this.selectionData.length === 0) {
+        this.$Message.warning('至少选择一条内容导出！')
+        return
+      }
       this.$refs.table.exportCsv({
         filename: this.filename,
         columns: this.columns,
