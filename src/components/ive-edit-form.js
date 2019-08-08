@@ -1,4 +1,3 @@
-<script>
 import _ from "lodash";
 import baseForm_mixin from '../mixins/baseForm_mixin';
 
@@ -310,15 +309,19 @@ export default {
     return h(
       'Form',
       {
+        class: 'ive-edit-form',
         props: {
           model,
           labelWidth,
         },
-        class: 'ive-edit-form',
+        nativeOn: {
+          submit: (e) => {
+            e.preventDefault();
+          },
+        },
         ref: 'form'
       },
       renderFormChilds(),
     );
   },
 };
-</script>
