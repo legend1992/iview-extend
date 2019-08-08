@@ -2,9 +2,17 @@
   <div class="ive-table">
     <Row v-if="topActions" class="add-button-wrapper" type="flex" justify="start">
       <Button v-if="actions.add" type="primary" @click="$emit('showEditModal')">新增</Button>
-      <Button v-if="actions.export" type="primary" size="small" @click="showExportModal">导出</Button>
-      <Button v-if="actions.import" type="primary" size="small" @click="showImportModal">导入</Button>
+      <Button v-if="actions.export" type="primary" size="small" @click="exportData">导出</Button>
+      <Button v-if="actions.import" type="primary" size="small" @click="importData">导入</Button>
     </Row>
+    <ive-import-data
+      :importModal="importModal"
+      :importApi="importApi"
+      @upload-success="uploadSuccess"
+      @close="handleClose"
+    >
+
+    </ive-import-data>
     <Table border ref="table" :columns="actions.export ? exportColumns : columns" :data="list" :loading="tableLoading" @on-selection-change="changeChose">
       <template slot-scope="{ row }" slot="action">
         <Button v-if="actions.edit" type="primary" size="small" @click="handleShowEditModal(row)">编辑</Button>
@@ -29,6 +37,14 @@ import _ from 'lodash';
 export default {
   name: 'ive-table',
   props: {
+    uploadSuccess: {
+      type: Function,
+      required: true,
+    },
+    importApi: {
+      type: Function,
+      required: true,
+    },
     filename: {
       type: String,
       default: '导出数据',
@@ -70,6 +86,7 @@ export default {
       tableLoading: true,
       queryParams: {},
       selectionData: [],
+      importModal: false,
       pager: {
         pageIndex: 1,
         pageSize: 30,
@@ -161,7 +178,7 @@ export default {
     changeChose(selectionData) {
       this.selectionData = selectionData;
     },
-    showExportModal() {
+    exportData() {
       this.$refs.table.exportCsv({
         filename: this.filename,
         columns: this.columns,
@@ -169,10 +186,12 @@ export default {
       });
       this.$refs.table.selectAll(false);
     },
-    showImportModal() {
+    importData() {
       this.importModal = true;
     },
-
+    handleClose() {
+      this.importModal = false;
+    },
   }
 };
 </script>
