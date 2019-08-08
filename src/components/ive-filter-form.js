@@ -145,12 +145,17 @@ export default {
     return h(
       'Form',
       {
+        class: 'ive-filter-form',
         props: {
           model,
           labelWidth,
           inline
         },
-        class: 'ive-filter-form',
+        nativeOn: {
+          submit: (e) => {
+            e.preventDefault();
+          },
+        },
         ref: 'form'
       },
       renderFormChilds()

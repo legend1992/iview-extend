@@ -1,8 +1,6 @@
 .DS_Store
 node_modules
 /dist
-App.vue
-main.js
 # local env files
 .env.local
 .env.*.local

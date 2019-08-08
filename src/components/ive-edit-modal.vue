@@ -8,12 +8,21 @@
     <span v-show="loading && id"><ive-spin /></span>
     <Icon slot="close" type="ios-close"/>
 
+    <slot name="prepend" />
     <ive-edit-form
       ref="baseForm"
       :labelWidth="labelWidth"
       :formConfig="formConfigCopy"
+      :hideConfig="hideConfigCopy"
       @update:formConfig="$emit('update:formConfig', $event)"
-    />
+      @update:hideConfig="$emit('update:hideConfig', $event)"
+    >
+      <template v-for="(slot, key) in formSlots" :slot="key">
+        <slot :name="key" />
+      </template>
+    </ive-edit-form>
+    <slot />
+    <slot name="append" />
 
     <div slot="footer">
       <Button @click="$emit('close')">取消</Button>
@@ -44,6 +53,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    hideConfig: {
+      type: Array,
+      default: () => [],
+    },
     getDetailApi: {
       type: Function,
       default: null,
@@ -62,6 +75,7 @@ export default {
       loading: true,
       submitLoading: false,
       formConfigCopy: _.cloneDeep(this.formConfig),
+      hideConfigCopy: _.cloneDeep(this.hideConfig),
     };
   },
   watch: {
@@ -77,10 +91,22 @@ export default {
         this.formConfigCopy = _.cloneDeep(e);
       },
       deep: true,
-    }
+    },
+    hideConfig: {
+      handler(e) {
+        this.hideConfigCopy = _.cloneDeep(e);
+      },
+      deep: true,
+    },
   },
   created() {
     this.init();
+  },
+  computed: {
+    formSlots() {
+      let { prepend, append, default: defaulta, ...formSlots } = this.$scopedSlots;
+      return formSlots;
+    },
   },
   methods: {
     reset() {
@@ -98,8 +124,10 @@ export default {
       try {
         this.loading = true;
         const { data: { data } } = await this.getDetailApi(id);
-        this.setFormConfig(data);
+        this.setFormConfig('formConfig', data);
+        this.setFormConfig('hideConfig', data);
       } catch (e) {
+        console.error(e);
         this.$Message.error(e);
       }
     },
@@ -111,18 +139,23 @@ export default {
 
       return reqData;
     },
-    setFormConfig(data = {}) {
-      this.formConfigCopy = this.formConfigCopy.map((item) => {
+    setFormConfig(config, data = {}) {
+      const configName = `${config}Copy`;
+      this[configName] = this[configName].map((item) => {
+        const value = data[item.prop];
         if (item.itemConfig && item.itemConfig instanceof Object) {
-          item.itemConfig.value = data[item.prop];
+          item.itemConfig.value = value;
         } else {
           item.itemConfig = {
-            value: data[item.prop]
+            value,
           };
         }
+        this.$nextTick(() => {
+          item.itemConfig.on && item.itemConfig.on.input && item.itemConfig.on.input(value);
+        });
         return item;
       });
-      this.$emit('update:formConfig', this.formConfigCopy);
+      this.$emit(`update:${config}`, this[configName]);
     },
     async submit(formModel) {
       try {

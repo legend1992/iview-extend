@@ -1,11 +1,14 @@
 <template>
   <Select
-    :value="value"
+    :value="currentValue"
     :filterable="filterable"
     :multiple="multiple"
     :clearable="clearable"
     :placeholder="placeholder"
-    @input="$emit('input', $event)"
+    :disabled="disabled"
+    :max-tag-count="maxTagCount"
+    :max-tag-placeholder="maxTagPlaceholder"
+    @input="handleInput"
     @on-query-change="queryChanged"
   >
     <Option
@@ -16,6 +19,7 @@
   </Select>
 </template>
 <script>
+import _ from 'lodash';
 export default {
   name: 'ive-select',
   props: {
@@ -51,6 +55,33 @@ export default {
       type: Boolean,
       default: false,
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+    maxTagCount: {
+      type: Number,
+    },
+    maxTagPlaceholder: {
+      type: Function,
+    },
+    maxTagSelect: {
+      type: Number,
+    },
+  },
+  data() {
+    return {
+      currentValue: [],
+    }
+  },
+  watch: {
+    value: {
+      handler(val) {
+        this.currentValue = _.cloneDeep(val);
+      },
+      immediate: true,
+      deep: true,
+    },
   },
   methods: {
     queryChanged(e) {
@@ -61,6 +92,15 @@ export default {
         value = parseInt(value, 10);
       }
       return value;
+    },
+    handleInput(e) {
+      let { multiple, maxTagSelect: maxTag, currentValue } = this;
+      currentValue = e;
+      if (multiple && maxTag && currentValue.length > maxTag) {
+        currentValue.length = maxTag;
+        this.$Message.warning(`最多可选择${ maxTag }条数据`);
+      }
+      this.$emit('input', currentValue);
     },
   },
 };
