@@ -127,6 +127,7 @@ export default {
         this.setFormConfig('formConfig', data);
         this.setFormConfig('hideConfig', data);
       } catch (e) {
+        console.error(e);
         this.$Message.error(e);
       }
     },
@@ -141,13 +142,17 @@ export default {
     setFormConfig(config, data = {}) {
       const configName = `${config}Copy`;
       this[configName] = this[configName].map((item) => {
+        const value = data[item.prop];
         if (item.itemConfig && item.itemConfig instanceof Object) {
-          item.itemConfig.value = data[item.prop];
+          item.itemConfig.value = value;
         } else {
           item.itemConfig = {
-            value: data[item.prop]
+            value,
           };
         }
+        this.$nextTick(() => {
+          item.itemConfig.on && item.itemConfig.on.input && item.itemConfig.on.input(value);
+        });
         return item;
       });
       this.$emit(`update:${config}`, this[configName]);
