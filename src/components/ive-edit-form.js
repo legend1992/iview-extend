@@ -84,16 +84,27 @@ export default {
           ];
         } else {
           const [requiredRule] = item.rules.filter(rule => {
-            return rule.required;
+            return rule.required !== undefined;
           });
           if (!requiredRule) {
             item.rules.unshift({
               required: true,
               message: `${item.label}不为空`
             });
-          } else if (requiredRule.message === undefined) {
-            requiredRule.message = `${item.label}不为空`;
+          } else {
+            requiredRule.required = true;
+            if (requiredRule.message === undefined) {
+              requiredRule.message = `${item.label}不为空`;
+            }
           }
+        }
+      } else if (item.required === false) {
+        const index = item.rules ? item.rules.findIndex(rule => rule.required) : -1;
+        if (index > -1) {
+          item.rules[index].required = false;
+          this.$nextTick(() => {
+            this.validateField(item.prop);
+          });
         }
       }
 
