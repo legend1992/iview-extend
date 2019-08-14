@@ -1,5 +1,5 @@
 <template>
-  <DatePicker :value="formatValue" @input="$emit('input', $event)" :type="type" :options="options" :placeholder="placeholder"></DatePicker>
+  <DatePicker :value="formatValue" @input="$emit('input', $event)" :type="type" :options="options" :placeholder="placeholder" :disabled="disabled"></DatePicker>
 </template>
 
 <script>
@@ -20,6 +20,10 @@ export default {
     },
     disabledDate: {
       default: () => new Date(new Date() - 24 * 60 * 60 * 1000),
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
   },
   computed: {

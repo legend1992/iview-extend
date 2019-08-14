@@ -31,8 +31,10 @@ export default {
           label: '端appkey',
           slot: 'appkey',
           itemConfig: {
+            tagName: 'ive-input-number',
             props: {
               maxlength: 512,
+              parseIntValue: true,
             },
           },
           required: true,

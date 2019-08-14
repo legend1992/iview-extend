@@ -60,7 +60,7 @@ export default {
   },
   methods: {
     intParser(value) {
-      return this.parseIntValue ? parseInt(value, 10) + '' : value;
+      return this.parseIntValue && value ? parseInt(value, 10) + '' : value;
     },
   },
 };
