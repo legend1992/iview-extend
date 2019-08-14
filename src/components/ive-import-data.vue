@@ -1,6 +1,6 @@
 <template>
   <Modal
-    class="import-modal"
+    class="ive-import-modal"
     title="导入详情"
     :mask-closable="false"
     :value="importModal"

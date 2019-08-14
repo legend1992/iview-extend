@@ -1,5 +1,6 @@
 <template>
   <Modal
+    class="ive-edit-modal"
     :value="modal"
     :mask-closable="false"
     :title="title"

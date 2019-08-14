@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="ive-upload">
     <Row type="flex" justify="space-between">
       <Upload
         ref="upload"
