@@ -20,31 +20,28 @@ export default {
     setDefaultItemConfig(label, config) {
       if (config === undefined) {
         config = {
-          tagName: 'Input',
+          tagName: 'ive-input',
           props: {
             placeholder: `请输入${label}`,
           }
         };
       } else {
         config = Object.assign({
-          tagName: 'Input',
+          tagName: 'ive-input',
         }, config);
         
+        let defaultProps = {
+          placeholder: `请输入${label}`,
+        };
+        if (config.tagName === 'ive-date-range-picker') {
+          defaultProps = {};
+        }
         if (config.props === undefined) {
-          config.props = {
-            placeholder: `请输入${label}`,
-          };
+          config.props = defaultProps;
         } else {
-          config.props = Object.assign({
-            placeholder: `请输入${label}`,
-          }, config.props);
+          config.props = Object.assign(defaultProps, config.props);
         }
       }
-
-      if (config.tagName === 'ive-date-range-picker') {
-        config.props.placeholder = ['请输入开始时间', '请输入结束时间'];
-      }
-
       return config;
     },
   },

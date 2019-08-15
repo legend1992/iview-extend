@@ -110,34 +110,6 @@ export default {
 
       return item.rules;
     },
-    // 为formConfig/hideConfig设置默认itemConfig
-    setDefaultItemConfig(label, config) {
-      if (config === undefined) {
-        config = {
-          tagName: 'Input',
-          props: {
-            placeholder: `请输入${label}`,
-          }
-        };
-      } else {
-        config = Object.assign({
-          tagName: 'Input',
-        }, config);
-        
-        let defaultProps = {
-          placeholder: `请输入${label}`,
-        };
-        if (config.tagName === 'ive-date-range-picker') {
-          defaultProps = {};
-        }
-        if (config.props === undefined) {
-          config.props = defaultProps;
-        } else {
-          config.props = Object.assign(defaultProps, config.props);
-        }
-      }
-      return config;
-    },
     getData(needValidate = true) {
       if (needValidate) {
         if (this.validate()) {
