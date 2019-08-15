@@ -1,11 +1,12 @@
 <template>
   <Input
     :value="value"
-    @input="$emit('input', $event)"
     type="textarea"
     :autosize="autosize"
     :placeholder="placeholder"
     :maxlength="maxlength"
+    :disabled="disabled"
+    @input="$emit('input', $event)"
     @on-blur="handleBlur"
   />
 </template>
@@ -31,6 +32,10 @@ export default {
     maxlength: {
       type: Number,
       default: 255,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
   },
   methods: {

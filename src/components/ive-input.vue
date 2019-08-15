@@ -1,10 +1,11 @@
 <template>
   <Input
     :value="value"
-    @input="$emit('input', $event)"
     :placeholder="placeholder"
     :maxlength="maxlength"
     :type="formatType"
+    :disabled="disabled"
+    @input="$emit('input', $event)"
     @on-blur="handleBlur"
   />
 </template>
@@ -26,6 +27,10 @@ export default {
     },
     type: {
       type: String,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
   },
   computed: {
