@@ -1,5 +1,13 @@
 <template>
-  <Input :value="value" @input="$emit('input', $event)" type="textarea" :autosize="autosize" :placeholder="placeholder" :maxlength="maxlength"/>
+  <Input
+    :value="value"
+    @input="$emit('input', $event)"
+    type="textarea"
+    :autosize="autosize"
+    :placeholder="placeholder"
+    :maxlength="maxlength"
+    @on-blur="handleBlur"
+  />
 </template>
 <script>
 export default {
@@ -22,7 +30,14 @@ export default {
     },
     maxlength: {
       type: Number,
-      default: 200,
+      default: 255,
+    },
+  },
+  methods: {
+    handleBlur() {
+      const newValue = this.value && this.value.trim();
+      this.$emit('on-blur', this.value);
+      this.$emit('input', newValue);
     },
   },
 };
