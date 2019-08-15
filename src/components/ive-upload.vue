@@ -19,7 +19,7 @@
       >
         <Button icon="md-add">选择文件</Button>
       </Upload>
-      <span class="fileUrl">{{ fileUrl }}</span>
+      <span class="fileUrl" :title="fileUrl">{{ fileUrl }}</span>
       <Button v-if="uploadByManual" icon="ios-cloud-upload-outline" @click="handleUpload">点击上传</Button>
     </Row>
     <ul v-if="uploadByManual && fileList.length" class="ivu-upload-list manual-upload-list">
