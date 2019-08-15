@@ -2,6 +2,7 @@
   <Modal
     class="ive-edit-modal"
     :value="modal"
+    :width="width"
     :mask-closable="false"
     :title="title"
     @on-cancel="$emit('close')"
@@ -38,6 +39,10 @@ import _ from "lodash";
 export default {
   name: 'ive-edit-modal',
   props: {
+    width: {
+      type: Number,
+      default: 570,
+    },
     id: {
       type: [String, Number],
       default: '',
