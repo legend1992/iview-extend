@@ -46,7 +46,7 @@ export default {
   },
   data() {
     return {
-      cValue: null,
+      cValue: this.value,
     }
   },
   watch: {
