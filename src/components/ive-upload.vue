@@ -57,7 +57,11 @@ export default {
     },
     accept: {
       type: String,
-      default: ""
+      default: "image/jpg, image/png, image/jpeg",
+    },
+    format: {
+      type: Array,
+      default: () => ['jpg', 'png', 'jpeg'],
     },
     "max-size": {
       type: Number
@@ -107,10 +111,20 @@ export default {
     }
   },
   methods: {
+    checkFormat(file) {
+      let checked = true;
+      if (this.format && this.format.length) {
+        const fileFormat = file.name.split('.').pop().toLocaleLowerCase();
+        checked = this.format.some(item => item.toLocaleLowerCase() === fileFormat);
+        if (!checked) {
+          this.$Message.error(`请选择后缀为${this.format.toString()}的文件`);
+        }
+      }
+      return checked;
+    },
     checkResolutionRatio(file) {
       let result = '';
       const reader = new FileReader();
-      const that = this;
       reader.onload = (e) => {
         const data = e.target.result;
         const image = new Image();
@@ -155,10 +169,12 @@ export default {
       if (this.uploadByManual) {
         this.fileList.push(file);
       } else {
-        if (this.resolutionRatio) {
-          this.checkResolutionRatio(file);
-        } else {
-          this.$refs.upload.post(file);
+        if (this.checkFormat(file)) {
+          if (this.resolutionRatio) {
+            this.checkResolutionRatio(file);
+          } else {
+            this.$refs.upload.post(file);
+          }
         }
       }
       return false;
@@ -192,9 +208,15 @@ export default {
     //   this.$emit('on-success', result);
     // },
     handleSuccess(result) {
-      this.fileUrl = result;
-      this.$emit("input", result);
-      this.$emit("on-success", result);
+      const { code, url, msg } = result;
+      if (code === 0) {
+        this.fileUrl = url;
+        this.$emit("input", url);
+        this.$emit("on-success", url);
+      } else {
+        this.$Message.error(msg || '图片上传出错');
+        this.handleError(result);
+      }
     },
     handleExceededSize($event) {
       this.$Message.warning('图片尺寸超出限制');
