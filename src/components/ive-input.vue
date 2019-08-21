@@ -7,7 +7,11 @@
     :disabled="disabled"
     @input="$emit('input', $event)"
     @on-blur="handleBlur"
-  />
+  >
+    <template v-for="(slot, key) in $slots" :slot="key">
+      <slot :name="key" />
+    </template>
+  </Input>
 </template>
 <script>
 export default {
@@ -47,6 +51,9 @@ export default {
       this.$emit('on-blur', newValue);
       this.$emit('input', newValue);
     },
+  },
+  created() {
+    console.log(this.$slots);
   },
 };
 </script>
