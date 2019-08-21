@@ -52,8 +52,5 @@ export default {
       this.$emit('input', newValue);
     },
   },
-  created() {
-    console.log(this.$slots);
-  },
 };
 </script>
