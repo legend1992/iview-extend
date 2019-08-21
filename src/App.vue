@@ -13,6 +13,7 @@
     >
       <template slot="appkey">
         <span slot="prepend">xxx</span>
+        <span slot="append">xxx</span>
       </template>
     </ive-edit-modal>
     <Button @click="modal = true">弹窗</Button>
@@ -29,9 +30,8 @@ export default {
         {
           prop: 'appkey',
           label: '端appkey',
-          slot: 'appkey',
           itemConfig: {
-            tagName: 'ive-input-number',
+            tagName: 'ive-input',
             props: {
               maxlength: 512,
               parseIntValue: true,

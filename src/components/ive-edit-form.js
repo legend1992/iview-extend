@@ -158,7 +158,7 @@ export default {
       // 渲染FormItem
       const renderFormItem = (item, type = 'formConfig') => {
         // 渲染控件
-        const renderItem = ({ prop, inlineTip, tip, itemConfig: config, slot }, type) => {
+        const renderItem = ({ prop, inlineTip, tip, itemConfig: config }, type) => {
           const renderInlineTip = (inlineTip) => h('span', {
             class: 'inline-tip',
           }, inlineTip);
@@ -168,7 +168,7 @@ export default {
             },
           });
           const renderSlots = () => {
-            const defaultSlots = this.$slots[slot];
+            const defaultSlots = this.$slots[prop];
             let slots = [];
             if (defaultSlots && defaultSlots.length) {
               defaultSlots.forEach((defaultSlot) => {
