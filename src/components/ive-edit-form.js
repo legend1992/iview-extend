@@ -172,25 +172,15 @@ export default {
             let slots = [];
             if (defaultSlots && defaultSlots.length) {
               defaultSlots.forEach((defaultSlot) => {
-                const {
-                  tag,
-                  text,
-                  children,
-                  data: {
-                    slot: slotName,
-                  },
-                } = defaultSlot;
-                if (children || text) {
-                  slots.push(
-                    h(
-                      tag,
-                      {
-                        slot: slotName,
-                      },
-                      children || text,
-                    )
-                  );
-                }
+                slots.push(
+                  h(
+                    'span',
+                    {
+                      slot: defaultSlot.data.slot,
+                    },
+                    [defaultSlot],
+                  )
+                );
               });
             }
             return slots;
