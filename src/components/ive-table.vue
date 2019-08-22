@@ -139,7 +139,6 @@ export default {
         this.list = data;
         this.pager.count = count;
       } catch (e) {
-        console.error(e);
         this.tableLoading = false;
         this.$Message.error(e);
       }
