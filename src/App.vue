@@ -1,5 +1,25 @@
 <template>
   <div class="ui-list">
+    <ive-filter-form
+      :formConfig="formConfig"
+      @query="handleQuery"
+    />
+
+    <ive-table
+      ref="table"
+      :actions="actions"
+      :columns="columns"
+      :getListApi="getListApi()"
+      deleteKey="appkey"
+      @showEditModal="showEditModal"
+      @remove="handleRemove"
+    >
+      <template slot="topButtons">
+        <Button @click="showEditModal">导入</Button>
+        <Button>导出</Button>
+      </template>
+    </ive-table>
+
     <ive-edit-modal
       ref="modal"
       :id="id"
@@ -11,6 +31,21 @@
       @submit="submit"
       @close="hideEditModal"
       @success="editSuccess"
+    />
+    
+    <ive-upload
+      action="//jsonplaceholder.typicode.com/posts/"
+      accept="image/gif, image/jpeg"
+      name="name"
+      :data="uploadData"
+    />
+
+    <ive-spin v-if="false" />
+
+    <ive-edit-form
+      ref="baseForm"
+      :labelWidth="110"
+      :formConfig.sync="formConfigEdit"
     >
       <template slot="appkey">
         <span slot="prepend">xxx</span>
@@ -34,8 +69,121 @@
 export default {
   data() {
     return {
+      checkboxValue: [0],
+      actions: {
+        add: true,
+        edit: true,
+        remove: true,
+        export: false,
+        import: false,
+        batchRemove: true,
+      },
+      options: {
+        0: 'xxx',
+        1: 'yyy',
+      },
+      options1: [0,1,2],
+      uploadData: {
+        xxx: false,
+      },
       id: '',
       modal: false,
+      formConfig: [
+        {
+          prop: 'appkey',
+          label: '端appkey',
+          itemConfig: {
+            props: {
+              maxlength: 20,
+            },
+          },
+        },
+        {
+          prop: 'domain',
+          label: '领域名',
+          itemConfig: {
+            tagName: 'ive-date-range-picker',
+            props: {
+              // disabledDate: null,
+            },
+          },
+        },
+        {
+          prop: 'intent',
+          label: '意图名',
+          itemConfig: {
+            tagName: 'ive-date-picker',
+            props: {
+              type: 'datetime',
+              disabledDate: new Date('2019-07-28'),
+            },
+          },
+        },
+        {
+          prop: 'baseType',
+          label: '基础类型',
+          tip: '模糊匹配',
+          itemConfig: {
+            tagName: 'ive-select',
+            props: {
+              // multiple: true,
+              options: {
+                0: 'xxx',
+                1: 'yyy',
+              },
+              parseIntKey: true,
+            },
+          },
+        },
+        {
+          prop: 'templateId',
+          label: '模板Id',
+        },
+      ],
+      columns: [
+        {
+          title: 'id',
+          key: 'id',
+          minWidth: 100,
+        },
+        {
+          title: 'appkey',
+          key: 'appkey',
+          minWidth: 100,
+        },
+        {
+          title: '领域名',
+          key: 'domain',
+          minWidth: 100,
+        },
+        {
+          title: '意图名',
+          key: 'intent',
+          minWidth: 100,
+        },
+        {
+          title: '基础类型',
+          key: 'baseType',
+          minWidth: 100,
+        },
+        {
+          title: '模板id',
+          key: 'templateId',
+          minWidth: 100,
+        },
+        {
+          title: '模板web化Url',
+          key: 'templateUrl',
+          minWidth: 200,
+        },
+        {
+          title: '操作',
+          slot: 'action',
+          align: 'center',
+          fixed: 'right',
+          minWidth: 150,
+        },
+      ],
       formConfigEdit: [
         {
           prop: 'appkey',
@@ -44,10 +192,97 @@ export default {
             tagName: 'ive-date-picker',
             props: {
               maxlength: 512,
-              parseIntValue: true,
             },
           },
           required: true,
+        },
+        {
+          prop: 'domain',
+          label: '领域名',
+          tip: '模糊匹配',
+          itemConfig: {
+            props: {
+              maxlength: 64,
+            },
+          },
+          required: true,
+        },
+        {
+          prop: 'intent',
+          label: '意图名',
+          itemConfig: {
+            props: {
+              maxlength: 128,
+            },
+          },
+          required: true,
+        },
+        {
+          prop: 'baseType',
+          label: '基础类型',
+          itemConfig: {
+            props: {
+              maxlength: 32,
+            },
+          },
+          required: true,
+        },
+        {
+          prop: 'isChoose',
+          label: '使用web化的模板',
+          itemConfig: {
+            tagName: 'ive-radio',
+            value: '',
+            props: {
+              options: {
+                1: '是',
+                2: '否',
+              },
+              parseIntKey: true,
+            },
+            on: {
+              input: (e) => {
+                console.log(e)
+              },
+            },
+          },
+        },
+        {
+          prop: 'templateId',
+          label: '模板Id',
+          itemConfig: {
+            tagName: 'ive-select',
+            value: 0,
+            props: {
+              options: {
+                0: 'xxx',
+                1: 'yyy',
+              },
+              // options: [1,2,3],
+              parseIntKey: true,
+            },
+            on: {
+              input: (e) => {
+                console.log(e);
+                if (e === '1') {
+                  this.formConfigEdit[4].itemConfig.props.disabled = true;
+                  this.formConfigEdit[4].inlineTip = '该模板未web化';
+                } else {
+                  this.formConfigEdit[4].itemConfig.props.disabled = false;
+                }
+              },
+            },
+          },
+          required: true,
+        },
+        {
+          prop: 'templateUrl',
+          label: '模板web化url',
+          itemConfig: {
+            props: {
+              disabled: false,
+            },
+          },
         },
       ],
       columns12: [
@@ -110,6 +345,7 @@ export default {
       return () => {};
     },
     showEditModal(a, b) {
+      console.log(a, b);
       this.modal = true;
       this.id = a;
     },
