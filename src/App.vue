@@ -8,7 +8,7 @@
       title="配置详情"
       :formConfig.sync="formConfigEdit"
       :getDetailApi="getDetailApi()"
-      :editApi="editApi()"
+      @submit="submit"
       @close="hideEditModal"
       @success="editSuccess"
     >
@@ -96,7 +96,6 @@ export default {
   },
   methods: {
     xxx() {
-      console.log('xxx click')
     },
     getDetailApi() {
       return (id) => {
@@ -117,11 +116,13 @@ export default {
     hideEditModal() {
       this.modal = false;
       const xxx = this.$refs.modal.$refs.baseForm.getData(false);
-      console.log(xxx);
     },
     editSuccess() {
       this.modal = false;
     },
+    submit(e) {
+      this.modal = false;
+    }
   },
 };
 </script>
