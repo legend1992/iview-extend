@@ -179,13 +179,13 @@ export default {
       return this.$refs.baseForm.validateField(prop);
     },
     handleSubmit() {
-      if (this.editApi) {
-        const reqData = this.$refs.baseForm.getData();
-        if (reqData) {
+      const reqData = this.$refs.baseForm.getData();
+      if (reqData) {
+        if (this.editApi) {
           this.submit(this.setReqData(reqData));
+        } else {
+          this.$emit('submit', reqData);
         }
-      } else {
-        this.$emit('close');
       }
     },
   },

@@ -21,13 +21,14 @@
     </ive-table>
 
     <ive-edit-modal
+      ref="modal"
       :id="id"
       :modal="modal"
       :labelWidth="110"
       title="配置详情"
       :formConfig.sync="formConfigEdit"
       :getDetailApi="getDetailApi()"
-      :editApi="editApi()"
+      @submit="submit"
       @close="hideEditModal"
       @success="editSuccess"
     />
@@ -46,13 +47,21 @@
       :labelWidth="110"
       :formConfig.sync="formConfigEdit"
     >
-    </ive-edit-form>
-
-    <ive-radio />
-    <ive-select :value="2" :options="options" :parseIntKey="true"/>
-    <ive-checkbox-group v-model="checkboxValue" :options="options1" />
-    <Button @click="getCheckBoxValue">获取checkbox值</Button>
-    <Button @click="remove">删除测试</Button>
+      <template slot="appkey">
+        <span slot="prepend">xxx</span>
+        <Button type="error" slot="append" @click="xxx">button</Button>
+      </template>
+    </ive-edit-modal>
+    <Button @click="modal = true">弹窗</Button>
+    <Table border :columns="columns12" :data="data6">
+      <template slot-scope="{ row }" slot="name">
+        <strong>{{ row.name }}</strong>
+      </template>
+      <template slot-scope="{ row, index }" slot="action">
+        <Button type="primary" size="small" style="margin-right: 5px" @click="show(index)">View</Button>
+        <Button type="error" size="small" @click="remove(index)">Delete</Button>
+      </template>
+    </Table>
   </div>
 </template>
 
@@ -180,6 +189,7 @@ export default {
           prop: 'appkey',
           label: '端appkey',
           itemConfig: {
+            tagName: 'ive-date-picker',
             props: {
               maxlength: 512,
             },
@@ -275,24 +285,52 @@ export default {
           },
         },
       ],
-      tableData: [{"id":10,"appkey":"5","domain":"5","intent":"5","baseType":"5","templateId":"23","templateUrl":"a"},{"id":9,"appkey":"4","domain":"4","intent":"4","baseType":"4","templateId":"11111","templateUrl":"3"},{"id":8,"appkey":"33","domain":"33","intent":"33","baseType":"33","templateId":"222323wefw","templateUrl":"www.baidu.com"}],
+      columns12: [
+        {
+          title: 'Name',
+          slot: 'name'
+        },
+        {
+          title: 'Age',
+          key: 'age'
+        },
+        {
+          title: 'Address',
+          key: 'address'
+        },
+        {
+          title: 'Action',
+          slot: 'action',
+          width: 150,
+          align: 'center'
+        }
+      ],
+      data6: [
+        {
+          name: 'John Brown',
+          age: 18,
+          address: 'New York No. 1 Lake Park'
+        },
+        {
+          name: 'Jim Green',
+          age: 24,
+          address: 'London No. 1 Lake Park'
+        },
+        {
+          name: 'Joe Black',
+          age: 30,
+          address: 'Sydney No. 1 Lake Park'
+        },
+        {
+          name: 'Jon Snow',
+          age: 26,
+          address: 'Ottawa No. 2 Lake Park'
+        }
+      ]
     };
   },
   methods: {
-    getCheckBoxValue() {
-      console.log(this.checkboxValue)
-    },
-    handleQuery(e) {
-      console.log(e);
-    },
-    getListApi() {
-      return () => {
-        return {
-          data: {
-            data: this.tableData,
-          },
-        };
-      };
+    xxx() {
     },
     getDetailApi() {
       return (id) => {
@@ -313,35 +351,18 @@ export default {
     },
     hideEditModal() {
       this.modal = false;
+      const xxx = this.$refs.modal.$refs.baseForm.getData(false);
     },
     editSuccess() {
       this.modal = false;
     },
-    handleRemove(a, b, c) {
-      console.log(a, b, c);
-      setTimeout(() => {
-        b.remove();
-      }, 2000);
-    },
-    handleUpload() {
-      console.log('upload')
-    },
-    handleError($event) {
-      console.log($event)
-    },
-    handleProgress($event) {
-      console.log($event)
-    },
-    handleSuccess($event) {
-      console.log($event)
-    },
-    remove() {
-      this.$iveModal.confirm('xxx');
+    submit(e) {
+      this.modal = false;
     }
   },
 };
 </script>
 
 <style lang="scss">
-  @import 'styles/iview-extends2';
+@import "styles/iview-extends2";
 </style>

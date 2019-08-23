@@ -1,5 +1,5 @@
 <template>
-  <DatePicker :value="formatValue" @input="$emit('input', $event)" :type="type" :options="options" :placeholder="placeholder" :disabled="disabled"></DatePicker>
+  <DatePicker :value="formatValue" @input="handleInput" :type="type" :options="options" :placeholder="placeholder" :disabled="disabled"></DatePicker>
 </template>
 
 <script>
@@ -55,6 +55,12 @@ export default {
       return {
         disabledDate: disabledDateFn,
       };
+    },
+  },
+  methods: {
+    handleInput($event) {
+      const value = $event || null;
+      this.$emit('input', value);
     },
   },
 };

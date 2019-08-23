@@ -5,6 +5,7 @@
       <Button v-if="actions.export" type="primary" @click="exportData">导出</Button>
       <Button v-if="actions.import" type="primary" @click="importData">导入</Button>
       <Button v-if="actions.batchRemove" type="primary" @click="batchRemove">批量删除</Button>
+      <Button v-if="actions.batchEdit" type="primary" @click="batchEdit">批量修改</Button>
     </Row>
 
     <ive-import-data
@@ -14,8 +15,8 @@
       @upload-success="uploadSuccess"
       @close="handleClose"
     />
-
-    <Table border ref="table" :columns="(actions.export || actions.batchRemove) ? checkboxColumns : columns" :data="list" :loading="tableLoading" @on-selection-change="changeChoose">
+    
+    <Table border ref="table" :columns="(actions.export || actions.batchEdit || actions.batchRemove) ? checkboxColumns : columns" :data="list" :loading="tableLoading" @on-selection-change="changeChoose">
       <template slot-scope="{ row }" slot="action">
         <Button v-if="actions.edit" type="primary" size="small" @click="handleShowEditModal(row)">编辑</Button>
         <Button v-if="actions.remove" type="error" size="small" @click="handleRemove(row)">删除</Button>
@@ -68,6 +69,7 @@ export default {
         export: false,
         import: false,
         batchRemove: false,
+        batchEdit: false,
       }),
     },
     idKey: {
@@ -140,6 +142,7 @@ export default {
         this.pager.count = count;
       } catch (e) {
         this.tableLoading = false;
+        console.error(e);
         this.$Message.error(e);
       }
     },
@@ -156,7 +159,7 @@ export default {
       const id = row[this.idKey] || row.id;
       this.$emit('showEditModal', id, row);
     },
-    async setRemove(confirm, id, row) {
+    async remove(confirm, id, row) {
        if (confirm && this.deleteApi && this.deleteApi instanceof Function) {
         try {
           await this.deleteApi(id);
@@ -165,6 +168,7 @@ export default {
           this.getList();
         } catch (e) {
           confirm.remove();
+          console.error(e);
           this.$Message.error(e);
         }
       } else if (confirm) {
@@ -175,7 +179,7 @@ export default {
       const id = row[this.idKey] || row.id;
       const title = row[this.deleteKey] || '';
       const confirm = await this.$iveModal.confirm(`确定删除<b>${ title }</b>吗？`);
-      this.setRemove(confirm, id, row);
+      this.remove(confirm, id, row);
     },
     changeChoose(selectionData) {
       this.selectionData = selectionData;
@@ -211,7 +215,14 @@ export default {
       const idList = this.selectionData.map(item => item.id);
       const confirm = await this.$iveModal.confirm(`确定删除要这${idList.length}条内容吗？`);
       this.setRemove(confirm, idList, row);
-    }
+    },
+    batchEdit() {
+      if (this.selectionData.length === 0) {
+        this.$Message.warning('至少选择一条内容修改！')
+        return;
+      }
+      this.$emit('showBatchEditModal');
+    },
   }
 };
 </script>
