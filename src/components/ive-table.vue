@@ -139,6 +139,7 @@ export default {
         this.list = data;
         this.pager.count = count;
       } catch (e) {
+        console.error(e);
         this.tableLoading = false;
         this.$Message.error(e);
       }
@@ -205,8 +206,6 @@ export default {
         this.$Message.warning('至少选择一条内容修改！')
         return;
       }
-      const idList= this.selectionData.map(item => item.id);
-      // const groupId= this.selectionData.map(item => item.groupId);
       this.$emit('showBatchEditModal');
     },
   }
