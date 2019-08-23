@@ -1,6 +1,7 @@
 <template>
   <div class="ui-list">
     <ive-edit-modal
+      ref="modal"
       :id="id"
       :modal="modal"
       :labelWidth="110"
@@ -40,7 +41,7 @@ export default {
           prop: 'appkey',
           label: '端appkey',
           itemConfig: {
-            tagName: 'ive-input',
+            tagName: 'ive-date-picker',
             props: {
               maxlength: 512,
               parseIntValue: true,
@@ -115,6 +116,8 @@ export default {
     },
     hideEditModal() {
       this.modal = false;
+      const xxx = this.$refs.modal.$refs.baseForm.getData(false);
+      console.log(xxx);
     },
     editSuccess() {
       this.modal = false;

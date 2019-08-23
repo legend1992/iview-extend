@@ -59,7 +59,7 @@ export default {
   },
   methods: {
     handleInput($event) {
-      const value = $event || undefined;
+      const value = $event || null;
       this.$emit('input', value);
     },
   },
