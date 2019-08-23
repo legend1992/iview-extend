@@ -4,6 +4,7 @@
       <Button v-if="actions.add" type="primary" @click="$emit('showEditModal')">新增</Button>
       <Button v-if="actions.export" type="primary" @click="exportData">导出</Button>
       <Button v-if="actions.import" type="primary" @click="importData">导入</Button>
+      <Button v-if="actions.batchEdit" type="primary" @click="batchEdit">批量修改</Button>
     </Row>
 
     <ive-import-data
@@ -14,7 +15,7 @@
       @close="handleClose"
     />
 
-    <Table border ref="table" :columns="actions.export ? exportColumns : columns" :data="list" :loading="tableLoading" @on-selection-change="changeChoose">
+    <Table border ref="table" :columns="(actions.export || actions.batchEdit) ? exportColumns : columns" :data="list" :loading="tableLoading" @on-selection-change="changeChoose">
       <template slot-scope="{ row }" slot="action">
         <Button v-if="actions.edit" type="primary" size="small" @click="handleShowEditModal(row)">编辑</Button>
         <Button v-if="actions.remove" type="error" size="small" @click="handleRemove(row)">删除</Button>
@@ -66,6 +67,7 @@ export default {
         remove: true,
         export: false,
         import: false,
+        batchEdit: false,
       }),
     },
     idKey: {
@@ -198,6 +200,13 @@ export default {
       this.handleClose();
       this.getList();
       this.$emit('upload-success');
+    },
+    batchEdit() {
+      if (this.selectionData.length === 0) {
+        this.$Message.warning('至少选择一条内容修改！')
+        return;
+      }
+      this.$emit('showBatchEditModal');
     },
   }
 };
