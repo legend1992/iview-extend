@@ -51,7 +51,7 @@
         <span slot="prepend">xxx</span>
         <Button type="error" slot="append" @click="xxx">button</Button>
       </template>
-    </ive-edit-modal>
+    </ive-edit-form>
     <Button @click="modal = true">弹窗</Button>
     <Table border :columns="columns12" :data="data6">
       <template slot-scope="{ row }" slot="name">
