@@ -56,22 +56,24 @@ export default {
   },
   computed: {
     formConfigFormat() {
-      return this.configFormat(_.cloneDeep(this.formConfig));
+      return this.configFormat();
     },
     hideConfigFormat() {
-      return this.configFormat(_.cloneDeep(this.hideConfig));
+      return this.configFormat();
     },
   },
   methods: {
-    configFormat(configs) {
-      configs.forEach((item) => {
+    configFormat() {
+      const allConfig = [..._.cloneDeep(this.formConfig), ..._.cloneDeep(this.hideConfig)];
+      this.model = {};
+      allConfig.forEach((item) => {
         const { prop, label, itemConfig } = item;
         item.itemConfig = this.setDefaultItemConfig(label, itemConfig);
         item.rules = this.setDefaultRules(item);
         this.$set(this.model, prop, itemConfig && itemConfig.value);
       });
 
-      return configs;
+      return allConfig;
     },
     setDefaultRules(item) {
       if (item.required) {
