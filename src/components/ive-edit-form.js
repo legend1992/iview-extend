@@ -65,12 +65,11 @@ export default {
   methods: {
     configFormat(configs) {
       configs.forEach((item) => {
-        const { prop, label, itemConfig } = item;
+        const { label, itemConfig } = item;
         item.itemConfig = this.setDefaultItemConfig(label, itemConfig);
         item.rules = this.setDefaultRules(item);
-        this.$set(this.model, prop, itemConfig && itemConfig.value);
       });
-
+      this.setModelValue();
       return configs;
     },
     setDefaultRules(item) {
@@ -109,6 +108,14 @@ export default {
       }
 
       return item.rules;
+    },
+    setModelValue() {
+      const allConfig = [..._.cloneDeep(this.formConfig), ..._.cloneDeep(this.hideConfig)];
+      this.model = {};
+      allConfig.forEach((item) => {
+        const { prop, itemConfig } = item;
+        this.$set(this.model, prop, itemConfig && itemConfig.value);
+      });
     },
     getData(needValidate = true) {
       if (needValidate) {
@@ -172,25 +179,15 @@ export default {
             let slots = [];
             if (defaultSlots && defaultSlots.length) {
               defaultSlots.forEach((defaultSlot) => {
-                const {
-                  tag,
-                  text,
-                  children,
-                  data: {
-                    slot: slotName,
-                  },
-                } = defaultSlot;
-                if (children || text) {
-                  slots.push(
-                    h(
-                      tag,
-                      {
-                        slot: slotName,
-                      },
-                      children || text,
-                    )
-                  );
-                }
+                slots.push(
+                  h(
+                    'span',
+                    {
+                      slot: defaultSlot.data.slot,
+                    },
+                    [defaultSlot],
+                  )
+                );
               });
             }
             return slots;

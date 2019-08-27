@@ -83,6 +83,10 @@
   color: #858585;
   margin-left: 5px;
 }
+/* ive-input-slot */
+.ivu-input-group-append .ivu-btn, .ivu-input-group-prepend .ivu-btn {
+  box-shadow: none;
+}
 
 /* 提示图标 */
 .ive-tooltip {
