@@ -206,7 +206,7 @@ export default {
         this.$Message.warning('至少选择一条内容修改！')
         return;
       }
-      this.$emit('showBatchEditModal');
+      this.$emit('showBatchEditModal', this.selectionData);
     },
   }
 };
