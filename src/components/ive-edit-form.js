@@ -56,24 +56,21 @@ export default {
   },
   computed: {
     formConfigFormat() {
-      return this.configFormat();
+      return this.configFormat(_.cloneDeep(this.formConfig));
     },
     hideConfigFormat() {
-      return this.configFormat();
+      return this.configFormat(_.cloneDeep(this.hideConfig));
     },
   },
   methods: {
-    configFormat() {
-      const allConfig = [..._.cloneDeep(this.formConfig), ..._.cloneDeep(this.hideConfig)];
-      this.model = {};
-      allConfig.forEach((item) => {
-        const { prop, label, itemConfig } = item;
+    configFormat(configs) {
+      configs.forEach((item) => {
+        const { label, itemConfig } = item;
         item.itemConfig = this.setDefaultItemConfig(label, itemConfig);
         item.rules = this.setDefaultRules(item);
-        this.$set(this.model, prop, itemConfig && itemConfig.value);
       });
-
-      return allConfig;
+      this.setModelValue();
+      return configs;
     },
     setDefaultRules(item) {
       if (item.required) {
@@ -111,6 +108,14 @@ export default {
       }
 
       return item.rules;
+    },
+    setModelValue() {
+      const allConfig = [..._.cloneDeep(this.formConfig), ..._.cloneDeep(this.hideConfig)];
+      this.model = {};
+      allConfig.forEach((item) => {
+        const { prop, itemConfig } = item;
+        this.$set(this.model, prop, itemConfig && itemConfig.value);
+      });
     },
     getData(needValidate = true) {
       if (needValidate) {
