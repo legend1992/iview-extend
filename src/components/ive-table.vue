@@ -165,6 +165,7 @@ export default {
           await this.deleteApi(id);
           this.$Message.success('删除成功');
           confirm.remove();
+          this.selectionData = [];
           this.getList();
         } catch (e) {
           confirm.remove();
