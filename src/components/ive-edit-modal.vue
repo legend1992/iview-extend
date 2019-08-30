@@ -169,7 +169,7 @@ export default {
         await this.editApi(formModel);
         this.submitLoading = false;
         this.$Message.success('操作成功');
-        this.$emit('success');
+        this.$emit('success', formModel);
       } catch (e) {
         this.submitLoading = false;
         this.$Message.error(e);
