@@ -14,6 +14,6 @@ export default {
 };
 </script>
 
-<style lang="scss">
-@import "styles/iview-extends2";
+<style>
+@import "styles/iview-extends2.css";
 </style>
