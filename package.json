@@ -23,6 +23,9 @@
     "lodash": "^4.17.14",
     "vue-template-compiler": "^2.6.10"
   },
+  "peerDependencies": {
+    "iview": "^3.4.2"
+  },
   "eslintConfig": {
     "root": true,
     "env": {
