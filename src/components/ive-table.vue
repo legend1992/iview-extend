@@ -15,11 +15,30 @@
       @upload-success="uploadSuccess"
       @close="handleClose"
     />
-    
-    <Table border ref="table" :columns="(actions.export || actions.batchEdit || actions.batchRemove) ? checkboxColumns : columns" :data="list" :loading="tableLoading" @on-selection-change="changeChoose">
+
+    <Table
+      border
+      ref="table"
+      :columns="formatColumns"
+      :data="list"
+      :loading="tableLoading"
+      @on-selection-change="changeChoose"
+    >
       <template slot-scope="{ row }" slot="action">
-        <Button v-if="actions.edit" type="primary" size="small" @click="handleShowEditModal(row)">编辑</Button>
-        <Button v-if="actions.remove" type="error" size="small" @click="handleRemove(row)">删除</Button>
+        <Button
+          v-if="actions.edit"
+          type="primary"
+          size="small"
+          @click="handleShowEditModal(row)">
+          编辑
+        </Button>
+        <Button
+          v-if="actions.remove"
+          type="error"
+          size="small"
+          @click="handleRemove(row)">
+          删除
+        </Button>
       </template>
       <template v-for="(slot, key) in tableSlots" slot-scope="{ row }" :slot="key">
         <slot :name="key" :row="row"></slot>
@@ -93,7 +112,7 @@ export default {
         pageSize: 30,
         count: 0,
       },
-    }
+    };
   },
   computed: {
     tableSlots() {
@@ -103,8 +122,13 @@ export default {
     },
     checkboxColumns() {
       const columns = _.cloneDeep(this.columns);
-      columns.unshift({type: 'selection', width: 50});
+      columns.unshift({ type: 'selection', width: 50 });
       return columns;
+    },
+    formatColumns() {
+      const { actions, checkboxColumns, columns } = this;
+      const { export: exportAlias, batchEdit, batchRemove } = actions;
+      return (exportAlias || batchEdit || batchRemove) ? checkboxColumns : columns;
     },
     topActions() {
       return this.actions.add || this.actions.export || this.actions.import;
@@ -131,10 +155,7 @@ export default {
           ...queryParams,
         };
         const {
-          data: {
-            data,
-            count,
-          },
+          data: { data, count },
         } = await this.getListApi(reqParams);
 
         this.tableLoading = false;
@@ -142,8 +163,8 @@ export default {
         this.pager.count = count;
       } catch (e) {
         this.tableLoading = false;
-        console.error(e);
         this.$Message.error(e);
+        throw (e);
       }
     },
     onPageSizeChanged(size) {
@@ -160,7 +181,7 @@ export default {
       this.$emit('showEditModal', id, row);
     },
     async remove(confirm, id, row) {
-       if (confirm && this.deleteApi && this.deleteApi instanceof Function) {
+      if (confirm && this.deleteApi && this.deleteApi instanceof Function) {
         try {
           await this.deleteApi(id);
           this.$Message.success('删除成功');
@@ -169,8 +190,8 @@ export default {
           this.getList();
         } catch (e) {
           confirm.remove();
-          console.error(e);
           this.$Message.error(e);
+          throw (e);
         }
       } else if (confirm) {
         this.$emit('remove', id, confirm, row);
@@ -179,7 +200,9 @@ export default {
     async handleRemove(row) {
       const id = row[this.idKey] || row.id;
       const title = row[this.deleteKey] || '';
-      const confirm = await this.$iveModal.confirm(`确定删除<b>${ title }</b>吗？`);
+      const confirm = await this.$iveModal.confirm(
+        `确定删除<b>${title}</b>吗？`,
+      );
       this.remove(confirm, id, row);
     },
     changeChoose(selectionData) {
@@ -187,7 +210,7 @@ export default {
     },
     exportData() {
       if (this.selectionData.length === 0) {
-        this.$Message.warning('至少选择一条内容导出！')
+        this.$Message.warning('至少选择一条内容导出！');
         return;
       }
       this.$refs.table.exportCsv({
@@ -210,20 +233,22 @@ export default {
     },
     async batchRemove(row) {
       if (this.selectionData.length === 0) {
-        this.$Message.warning('至少选择一条内容删除！')
+        this.$Message.warning('至少选择一条内容删除！');
         return;
       }
       const idList = this.selectionData.map(item => item.id);
-      const confirm = await this.$iveModal.confirm(`确定删除要这${idList.length}条内容吗？`);
+      const confirm = await this.$iveModal.confirm(
+        `确定删除要这${idList.length}条内容吗？`,
+      );
       this.remove(confirm, idList, row);
     },
     batchEdit() {
       if (this.selectionData.length === 0) {
-        this.$Message.warning('至少选择一条内容修改！')
+        this.$Message.warning('至少选择一条内容修改！');
         return;
       }
       this.$emit('showBatchEditModal', this.selectionData);
     },
-  }
+  },
 };
 </script>

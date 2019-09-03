@@ -15,8 +15,8 @@ export default {
         {
           prop: 'x1',
           label: 'x1',
-        }
-      ]
+        },
+      ],
     };
   },
   methods: {

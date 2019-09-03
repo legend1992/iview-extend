@@ -11,7 +11,7 @@ module.exports = (config) => {
     reporters: ['spec', 'coverage'],
     coverageReporter: {
       dir: './coverage',
-      reporters: [{ type: 'lcov', subdir: '.' }, { type: 'text-summary' }]
+      reporters: [{ type: 'lcov', subdir: '.' }, { type: 'text-summary' }],
     },
     browsers: ['ChromeHeadless'],
   });

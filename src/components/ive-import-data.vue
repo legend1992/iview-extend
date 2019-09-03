@@ -8,7 +8,7 @@
   >
     <Upload
       ref="upload"
-      action=""
+      action
       :accept="accept"
       :format="format"
       :show-upload-list="false"
@@ -16,12 +16,23 @@
     >
       <Button icon="ios-cloud-upload-outline">选择导入文件</Button>
     </Upload>
-    <div v-show="hasFile" class="file-wrapper">上传文件: {{ uploadFile[0] && uploadFile[0].name }}
+    <div v-show="hasFile" class="file-wrapper">
+      上传文件: {{ uploadFile[0] && uploadFile[0].name }}
       <Button class="delete" type="text" size="small" title="删除" @click.stop="remove">X</Button>
     </div>
     <div slot="footer">
-      <Button type="error" :disabled="!hasFile" :title="exportButtonTitle" @click="upload('yes')">覆盖导入：唯一字段相同时直接覆盖</Button>
-      <Button type="primary" :disabled="!hasFile" :title="exportButtonTitle" @click="upload('no')">跳过导入：唯一字段相同时不导入</Button>
+      <Button
+        type="error"
+        :disabled="!hasFile"
+        :title="exportButtonTitle"
+        @click="upload('yes')"
+      >覆盖导入：唯一字段相同时直接覆盖</Button>
+      <Button
+        type="primary"
+        :disabled="!hasFile"
+        :title="exportButtonTitle"
+        @click="upload('no')"
+      >跳过导入：唯一字段相同时不导入</Button>
     </div>
   </Modal>
 </template>
@@ -32,16 +43,17 @@ export default {
   data() {
     return {
       uploadFile: [],
-    }
+    };
   },
   props: {
     accept: {
       type: String,
-      default: 'application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      default:
+        'application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     },
     format: {
       type: Array,
-      default: () => ['xls','xlsx'],
+      default: () => ['xls', 'xlsx'],
     },
     importModal: {
       type: Boolean,
@@ -64,12 +76,19 @@ export default {
     formatCheck(file) {
       let checked = true;
       if (this.format && this.format.length) {
-        const fileFormat = file.name.split('.').pop().toLocaleLowerCase();
-        checked = this.format.some(item => item.toLocaleLowerCase() === fileFormat);
+        const fileFormat = file.name
+          .split('.')
+          .pop()
+          .toLocaleLowerCase();
+        checked = this.format.some(
+          item => item.toLocaleLowerCase() === fileFormat,
+        );
         if (!checked) {
           this.$Notice.warning({
             title: '上传文件格式错误',
-            desc: `${file.name}的文件格式是不正确的,请选择${this.format.toString()}格式的文件`
+            desc: `${
+              file.name
+            }的文件格式是不正确的,请选择${this.format.toString()}格式的文件`,
           });
         }
       }
@@ -94,10 +113,10 @@ export default {
         formData.append('cover', cover);
         await this.importApi(formData);
         this.$emit('upload-success');
-      } catch(error) {
+      } catch (error) {
         this.$Message.warning({
           content: error,
-          duration: 3
+          duration: 3,
         });
       }
       this.remove();
@@ -106,5 +125,5 @@ export default {
       this.uploadFile = [];
     },
   },
-}
+};
 </script>

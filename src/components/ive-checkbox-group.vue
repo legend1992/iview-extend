@@ -1,6 +1,11 @@
 <template>
   <CheckboxGroup v-if="optionsLength" :value="value" @input="$emit('input', $event)">
-    <Checkbox v-for="(oValue, key) in options" :key="oValue" :label="formatLabel(key)">{{ oValue }}</Checkbox>
+    <Checkbox
+      v-for="(oValue, key) in options"
+      :key="oValue"
+      :label="formatLabel(key)">
+      {{ oValue }}
+    </Checkbox>
   </CheckboxGroup>
   <span v-else class="ive-no-data">{{ noDataMessage }}</span>
 </template>
@@ -27,13 +32,13 @@ export default {
   },
   computed: {
     optionsLength() {
-      let length = 0;
+      let arr = [];
       if (this.options instanceof Array) {
-        length = this.options.length;
+        arr = this.options;
       } else {
-        length = Object.keys(this.options).length;
+        arr = Object.keys(this.options);
       }
-      return length;
+      return arr.length;
     },
   },
   methods: {
@@ -44,6 +49,5 @@ export default {
       return value;
     },
   },
-}
+};
 </script>
-

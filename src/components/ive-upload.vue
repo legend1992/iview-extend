@@ -20,7 +20,12 @@
         <Button icon="md-add">选择文件</Button>
       </Upload>
       <span class="fileUrl" :title="fileUrl">{{ fileUrl }}</span>
-      <Button v-if="uploadByManual" icon="ios-cloud-upload-outline" @click="handleUpload">点击上传</Button>
+      <Button
+        v-if="uploadByManual"
+        icon="ios-cloud-upload-outline"
+        @click="handleUpload">
+        点击上传
+      </Button>
     </Row>
     <ul v-if="uploadByManual && fileList.length" class="ivu-upload-list manual-upload-list">
       <li v-for="(file, index) in fileList" :key="file.name + index" class="ivu-upload-list-file">
@@ -28,47 +33,51 @@
           <i class="ivu-icon ivu-icon-md-document"></i>
           {{ file.name }}
         </span>
-        <i class="ivu-icon ivu-icon-ios-close ivu-upload-list-remove" @click="handleRemove(index)"></i>
+        <i
+          class="ivu-icon ivu-icon-ios-close ivu-upload-list-remove"
+          @click="handleRemove(index)">
+        </i>
       </li>
     </ul>
   </div>
 </template>
 <script>
-import _ from "lodash";
+// import _ from "lodash";
+
 export default {
-  name: "ive-upload",
+  name: 'ive-upload',
   props: {
     value: undefined,
     action: {
       type: String,
-      default: ""
+      default: '',
     },
     multiple: {
       type: Boolean,
-      default: false
+      default: false,
     },
     data: {
       type: Object,
-      default: () => ({})
+      default: () => ({}),
     },
     name: {
       type: String,
-      default: "file"
+      default: 'file',
     },
     accept: {
       type: String,
-      default: "image/jpg, image/png, image/jpeg",
+      default: 'image/jpg, image/png, image/jpeg',
     },
     format: {
       type: Array,
       default: () => ['jpg', 'png', 'jpeg'],
     },
-    "max-size": {
-      type: Number
+    'max-size': {
+      type: Number,
     },
-    "upload-by-manual": {
+    'upload-by-manual': {
       type: Boolean,
-      default: false
+      default: false,
     },
     // 分辨率
     resolutionRatio: {
@@ -80,15 +89,25 @@ export default {
           const { width, height } = val;
           const widthType = typeof width;
           const heightType = typeof height;
-          if (widthType === 'object' && width.toString() === '[object Object]') {
+          if (
+            widthType === 'object'
+            && width.toString() === '[object Object]'
+          ) {
             const { max: maxWidth, min: minWidth } = width;
-            result = [maxWidth, minWidth].every((value) => value === undefined || typeof value === 'number');
+            result = [maxWidth, minWidth].every(
+              value => value === undefined || typeof value === 'number',
+            );
           } else if (width && widthType !== 'number') {
             result = false;
           }
-          if (heightType === 'object' && height.toString() === '[object Object]') {
+          if (
+            heightType === 'object'
+            && height.toString() === '[object Object]'
+          ) {
             const { max: maxHeight, min: minHeight } = height;
-            result = [maxHeight, minHeight].every((value) => value === undefined || typeof value === 'number');
+            result = [maxHeight, minHeight].every(
+              value => value === undefined || typeof value === 'number',
+            );
           } else if (height && heightType !== 'number') {
             result = false;
           }
@@ -102,20 +121,25 @@ export default {
       fileList: [],
       uploadedList: [],
       uploadedResultList: [],
-      fileUrl: ""
+      fileUrl: '',
     };
   },
   watch: {
     value(value) {
       this.fileUrl = value;
-    }
+    },
   },
   methods: {
     checkFormat(file) {
       let checked = true;
       if (this.format && this.format.length) {
-        const fileFormat = file.name.split('.').pop().toLocaleLowerCase();
-        checked = this.format.some(item => item.toLocaleLowerCase() === fileFormat);
+        const fileFormat = file.name
+          .split('.')
+          .pop()
+          .toLocaleLowerCase();
+        checked = this.format.some(
+          item => item.toLocaleLowerCase() === fileFormat,
+        );
         if (!checked) {
           this.$Message.error(`请选择后缀为${this.format.toString()}的文件`);
         }
@@ -134,7 +158,10 @@ export default {
           const { width, height } = this.resolutionRatio;
           if (typeof width === 'number' && imgWidth !== width) {
             result = `图片宽度需等于${width}`;
-          } else if (typeof width === 'object' && width.toString() === '[object Object]') {
+          } else if (
+            typeof width === 'object'
+            && width.toString() === '[object Object]'
+          ) {
             const { max, min } = width;
             if (typeof max === 'number' && imgWidth > max) {
               result = `图片最大宽度为${max}`;
@@ -145,7 +172,10 @@ export default {
           if (!result) {
             if (typeof height === 'number' && imgHeight !== height) {
               result = `图片高度需等于${height}`;
-            } else if (typeof height === 'object' && height.toString() === '[object Object]') {
+            } else if (
+              typeof height === 'object'
+              && height.toString() === '[object Object]'
+            ) {
               const { max, min } = height;
               if (typeof max === 'number' && imgHeight > max) {
                 result = `图片最大高度为${max}`;
@@ -168,13 +198,11 @@ export default {
     pickFile(file) {
       if (this.uploadByManual) {
         this.fileList.push(file);
-      } else {
-        if (this.checkFormat(file)) {
-          if (this.resolutionRatio) {
-            this.checkResolutionRatio(file);
-          } else {
-            this.$refs.upload.post(file);
-          }
+      } else if (this.checkFormat(file)) {
+        if (this.resolutionRatio) {
+          this.checkResolutionRatio(file);
+        } else {
+          this.$refs.upload.post(file);
         }
       }
       return false;
@@ -186,20 +214,20 @@ export default {
     //   const value = this.uploadedResultList.length ? _.cloneDeep(this.uploadedResultList) : null;
     //   this.$emit('input', value);
     // },
-    handleRemoveUploadedFile(file, fileList) {
-      this.$emit("input", null);
+    handleRemoveUploadedFile() {
+      this.$emit('input', null);
     },
     handleRemove(index) {
       this.fileList.splice(index, 1);
     },
     handleUpload() {
-      this.$emit("on-upload", this.fileList);
+      this.$emit('on-upload', this.fileList);
     },
     handleError($event) {
-      this.$emit("on-error", $event);
+      this.$emit('on-error', $event);
     },
     handleProgress($event) {
-      this.$emit("on-progress", $event);
+      this.$emit('on-progress', $event);
     },
     // handleSuccess(result, file, fileList) {
     //   this.uploadedResultList.push(result);
@@ -211,8 +239,8 @@ export default {
       const { code, url, msg } = result;
       if (code === 0) {
         this.fileUrl = url;
-        this.$emit("input", url);
-        this.$emit("on-success", url);
+        this.$emit('input', url);
+        this.$emit('on-success', url);
       } else {
         this.$Message.error(msg || '图片上传出错');
         this.handleError(result);
@@ -220,8 +248,8 @@ export default {
     },
     handleExceededSize($event) {
       this.$Message.warning('图片尺寸超出限制');
-      this.$emit("on-exceeded-size", $event);
-    }
-  }
+      this.$emit('on-exceeded-size', $event);
+    },
+  },
 };
 </script>

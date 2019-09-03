@@ -1,9 +1,9 @@
 import _ from 'lodash';
-import baseForm_mixin from '../mixins/baseForm_mixin';
+import baseFormMixin from '../mixins/baseForm_mixin';
 
 export default {
   name: 'ive-form',
-  mixins: [baseForm_mixin],
+  mixins: [baseFormMixin],
   props: {
     /**
      * formConfig: {
@@ -116,14 +116,13 @@ export default {
       });
     },
     getData(needValidate = true) {
-      if (needValidate) {
-        if (this.validate()) {
-          return _.cloneDeep(this.model);
-        }
+      let model;
+      if (needValidate && !this.validate()) {
         this.$Message.warning('请将表单填写完整');
       } else {
-        return _.cloneDeep(this.model);
+        model = _.cloneDeep(this.model);
       }
+      return model;
     },
     validate() {
       let validate;
@@ -160,11 +159,11 @@ export default {
         // 渲染控件
         const renderItem = ({
           prop, inlineTip, tip, itemConfig: config,
-        }, type) => {
-          const renderInlineTip = inlineTip => h('span', {
+        }) => {
+          const renderInlineTip = () => h('span', {
             class: 'inline-tip',
           }, inlineTip);
-          const renderTip = tip => h('ive-icon-tooltip', {
+          const renderTip = () => h('ive-icon-tooltip', {
             props: {
               content: tip,
             },
@@ -199,12 +198,15 @@ export default {
                   this.model[prop] = value;
                   config.value = value;
                   this.$emit(`update:${type}`, this[`${type}Format`]);
-                  config.on && config.on.input && config.on.input(value);
+                  const { on } = config;
+                  if (on && on.input && on.input instanceof Function) {
+                    on.input(value);
+                  }
                 },
               },
             }, renderSlots()),
-            inlineTip ? renderInlineTip(inlineTip) : null,
-            tip ? renderTip(tip) : null,
+            inlineTip ? renderInlineTip() : null,
+            tip ? renderTip() : null,
           ];
         };
         const {
@@ -224,7 +226,7 @@ export default {
               required,
             },
           },
-          renderItem(item, type),
+          renderItem(item),
         );
       };
       // 渲染隐藏部分

@@ -47,11 +47,11 @@ export default {
   data() {
     return {
       cValue: this.value,
-    }
+    };
   },
   watch: {
     value(value) {
-      if (!value && value !== 0 || isNaN(value)) {
+      if ((!value && value !== 0) || Number.isNaN(value)) {
         this.cValue = null;
       } else {
         this.cValue = value;
@@ -60,7 +60,7 @@ export default {
   },
   methods: {
     intParser(value) {
-      return this.parseIntValue && value ? parseInt(value, 10) + '' : value;
+      return this.parseIntValue && value ? `${parseInt(value, 10)}` : value;
     },
   },
 };

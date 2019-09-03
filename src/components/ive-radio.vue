@@ -40,13 +40,13 @@ export default {
   },
   computed: {
     optionsLength() {
-      let length = 0;
+      let arr = [];
       if (this.options instanceof Array) {
-        length = this.options.length;
+        arr = this.options;
       } else {
-        length = Object.keys(this.options).length;
+        arr = Object.keys(this.options);
       }
-      return length;
+      return arr.length;
     },
   },
   methods: {

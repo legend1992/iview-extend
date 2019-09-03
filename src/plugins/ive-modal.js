@@ -24,7 +24,7 @@ function initMethod(method, content) {
     instance.$Modal[method](options);
   });
 }
-const createModal = function (Vue) {
+function createModal(Vue) {
   const modal = {};
   instance = new Vue();
   Vue.use(iview);
@@ -33,6 +33,6 @@ const createModal = function (Vue) {
     modal[name] = content => initMethod(name, content);
   });
   return modal;
-};
+}
 
 export default createModal;

@@ -1,5 +1,12 @@
 <template>
-  <DatePicker :value="formatValue" @input="handleInput" :type="type" :options="options" :placeholder="placeholder" :disabled="disabled"></DatePicker>
+  <DatePicker
+    :value="formatValue"
+    @input="handleInput"
+    :type="type"
+    :options="options"
+    :placeholder="placeholder"
+    :disabled="disabled"
+  ></DatePicker>
 </template>
 
 <script>
@@ -32,7 +39,7 @@ export default {
       if (!this.value || formatValue.toString() === 'Invalid Date') {
         formatValue = null;
       }
-      
+
       return formatValue;
     },
     options() {
@@ -48,9 +55,9 @@ export default {
               disabledDate = value < this.disabledDate;
             }
           }
-          
+
           return disabledDate;
-        }
+        };
       }
       return {
         disabledDate: disabledDateFn,

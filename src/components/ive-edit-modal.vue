@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import _ from "lodash";
+import _ from 'lodash';
 
 export default {
   name: 'ive-edit-modal',
@@ -74,7 +74,7 @@ export default {
     labelWidth: {
       type: Number,
       default: 80,
-    }
+    },
   },
   data() {
     return {
@@ -110,7 +110,9 @@ export default {
   },
   computed: {
     formSlots() {
-      let { prepend, append, default: defaulta, ...formSlots } = this.$scopedSlots;
+      const {
+        prepend, append, default: defaulta, ...formSlots
+      } = this.$scopedSlots;
       return formSlots;
     },
   },
@@ -133,8 +135,8 @@ export default {
         this.setFormConfig('formConfig', data);
         this.setFormConfig('hideConfig', data);
       } catch (e) {
-        console.error(e);
         this.$Message.error(e);
+        throw (e);
       }
     },
     // 设置请求参数
@@ -157,7 +159,10 @@ export default {
           };
         }
         this.$nextTick(() => {
-          item.itemConfig.on && item.itemConfig.on.input && item.itemConfig.on.input(value);
+          const { on } = item.itemConfig;
+          if (on && on.input && on.input instanceof Function) {
+            on.input(value);
+          }
         });
         return item;
       });
