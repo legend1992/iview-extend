@@ -1,5 +1,9 @@
 <template>
   <div class="ui-list">
+    <ive-filter-form
+      @query="query"
+      :formConfig="formConfig"
+    />
   </div>
 </template>
 
@@ -7,9 +11,18 @@
 export default {
   data() {
     return {
+      formConfig: [
+        {
+          prop: 'x1',
+          label: 'x1',
+        }
+      ]
     };
   },
   methods: {
+    query(e) {
+      console.log(e);
+    },
   },
 };
 </script>
