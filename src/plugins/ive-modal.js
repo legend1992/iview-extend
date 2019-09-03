@@ -1,4 +1,5 @@
 import iview from 'iview';
+
 let instance = null;
 const titleMap = {
   info: '信息提示框',
@@ -6,7 +7,7 @@ const titleMap = {
 };
 function initMethod(method, content) {
   return new Promise((resolve) => {
-    let options = {
+    const options = {
       loading: true,
       onOk: () => {
         resolve(instance.$Modal);
@@ -14,7 +15,7 @@ function initMethod(method, content) {
       onCancel: () => {
         resolve(false);
       },
-    }
+    };
     Object.assign(options, {
       title: titleMap[method],
       content,
@@ -23,7 +24,7 @@ function initMethod(method, content) {
     instance.$Modal[method](options);
   });
 }
-const createModal = function(Vue) {
+const createModal = function (Vue) {
   const modal = {};
   instance = new Vue();
   Vue.use(iview);

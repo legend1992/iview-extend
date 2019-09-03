@@ -3,11 +3,11 @@ export default {
     formConfig: {
       type: Array,
       default: () => [],
-      required: true
+      required: true,
     },
     labelWidth: {
       type: Number,
-      default: 80
+      default: 80,
     },
   },
   data() {
@@ -23,13 +23,13 @@ export default {
           tagName: 'ive-input',
           props: {
             placeholder: `请输入${label}`,
-          }
+          },
         };
       } else {
         config = Object.assign({
           tagName: 'ive-input',
         }, config);
-        
+
         let defaultProps = {
           placeholder: `请输入${label}`,
         };

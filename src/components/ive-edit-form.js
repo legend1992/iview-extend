@@ -1,8 +1,8 @@
-import _ from "lodash";
+import _ from 'lodash';
 import baseForm_mixin from '../mixins/baseForm_mixin';
 
 export default {
-  name: "ive-form",
+  name: 'ive-form',
   mixins: [baseForm_mixin],
   props: {
     /**
@@ -39,12 +39,12 @@ export default {
      */
     hideConfig: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     inline: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
@@ -78,17 +78,15 @@ export default {
           item.rules = [
             {
               required: true,
-              message: `${item.label}不为空`
-            }
+              message: `${item.label}不为空`,
+            },
           ];
         } else {
-          const [requiredRule] = item.rules.filter(rule => {
-            return rule.required !== undefined;
-          });
+          const [requiredRule] = item.rules.filter(rule => rule.required !== undefined);
           if (!requiredRule) {
             item.rules.unshift({
               required: true,
-              message: `${item.label}不为空`
+              message: `${item.label}不为空`,
             });
           } else {
             requiredRule.required = true;
@@ -121,16 +119,15 @@ export default {
       if (needValidate) {
         if (this.validate()) {
           return _.cloneDeep(this.model);
-        } else {
-          this.$Message.warning("请将表单填写完整");
         }
+        this.$Message.warning('请将表单填写完整');
       } else {
         return _.cloneDeep(this.model);
       }
     },
     validate() {
       let validate;
-      this.$refs.form.validate(valid => {
+      this.$refs.form.validate((valid) => {
         validate = valid;
       });
       return validate;
@@ -141,16 +138,12 @@ export default {
     reset() {
       this.moreIsShow = false;
       const resetFormConfig = this.formConfigFormat.map((item) => {
-        let originalItem = this.formConfigOriginal.find((oItem) => {
-          return oItem.prop === item.prop;
-        }) || {};
+        const originalItem = this.formConfigOriginal.find(oItem => oItem.prop === item.prop) || {};
         item.itemConfig.value = originalItem.itemConfig && originalItem.itemConfig.value;
         return item;
       });
       const resetHideConfig = this.hideConfigFormat.map((item) => {
-        let originalItem = this.hideConfigOriginal.find((oItem) => {
-          return oItem.prop === item.prop;
-        }) || {};
+        const originalItem = this.hideConfigOriginal.find(oItem => oItem.prop === item.prop) || {};
         item.itemConfig.value = originalItem.itemConfig && originalItem.itemConfig.value;
         return item;
       });
@@ -165,18 +158,20 @@ export default {
       // 渲染FormItem
       const renderFormItem = (item, type = 'formConfig') => {
         // 渲染控件
-        const renderItem = ({ prop, inlineTip, tip, itemConfig: config }, type) => {
-          const renderInlineTip = (inlineTip) => h('span', {
+        const renderItem = ({
+          prop, inlineTip, tip, itemConfig: config,
+        }, type) => {
+          const renderInlineTip = inlineTip => h('span', {
             class: 'inline-tip',
           }, inlineTip);
-          const renderTip = (tip) => h('ive-icon-tooltip', {
+          const renderTip = tip => h('ive-icon-tooltip', {
             props: {
               content: tip,
             },
           });
           const renderSlots = () => {
             const defaultSlots = this.$slots[prop];
-            let slots = [];
+            const slots = [];
             if (defaultSlots && defaultSlots.length) {
               defaultSlots.forEach((defaultSlot) => {
                 slots.push(
@@ -186,7 +181,7 @@ export default {
                       slot: defaultSlot.data.slot,
                     },
                     [defaultSlot],
-                  )
+                  ),
                 );
               });
             }
@@ -212,12 +207,14 @@ export default {
             tip ? renderTip(tip) : null,
           ];
         };
-        const { hide, label, prop, rules, required } = item;
+        const {
+          hide, label, prop, rules, required,
+        } = item;
         return h(
           'FormItem',
           {
             class: {
-              hide: hide,
+              hide,
               'ive-form-item': true,
             },
             props: {
@@ -247,7 +244,7 @@ export default {
             },
           },
         }, '点击查看更多内容');
-        
+
         // 渲染默认隐藏部分和收起按钮
         const renderHidePartWrapper = () => {
           // 渲染收起按钮
@@ -300,7 +297,7 @@ export default {
             e.preventDefault();
           },
         },
-        ref: 'form'
+        ref: 'form',
       },
       renderFormChilds(),
     );
