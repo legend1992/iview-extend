@@ -2,6 +2,7 @@ language: node_js
 node_js:
   - 10
 install:
-  - npm install -g codecov
-before_script:
+  - yarn add -g codecov
+script:
+  - yarn test
   - codecov
