@@ -1,5 +1,5 @@
 # iview-extend
-[![Build Status](https://travis-ci.org/legend1992/iview-extend.svg?branch=master)](https://travis-ci.org/legend1992/iview-extend)
+[![Build Status](https://travis-ci.org/legend1992/iview-extend.svg?branch=unit-test2)](https://travis-ci.org/legend1992/iview-extend)
 
 [![codecov](https://codecov.io/gh/legend1992/iview-extend/branch/unit-test2/graph/badge.svg)](https://codecov.io/gh/legend1992/iview-extend)
 
