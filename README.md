@@ -1,7 +1,7 @@
 # iview-extend
 [![Build Status](https://travis-ci.org/legend1992/iview-extend.svg?branch=master)](https://travis-ci.org/legend1992/iview-extend)
 
-[![codecov](https://codecov.io/gh/legend1992/iview-extend/branch/master/graph/badge.svg)](https://codecov.io/gh/legend1992/iview-extend)
+[![codecov](https://codecov.io/gh/legend1992/iview-extend/branch/unit-test2/graph/badge.svg)](https://codecov.io/gh/legend1992/iview-extend)
 
 [![NPM](https://nodei.co/npm/iview-extends2.png?compact=true)](https://npmjs.org/package/iview-extends2)
 ## Project setup
