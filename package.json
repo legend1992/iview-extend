@@ -5,8 +5,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "test": "cross-env BABEL_ENV=test karma start --single-run",
-    "report-coverage": "codecov"
+    "test": "cross-env BABEL_ENV=test karma start --single-run"
   },
   "dependencies": {
     "@vue/cli-service": "^3.9.0",
