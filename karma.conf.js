@@ -11,7 +11,7 @@ module.exports = (config) => {
     reporters: ['spec', 'coverage'],
     coverageReporter: {
       dir: './coverage',
-      reporters: [{ type: 'lcovonly', subdir: '.' }, { type: 'text-summary' }, { type: 'json', subdir: '.' }],
+      reporters: [{ type: 'lcovonly', subdir: '.' }, { type: 'json', subdir: '.' }],
     },
     browsers: ['ChromeHeadless'],
   });
