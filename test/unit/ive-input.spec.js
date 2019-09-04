@@ -30,4 +30,27 @@ describe('iveInput.vue', () => {
     expect(type).to.equal('text');
     expect(disabled).to.equal('disabled');
   });
+  it('iveInput on-blur', () => {
+    const wrapper = mount(iveInput, {
+      propsData: {
+        value: ' 值 ',
+      },
+    });
+    wrapper.vm.handleBlur();
+    const emitted = wrapper.emitted();
+    expect(emitted['on-blur'][0][0]).to.equal('值');
+    expect(emitted.input[0][0]).to.equal('值');
+  });
+  it('iveInput type is letter', () => {
+    const wrapper = mount(iveInput, {
+      propsData: {
+        type: 'letter',
+        value: ' 值only letter ',
+      },
+    });
+    wrapper.vm.handleBlur();
+    const emitted = wrapper.emitted();
+    expect(emitted['on-blur'][0][0]).to.equal('only letter');
+    expect(emitted.input[0][0]).to.equal('only letter');
+  });
 });
