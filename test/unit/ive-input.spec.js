@@ -4,7 +4,7 @@ import '../utils';
 import iveInput from '../../src/components/ive-input.vue';
 
 describe('iveInput.vue', () => {
-  it('iveInput renders the correct markup', () => {
+  it('renders the correct markup', () => {
     const wrapper = mount(iveInput, {
       propsData: {
         value: '值',
@@ -15,7 +15,6 @@ describe('iveInput.vue', () => {
       },
     });
     expect(wrapper.classes()).to.include('ivu-input-wrapper');
-    expect(wrapper.contains('input')).to.equal(true);
     const input = wrapper.find('input');
     expect(input.classes()).to.include('ivu-input');
     const {
@@ -30,7 +29,7 @@ describe('iveInput.vue', () => {
     expect(type).to.equal('text');
     expect(disabled).to.equal('disabled');
   });
-  it('iveInput on-blur', () => {
+  it('on-blur formatValue', () => {
     const wrapper = mount(iveInput, {
       propsData: {
         value: ' 值 ',
@@ -41,7 +40,7 @@ describe('iveInput.vue', () => {
     expect(emitted['on-blur'][0][0]).to.equal('值');
     expect(emitted.input[0][0]).to.equal('值');
   });
-  it('iveInput type is letter', () => {
+  it('type is letter', () => {
     const wrapper = mount(iveInput, {
       propsData: {
         type: 'letter',
