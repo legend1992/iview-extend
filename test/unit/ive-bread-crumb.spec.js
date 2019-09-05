@@ -21,7 +21,7 @@ const router = new VueRouter({
   routes,
 });
 
-describe('iveBreadCrumb.vue', () => {
+describe('ive-bread-crumb.vue', () => {
   it('renders the correct markup', () => {
     const wrapper = mount(iveBreadCrumb, {
       localVue,

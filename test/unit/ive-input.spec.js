@@ -3,7 +3,7 @@ import { mount } from '@vue/test-utils';
 import '../utils';
 import iveInput from '../../src/components/ive-input.vue';
 
-describe('iveInput.vue', () => {
+describe('ive-input.vue', () => {
   it('renders the correct markup', () => {
     const wrapper = mount(iveInput, {
       propsData: {
