@@ -1,10 +1,15 @@
 <template>
   <div class="ui-list">
+    <ive-checkbox-group :value="[0, 1]" :options="{
+      0: '选项1',
+      1: '选项2',
+      2: '选项3',
+    }" :parseIntKey="true"/>
     <ive-filter-form @query="query" :formConfig="formConfig" />
     <!-- <ive-edit-form
       :formConfig="formConfig"
     />-->
-    <ive-edit-modal id="1" :modal="true" :formConfig="formConfigBatchEdit" :getDetailApi="getDetailApi" />
+    <!-- <ive-edit-modal id="1" :modal="true" :formConfig="formConfigBatchEdit" :getDetailApi="getDetailApi" /> -->
   </div>
 </template>
 
