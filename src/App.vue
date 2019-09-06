@@ -5,6 +5,11 @@
       1: '选项2',
       2: '选项3',
     }" :parseIntKey="true"/>
+    <ive-date-picker
+      v-model="date"
+      placeholder="请选择"
+      :disabledDate="new Date('2019-9-5')"
+    />
     <ive-filter-form @query="query" :formConfig="formConfig" />
     <!-- <ive-edit-form
       :formConfig="formConfig"
@@ -17,6 +22,7 @@
 export default {
   data() {
     return {
+      date: '2019-9-1',
       formConfig: [
         {
           prop: 'x1',
