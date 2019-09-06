@@ -35,7 +35,7 @@ describe('ive-input.vue', () => {
         value: ' 值 ',
       },
     });
-    wrapper.vm.handleBlur();
+    wrapper.find('input').trigger('blur');
     const emitted = wrapper.emitted();
     expect(emitted['on-blur'][0][0]).to.equal('值');
     expect(emitted.input[0][0]).to.equal('值');
@@ -47,7 +47,7 @@ describe('ive-input.vue', () => {
         value: ' 值only letter ',
       },
     });
-    wrapper.vm.handleBlur();
+    wrapper.find('input').trigger('blur');
     const emitted = wrapper.emitted();
     expect(emitted['on-blur'][0][0]).to.equal('only letter');
     expect(emitted.input[0][0]).to.equal('only letter');
