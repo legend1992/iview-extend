@@ -209,9 +209,7 @@ export default {
             tip ? renderTip() : null,
           ];
         };
-        const {
-          hide, label, prop, rules, required,
-        } = item;
+        const { hide, label, prop, rules } = item;
         return h(
           'FormItem',
           {
@@ -223,8 +221,8 @@ export default {
               label,
               prop,
               rules,
-              required,
             },
+            key: prop,
           },
           renderItem(item),
         );
