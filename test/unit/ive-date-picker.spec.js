@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 import { mount } from '@vue/test-utils';
-import moment from 'moment';
-import '../utils';
+import { momentFormatYYYYMMDD, oneDay } from '../utils';
 import iveDatePicker from '../../src/components/ive-date-picker.vue';
 
 describe('ive-date-picker.vue', () => {
@@ -21,7 +20,7 @@ describe('ive-date-picker.vue', () => {
       disabled,
     } = input.attributes();
     expect(wrapper.props('type')).to.equal('date');
-    expect(input.element.value).to.equal(moment(new Date()).format('YYYY-MM-DD'));
+    expect(input.element.value).to.equal(momentFormatYYYYMMDD(new Date()));
     expect(placeholder).to.equal('请选择');
     expect(disabled).to.equal('disabled');
   });
@@ -33,7 +32,7 @@ describe('ive-date-picker.vue', () => {
     });
     const { disabledDate } = wrapper.vm.options;
     expect(disabledDate(new Date())).to.equal(false);
-    expect(disabledDate(new Date() - 24 * 60 * 60 * 1000)).to.equal(true);
+    expect(disabledDate(new Date() - oneDay)).to.equal(true);
     wrapper.setProps({ disabledDate() {} });
     expect(wrapper.vm.options.disabledDate).to.equal(wrapper.vm.disabledDate);
     wrapper.setProps({ disabledDate: null });
@@ -50,7 +49,7 @@ describe('ive-date-picker.vue', () => {
     wrapper.setProps({ value: null });
     expect(inputEle.element.value).to.equal('');
     wrapper.setProps({ value: '2019-8-15' });
-    expect(moment(inputEle.element.value).format('YYYY-MM-DD')).to.equal('2019-08-15');
+    expect(momentFormatYYYYMMDD(inputEle.element.value)).to.equal('2019-08-15');
   });
   it('emit input event', () => {
     const wrapper = mount(iveDatePicker, {
@@ -61,6 +60,6 @@ describe('ive-date-picker.vue', () => {
     });
     wrapper.find('span.ivu-date-picker-cells-cell-selected + span').trigger('click');
     const emitted = wrapper.emitted();
-    expect(moment(emitted.input[0][0]).format('YYYY-MM-DD')).to.deep.equal('2019-08-16');
+    expect(momentFormatYYYYMMDD(emitted.input[0][0])).to.equal('2019-08-16');
   });
 });
