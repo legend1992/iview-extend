@@ -223,14 +223,14 @@ export default {
       }
       const idList = this.selectionData.map(item => item.id);
       const confirm = await this.$iveModal.confirm(`确定删除要这${idList.length}条内容吗？`);
-      this.setRemove(confirm, idList, row);
+      this.remove(confirm, idList, row);
     },
     batchEdit() {
       if (this.selectionData.length === 0) {
         this.$Message.warning('至少选择一条内容修改！')
         return;
       }
-      this.$emit('showBatchEditModal');
+      this.$emit('showBatchEditModal', this.selectionData);
     },
   }
 };
