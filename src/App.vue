@@ -19,6 +19,7 @@
     <ive-edit-form
       :formConfig="formConfig"
     />
+    <ive-icon-tooltip />
     <!-- <ive-edit-modal id="1" :modal="true" :formConfig="formConfigBatchEdit" :getDetailApi="getDetailApi" /> -->
   </div>
 </template>
