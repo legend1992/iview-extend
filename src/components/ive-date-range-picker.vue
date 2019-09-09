@@ -20,6 +20,7 @@
 
 <script>
 import _ from 'lodash';
+import moment from 'moment';
 
 export default {
   name: 'ive-date-range-picker',
@@ -66,7 +67,7 @@ export default {
           let disabledDate;
           if (date) {
             const value = date && date.valueOf();
-            const maxValue = new Date(this.currentValue[0]) - 86400000;
+            const maxValue = new Date(this.currentValue[0]);
             if (this.disabledDate && this.disabledDate instanceof Date) {
               disabledDate = value < maxValue || value < this.disabledDate;
             } else {
@@ -86,9 +87,15 @@ export default {
   },
   methods: {
     change(e, index) {
+      if (e && e instanceof Date) {
+        e = new Date(moment(e).format('YYYY-MM-DD'));
+      }
       this.currentValue[index] = e;
       this.$emit('input', this.currentValue);
     },
+  },
+  created() {
+    this.currentValue = _.cloneDeep(this.value);
   },
 };
 </script>
