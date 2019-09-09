@@ -10,10 +10,15 @@
       placeholder="请选择"
       :disabledDate="new Date('2019-9-5')"
     />
+    <ive-date-range-picker
+      v-model="rangeDate"
+      :placeholder="['请选择开始时间', '请选择结束时间']"
+      @input="dateRangeInput"
+    />
     <ive-filter-form @query="query" :formConfig="formConfig" />
-    <!-- <ive-edit-form
+    <ive-edit-form
       :formConfig="formConfig"
-    />-->
+    />
     <!-- <ive-edit-modal id="1" :modal="true" :formConfig="formConfigBatchEdit" :getDetailApi="getDetailApi" /> -->
   </div>
 </template>
@@ -21,8 +26,10 @@
 <script>
 export default {
   data() {
+    const oneDay = 24 * 60 * 60 * 1000;
     return {
       date: '2019-9-1',
+      rangeDate: ['2019-9-15', '2019-9-16'],
       formConfig: [
         {
           prop: 'x1',
@@ -163,7 +170,10 @@ export default {
           }
         }
       };
-    }
+    },
+    dateRangeInput(e) {
+      console.log(e);
+    },
   }
 };
 </script>
