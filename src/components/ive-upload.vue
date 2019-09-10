@@ -208,15 +208,9 @@ export default {
     //   this.$emit('on-success', result);
     // },
     handleSuccess(result) {
-      const { code, url, msg } = result;
-      if (code === 0) {
-        this.fileUrl = url;
-        this.$emit("input", url);
-        this.$emit("on-success", url);
-      } else {
-        this.$Message.error(msg || '图片上传出错');
-        this.handleError(result);
-      }
+      this.fileUrl = result;
+      this.$emit("input", result);
+      this.$emit("on-success", result);
     },
     handleExceededSize($event) {
       this.$Message.warning('图片尺寸超出限制');

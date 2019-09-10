@@ -225,6 +225,7 @@ export default {
               prop,
               rules,
             },
+            key: prop,
           },
           renderItem(item, type),
         );

@@ -11,9 +11,7 @@ export default {
     titleList() {
       const titleList = [];
       this.$route.matched.forEach((route) => {
-        if (route.meta && route.meta.title) {
-          titleList.push(route.meta.title);
-        }
+        titleList.push(route.meta.title || route.path);
       });
       return titleList;
     },

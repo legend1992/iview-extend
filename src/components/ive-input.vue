@@ -46,7 +46,7 @@ export default {
     handleBlur() {
       let newValue = this.value && this.value.trim();
       if (this.type === 'letter') {
-        newValue = newValue.replace(/[^a-zA-Z]/g, '');
+        newValue = newValue.replace(/[^a-zA-Z\s]/g, '');
       }
       this.$emit('on-blur', newValue);
       this.$emit('input', newValue);
