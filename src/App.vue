@@ -1,25 +1,25 @@
 <template>
   <div class="ui-list">
-    <ive-checkbox-group :value="[0, 1]" :options="{
+    <ive-checkbox-group
+      :value="[0, 1]"
+      :options="{
       0: '选项1',
       1: '选项2',
       2: '选项3',
-    }" :parseIntKey="true"/>
-    <ive-date-picker
-      v-model="date"
-      placeholder="请选择"
-      :disabledDate="new Date('2019-9-5')"
+    }"
+      :parseIntKey="true"
     />
+    <ive-date-picker v-model="date" placeholder="请选择" :disabledDate="new Date('2019-9-5')" />
     <ive-date-range-picker
       v-model="rangeDate"
       :placeholder="['请选择开始时间', '请选择结束时间']"
       @input="dateRangeInput"
     />
     <ive-filter-form @query="query" :formConfig="formConfig" />
-    <ive-edit-form
-      :formConfig="formConfig"
-    />
+    <ive-edit-form :formConfig="formConfig" />
     <ive-icon-tooltip />
+    <ive-input />
+    <ive-input-number />
     <!-- <ive-edit-modal id="1" :modal="true" :formConfig="formConfigBatchEdit" :getDetailApi="getDetailApi" /> -->
   </div>
 </template>
@@ -29,12 +29,12 @@ export default {
   data() {
     const oneDay = 24 * 60 * 60 * 1000;
     return {
-      date: '2019-9-1',
-      rangeDate: ['2019-9-15', '2019-9-16'],
+      date: "2019-9-1",
+      rangeDate: ["2019-9-15", "2019-9-16"],
       formConfig: [
         {
-          prop: 'x1',
-          label: 'x1',
+          prop: "x1",
+          label: "x1"
         }
       ],
       formConfigBatchEdit: [
@@ -69,7 +69,7 @@ export default {
           itemConfig: {
             tagName: "ive-select",
             props: {
-              placeholder: "请选择模式",
+              placeholder: "请选择模式"
               // options: replyMode
             }
           }
@@ -81,7 +81,7 @@ export default {
           itemConfig: {
             tagName: "ive-select",
             props: {
-              placeholder: "请选择场景",
+              placeholder: "请选择场景"
               // options: replyScene
             },
             on: {
@@ -139,7 +139,7 @@ export default {
           itemConfig: {
             tagName: "ive-select",
             props: {
-              placeholder: "请选择资源类型",
+              placeholder: "请选择资源类型"
               // options: replyResourceType
             },
             on: {
@@ -156,7 +156,7 @@ export default {
             }
           }
         }
-      ],
+      ]
     };
   },
   methods: {
@@ -174,7 +174,7 @@ export default {
     },
     dateRangeInput(e) {
       console.log(e);
-    },
+    }
   }
 };
 </script>
