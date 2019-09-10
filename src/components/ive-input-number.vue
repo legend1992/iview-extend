@@ -46,22 +46,29 @@ export default {
   },
   data() {
     return {
-      cValue: this.value,
+      cValue: null,
     };
   },
   watch: {
-    value(value) {
-      if ((!value && value !== 0) || Number.isNaN(value)) {
-        this.cValue = null;
-      } else {
-        this.cValue = value;
-      }
+    value() {
+      this.intValue();
     },
   },
   methods: {
     intParser(value) {
       return this.parseIntValue && value ? `${parseInt(value, 10)}` : value;
     },
+    intValue(e) {
+      const { value } = this;
+      if ((!value && value !== 0) || Number.isNaN(value)) {
+        this.cValue = null;
+      } else {
+        this.cValue = this.parseIntValue ? parseInt(value, 10) : value;
+      }
+    }
+  },
+  created() {
+    this.intValue();
   },
 };
 </script>
