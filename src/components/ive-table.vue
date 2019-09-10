@@ -60,6 +60,10 @@ import _ from 'lodash';
 export default {
   name: 'ive-table',
   props: {
+    getListAllApi: {
+      type: Function,
+      default: null,
+    },
     importApi: {
       type: Function,
     },
@@ -208,15 +212,19 @@ export default {
     changeChoose(selectionData) {
       this.selectionData = selectionData;
     },
-    exportData() {
+    async exportData() {
+      const resData = await this.getListAllApi(this.queryParams);
+      const queryParamsData = resData.data.data;
+      let exportDataList = [];
       if (this.selectionData.length === 0) {
-        this.$Message.warning('至少选择一条内容导出！');
-        return;
+        exportDataList = queryParamsData;
+      } else {
+        exportDataList = this.selectionData;
       }
       this.$refs.table.exportCsv({
         filename: this.filename,
         columns: this.columns,
-        data: this.selectionData,
+        data: exportDataList,
       });
       this.$refs.table.selectAll(false);
     },

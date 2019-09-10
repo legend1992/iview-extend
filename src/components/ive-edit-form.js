@@ -61,15 +61,24 @@ export default {
     hideConfigFormat() {
       return this.configFormat(_.cloneDeep(this.hideConfig));
     },
+    allItemsProp() {
+      const formConfigProps = this.formConfig.map(({prop}) => prop);
+      const hideConfigProps = this.hideConfig.map(({prop}) => prop);
+      return [
+        ...formConfigProps,
+        ...hideConfigProps,
+      ];
+    },
   },
   methods: {
     configFormat(configs) {
       configs.forEach((item) => {
-        const { label, itemConfig } = item;
+        const { prop, label, itemConfig } = item;
         item.itemConfig = this.setDefaultItemConfig(label, itemConfig);
         item.rules = this.setDefaultRules(item);
+        this.$set(this.model, prop, itemConfig && itemConfig.value);
       });
-      this.setModelValue();
+      this.cleaningModel();
       return configs;
     },
     setDefaultRules(item) {
@@ -107,12 +116,11 @@ export default {
 
       return item.rules;
     },
-    setModelValue() {
-      const allConfig = [..._.cloneDeep(this.formConfig), ..._.cloneDeep(this.hideConfig)];
-      this.model = {};
-      allConfig.forEach((item) => {
-        const { prop, itemConfig } = item;
-        this.$set(this.model, prop, itemConfig && itemConfig.value);
+    cleaningModel() {
+      Object.keys(this.model).forEach((prop) => {
+        if (!this.allItemsProp.includes(prop)) {
+          delete this.model[prop];
+        }
       });
     },
     getData(needValidate = true) {
