@@ -18,6 +18,7 @@
     <ive-icon-tooltip />
     <ive-input />
     <ive-input-number v-bind="numberProps"/>
+    <ive-radio v-bind="radioProps" />
     <ive-filter-form @query="query" :formConfig="formConfig" />
     <ive-edit-form :formConfig="formConfig" />
     <!-- <ive-edit-modal id="1" :modal="true" :formConfig="formConfigBatchEdit" :getDetailApi="getDetailApi" /> -->
@@ -38,6 +39,17 @@ export default {
         placeholder: '输入数字',
         parseIntValue: true,
         // step: 0.1,
+      },
+      radioProps: {
+        value: 1,
+        // options: [0, 1, 2],
+        parseIntKey: true,
+        options: {
+          0: '选项1',
+          1: '选项2',
+          2: '选项3',
+        },
+        // disabled: true,
       },
       formConfig: [
         {
