@@ -15,11 +15,11 @@
       :placeholder="['请选择开始时间', '请选择结束时间']"
       @input="dateRangeInput"
     />
-    <ive-filter-form @query="query" :formConfig="formConfig" />
-    <ive-edit-form :formConfig="formConfig" />
     <ive-icon-tooltip />
     <ive-input />
-    <ive-input-number />
+    <ive-input-number v-bind="numberProps"/>
+    <ive-filter-form @query="query" :formConfig="formConfig" />
+    <ive-edit-form :formConfig="formConfig" />
     <!-- <ive-edit-modal id="1" :modal="true" :formConfig="formConfigBatchEdit" :getDetailApi="getDetailApi" /> -->
   </div>
 </template>
@@ -31,6 +31,14 @@ export default {
     return {
       date: "2019-9-1",
       rangeDate: ["2019-9-15", "2019-9-16"],
+      numberProps: {
+        value: 99.13,
+        max: 100,
+        min: 99,
+        placeholder: '输入数字',
+        parseIntValue: true,
+        // step: 0.1,
+      },
       formConfig: [
         {
           prop: "x1",
