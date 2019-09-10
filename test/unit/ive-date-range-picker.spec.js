@@ -23,7 +23,7 @@ describe('ive-date-range-picker.vue', () => {
     expect(placeholderStart).to.equal('请选择开始时间');
     expect(placeholderEnd).to.equal('请选择结束时间');
   });
-  it('check disabledDate', () => {
+  it('check props: disabledDate', () => {
     const now = new Date(momentFormatYYYYMMDD(Date.now())).getTime();
     const wrapper = mount(iveDateRangePicker);
     const { disabledDate: disabledDateStart } = wrapper.vm.startOptions;
@@ -47,7 +47,7 @@ describe('ive-date-range-picker.vue', () => {
     expect(disabledDateEnd(new Date(momentFormatYYYYMMDD(startDate)))).to.equal(false);
     expect(disabledDateEnd(new Date(momentFormatYYYYMMDD(now - oneDay)))).to.equal(true);
   });
-  it('emit input event', (done) => {
+  it('check event: emit input', (done) => {
     const wrapper = mount(iveDateRangePicker, {
       propsData: {
         value: ['2019-9-15', '2019-9-16'],

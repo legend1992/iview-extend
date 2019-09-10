@@ -24,7 +24,7 @@ describe('ive-date-picker.vue', () => {
     expect(placeholder).to.equal('请选择');
     expect(disabled).to.equal('disabled');
   });
-  it('check disabledDate', () => {
+  it('check props: disabledDate', () => {
     const wrapper = mount(iveDatePicker, {
       propsData: {
         disabledDate: new Date(),
@@ -38,7 +38,7 @@ describe('ive-date-picker.vue', () => {
     wrapper.setProps({ disabledDate: null });
     expect(wrapper.vm.options.disabledDate(new Date())).to.equal(undefined);
   });
-  it('formatValue', () => {
+  it('check computed: formatValue', () => {
     const wrapper = mount(iveDatePicker, {
       propsData: {
         value: '2019年8月15',
@@ -51,7 +51,7 @@ describe('ive-date-picker.vue', () => {
     wrapper.setProps({ value: '2019-8-15' });
     expect(momentFormatYYYYMMDD(inputEle.element.value)).to.equal('2019-08-15');
   });
-  it('emit input event', () => {
+  it('check event: emit input', () => {
     const wrapper = mount(iveDatePicker, {
       propsData: {
         value: '2019-8-15',

@@ -25,7 +25,7 @@ describe('ive-checkbox-group.vue', () => {
     expect(checkboxGroupItems.at(1).find('.ivu-checkbox').classes()).to.include('ivu-checkbox-checked');
     expect(checkboxGroupItems.at(2).find('.ivu-checkbox').classes()).to.include('ivu-checkbox-checked');
   });
-  it('prop parseIntKey & options is Object', () => {
+  it('check props: parseIntKey & options is Object', () => {
     const wrapper = mount(iveCheckboxGroup, {
       propsData: {
         value: [0, 1],
@@ -44,7 +44,7 @@ describe('ive-checkbox-group.vue', () => {
     expect(checkboxGroupItems.at(1).find('.ivu-checkbox').classes()).to.include('ivu-checkbox-checked');
     expect(checkboxGroupItems.at(2).find('.ivu-checkbox').classes()).to.not.include('ivu-checkbox-checked');
   });
-  it('emit input event', () => {
+  it('check event: emit input', () => {
     const wrapper = mount(iveCheckboxGroup, {
       propsData: {
         value: [1, 2],

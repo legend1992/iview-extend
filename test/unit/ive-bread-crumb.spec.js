@@ -31,7 +31,7 @@ describe('ive-bread-crumb.vue', () => {
     wrapper.vm.$router.push('foo');
     expect(wrapper.find('.ivu-breadcrumb-item-link').text()).to.equal('/foo');
   });
-  it('titleList', () => {
+  it('check computed: titleList', () => {
     const wrapper = mount(iveBreadCrumb, {
       localVue,
       router,

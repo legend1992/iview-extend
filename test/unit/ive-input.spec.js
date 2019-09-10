@@ -29,7 +29,7 @@ describe('ive-input.vue', () => {
     expect(type).to.equal('text');
     expect(disabled).to.equal('disabled');
   });
-  it('on-blur formatValue', () => {
+  it('check event: on-blur', () => {
     const wrapper = mount(iveInput, {
       propsData: {
         value: ' 值 ',
@@ -40,7 +40,7 @@ describe('ive-input.vue', () => {
     expect(emitted['on-blur'][0][0]).to.equal('值');
     expect(emitted.input[0][0]).to.equal('值');
   });
-  it('type is letter', () => {
+  it('check props: type is letter', () => {
     const wrapper = mount(iveInput, {
       propsData: {
         type: 'letter',
