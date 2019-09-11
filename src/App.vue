@@ -1,5 +1,6 @@
 <template>
   <div class="ui-list">
+    <h2>ive-checkbox-group</h2>
     <ive-checkbox-group
       :value="[0, 1]"
       :options="{
@@ -9,17 +10,27 @@
     }"
       :parseIntKey="true"
     />
+    <h2>ive-date-picker</h2>
     <ive-date-picker v-model="date" placeholder="请选择" :disabledDate="new Date('2019-9-5')" />
+    <h2>ive-date-range-picker</h2>
     <ive-date-range-picker
       v-model="rangeDate"
       :placeholder="['请选择开始时间', '请选择结束时间']"
       @input="dateRangeInput"
     />
+    <h2>ive-icon-tooltip</h2>
     <ive-icon-tooltip />
+    <h2>ive-input</h2>
     <ive-input />
+    <h2>ive-input-number</h2>
     <ive-input-number v-bind="numberProps"/>
+    <h2>ive-radio</h2>
     <ive-radio v-bind="radioProps" />
+    <h2>ive-select</h2>
+    <ive-select v-bind="selectProps" @input="selectInput" />
+    <h2>ive-filter-form</h2>
     <ive-filter-form @query="query" :formConfig="formConfig" />
+    <h2>ive-edit-form</h2>
     <ive-edit-form :formConfig="formConfig" />
     <!-- <ive-edit-modal id="1" :modal="true" :formConfig="formConfigBatchEdit" :getDetailApi="getDetailApi" /> -->
   </div>
@@ -50,6 +61,24 @@ export default {
           2: '选项3',
         },
         // disabled: true,
+      },
+      selectProps: {
+        // value: 1,
+        options: [0, 1, 2, 3],
+        // disabled: true,
+        // value: [0, 1, 2, 3],
+        // options: {
+        //   0: '选项1',
+        //   1: '选项2',
+        //   2: '选项3',
+        // },
+        // multiple: true,
+        // maxTagCount: 2,
+        // maxTagPlaceholder: e => `more ${e}`,
+        // maxTagSelect: 3,
+        // parseIntKey: true,
+        // clearable: true,
+        filterable: true,
       },
       formConfig: [
         {
@@ -194,11 +223,21 @@ export default {
     },
     dateRangeInput(e) {
       console.log(e);
-    }
+    },
+    selectInput(e) {
+      console.log(e);
+    },
   }
 };
 </script>
 
 <style>
 @import "styles/iview-extends2.css";
+.ui-list {
+  margin-left: 1em;
+}
+h2 + * {
+  margin-left: 2em!important;
+  margin-bottom: 1em;
+}
 </style>
