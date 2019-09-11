@@ -144,11 +144,14 @@ export default {
     }
   },
   methods: {
-    async getList(queryParams) {
+    async getList(queryParams, pageIndex) {
       if (queryParams && queryParams instanceof Object) {
         this.queryParams = { ...queryParams };
       } else {
         queryParams = { ...this.queryParams };
+      }
+      if (pageIndex) {
+        this.pager.pageIndex = pageIndex;
       }
 
       try {
