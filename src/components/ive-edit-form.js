@@ -104,14 +104,22 @@ export default {
             }
           }
         }
-      } else if (item.required === false) {
-        const index = item.rules ? item.rules.findIndex(rule => rule.required) : -1;
+      } else if (item.rules && item.rules instanceof Array) {
+        const index = item.rules.findIndex(rule => rule.required);
         if (index > -1) {
           item.rules[index].required = false;
           this.$nextTick(() => {
             this.validateField(item.prop);
           });
+        } else {
+          item.rules.push({
+            required: false,
+          });
         }
+      } else {
+        item.rules = [{
+          required: false,
+        }];
       }
 
       return item.rules;
