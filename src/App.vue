@@ -10,26 +10,40 @@
     }"
       :parseIntKey="true"
     />
+
     <h2>ive-date-picker</h2>
     <ive-date-picker v-model="date" placeholder="请选择" :disabledDate="new Date('2019-9-5')" />
+    
     <h2>ive-date-range-picker</h2>
     <ive-date-range-picker
       v-model="rangeDate"
       :placeholder="['请选择开始时间', '请选择结束时间']"
       @input="dateRangeInput"
     />
+
     <h2>ive-icon-tooltip</h2>
     <ive-icon-tooltip />
+
     <h2>ive-input</h2>
     <ive-input />
+
     <h2>ive-input-number</h2>
     <ive-input-number v-bind="numberProps"/>
+
     <h2>ive-radio</h2>
     <ive-radio v-bind="radioProps" />
+
     <h2>ive-select</h2>
     <ive-select v-bind="selectProps" @input="selectInput" />
+
+    <h2>ive-spin</h2>
+    <div style="position: relative; width: 200px; height: 200px; border: 1px solid;">
+      <ive-spin />
+    </div>
+
     <h2>ive-filter-form</h2>
     <ive-filter-form @query="query" :formConfig="formConfig" />
+
     <h2>ive-edit-form</h2>
     <ive-edit-form :formConfig="formConfig" />
     <!-- <ive-edit-modal id="1" :modal="true" :formConfig="formConfigBatchEdit" :getDetailApi="getDetailApi" /> -->
