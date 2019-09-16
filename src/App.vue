@@ -44,6 +44,9 @@
       <ive-spin />
     </div>
 
+    <h2>ive-page</h2>
+    <ive-page v-bind="pageProps" />
+
     <h2>ive-filter-form</h2>
     <ive-filter-form @query="query" :formConfig="formConfig" />
 
@@ -102,6 +105,12 @@ export default {
         // parseIntKey: true,
         // clearable: true,
         filterable: true,
+      },
+      pageProps: {
+        // total: 61,
+        // showTotal: false,
+        // showElevator: false,
+        // showSizer: false,
       },
       formConfig: [
         {
