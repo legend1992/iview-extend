@@ -30,6 +30,7 @@ describe('ive-textarea.vue', () => {
     const wrapper = mount(iveTextarea, {
       attachToDocument: true,
     });
+    await wrapper.vm.$nextTick();
     const style = getComputedStyle(wrapper.find('textarea').element);
     const { maxHeight, minHeight } = style;
     const lineheight = 15;
