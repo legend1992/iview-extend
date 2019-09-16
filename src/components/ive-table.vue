@@ -160,10 +160,12 @@ export default {
       this.pager.pageIndex = 1;
       this.pager.pageSize = size;
       this.getList();
+      this.selectionData = [];
     },
     onPageChanged(index) {
       this.pager.pageIndex = index;
       this.getList();
+      this.selectionData = [];
     },
     handleShowEditModal(row) {
       const id = row[this.idKey] || row.id;
