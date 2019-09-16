@@ -38,11 +38,7 @@ export default {
   methods: {
     initModel() {
       this.model = this.formConfig.reduce((prev, cur) => {
-        if (cur.itemConfig && cur.itemConfig.tagName === 'ive-date-range-picker') {
-          prev[cur.prop] = (cur.itemConfig && cur.itemConfig.value) || [];
-        } else {
-          prev[cur.prop] = (cur.itemConfig && cur.itemConfig.value) || '';
-        }
+        prev[cur.prop] = cur.itemConfig && cur.itemConfig.value;
         return prev;
       }, {});
     },
