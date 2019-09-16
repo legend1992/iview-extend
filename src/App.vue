@@ -112,12 +112,7 @@ export default {
         // showElevator: false,
         // showSizer: false,
       },
-      formConfig: [
-        {
-          prop: "x1",
-          label: "x1"
-        }
-      ],
+      formConfig: [{"prop":"prop1","label":"label1"},{"prop":"prop2","label":"label2","itemConfig":{"tagName":"ive-checkbox-group"}},{"prop":"prop3","label":"label3","itemConfig":{"tagName":"ive-date-picker"}},{"prop":"prop4","label":"label4","itemConfig":{"tagName":"ive-date-range-picker"}},{"prop":"prop5","label":"label5","itemConfig":{"tagName":"ive-input-number"}},{"prop":"prop6","label":"label6","itemConfig":{"tagName":"ive-radio"}},{"prop":"prop7","label":"label7","itemConfig":{"tagName":"ive-select"}},{"prop":"prop8","label":"label8","itemConfig":{"tagName":"ive-textarea"}},{"prop":"prop9","label":"label9","itemConfig":{"tagName":"ive-upload"}}],
       formConfigBatchEdit: [
         {
           prop: "startAt",
