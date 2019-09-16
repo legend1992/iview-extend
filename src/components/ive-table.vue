@@ -124,6 +124,7 @@ export default {
   },
   methods: {
     async getList(queryParams, pageIndex) {
+      this.selectionData = [];
       if (queryParams && queryParams instanceof Object) {
         this.queryParams = { ...queryParams };
       } else {
@@ -160,12 +161,10 @@ export default {
       this.pager.pageIndex = 1;
       this.pager.pageSize = size;
       this.getList();
-      this.selectionData = [];
     },
     onPageChanged(index) {
       this.pager.pageIndex = index;
       this.getList();
-      this.selectionData = [];
     },
     handleShowEditModal(row) {
       const id = row[this.idKey] || row.id;
@@ -177,7 +176,6 @@ export default {
           await this.deleteApi(id);
           this.$Message.success('删除成功');
           confirm.remove();
-          this.selectionData = [];
           this.getList();
         } catch (e) {
           confirm.remove();
