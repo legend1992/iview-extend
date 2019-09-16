@@ -17,8 +17,8 @@ export function momentFormatYYYYMMDD(date) {
   return moment(new Date(date)).format('YYYY-MM-DD');
 }
 
+export const tagNameList = ['ive-checkbox-group', 'ive-date-picker', 'ive-date-range-picker', 'ive-input-number', 'ive-radio', 'ive-select', 'ive-textarea', 'ive-upload'];
 function createFormConfig() {
-  const tagNameList = ['ive-checkbox-group', 'ive-date-picker', 'ive-date-range-picker', 'ive-input-number', 'ive-radio', 'ive-select', 'ive-textarea', 'ive-upload'];
   return tagNameList.reduce((acc, tagName, index) => {
     const newIndex = index + 2;
     acc.push({
