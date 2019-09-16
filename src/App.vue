@@ -27,6 +27,9 @@
     <h2>ive-input</h2>
     <ive-input />
 
+    <h2>ive-textarea</h2>
+    <ive-textarea v-bind="textareaProps" v-model="textareaProps.value"/>
+
     <h2>ive-input-number</h2>
     <ive-input-number v-bind="numberProps"/>
 
@@ -57,6 +60,12 @@ export default {
     return {
       date: "2019-9-1",
       rangeDate: ["2019-9-15", "2019-9-16"],
+      textareaProps: {
+        value: '值',
+        // placeholder: '请输入文字',
+        // maxlength: 100,
+        // disabled: true,
+      },
       numberProps: {
         value: 99.13,
         max: 100,
