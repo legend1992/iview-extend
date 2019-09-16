@@ -4,8 +4,8 @@
       <Button v-if="actions.add" type="primary" @click="$emit('showEditModal')">新增</Button>
       <Button v-if="actions.export" type="primary" @click="exportData">导出</Button>
       <Button v-if="actions.import" type="primary" @click="importData">导入</Button>
-      <Button v-if="actions.batchRemove" type="primary" @click="batchRemove">批量删除</Button>
-      <Button v-if="actions.batchEdit" type="primary" @click="batchEdit">批量修改</Button>
+      <Button v-if="actions.batchRemove" :disabled="batchDisabled" type="primary" @click="batchRemove">批量删除</Button>
+      <Button v-if="actions.batchEdit" :disabled="batchDisabled" type="primary" @click="batchEdit">批量修改</Button>
     </Row>
 
     <ive-import-data
@@ -137,6 +137,9 @@ export default {
     topActions() {
       return this.actions.add || this.actions.export || this.actions.import;
     },
+    batchDisabled() {
+      return this.selectionData.length < 1 ? true : false;
+    },
   },
   mounted() {
     if (this.getListApi) {
@@ -254,11 +257,12 @@ export default {
       this.remove(confirm, idList, row);
     },
     batchEdit() {
-      if (this.selectionData.length === 0) {
-        this.$Message.warning('至少选择一条内容修改！');
-        return;
+      const { selectionData } = this;
+      if (selectionData.length === 1) {
+        this.handleShowEditModal(selectionData[0]);
+      } else {
+        this.$emit('showBatchEditModal', selectionData);
       }
-      this.$emit('showBatchEditModal', this.selectionData);
     },
   },
 };
