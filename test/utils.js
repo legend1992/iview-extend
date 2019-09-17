@@ -2,6 +2,8 @@ import Vue from 'vue';
 import iView from 'iview';
 import moment from 'moment';
 
+Vue.config.silent = true;
+
 Vue.use(iView);
 export const oneDay = 24 * 60 * 60 * 1000;
 export function momentFormatYYYYMMDD(date) {
