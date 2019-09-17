@@ -217,10 +217,10 @@ export default {
     handleClose() {
       this.importModal = false;
     },
-    uploadSuccess() {
+    uploadSuccess(resData) {
       this.handleClose();
       this.getList();
-      this.$emit('upload-success');
+      this.$emit('upload-success', resData);
     },
     async batchRemove(row) {
       if (this.selectionData.length === 0) {
