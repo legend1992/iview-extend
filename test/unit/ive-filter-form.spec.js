@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import { mount } from '@vue/test-utils';
 import { formConfig, tagNameList } from '../utils';
 import iveFilterForm from '../../src/components/ive-filter-form';
+import iveTooltip from '../../src/components/ive-icon-tooltip.vue';
 
 describe('ive-filter-form.vue', () => {
   it('renders the correct markup & check props', () => {
@@ -46,5 +47,22 @@ describe('ive-filter-form.vue', () => {
     const { model } = wrapper.vm;
     expect(emitted.query[0][0]).to.deep.equal(model);
     expect(emitted.query[1][0]).to.deep.equal(model);
+  });
+  it('check props: formConfig - tip', () => {
+    const wrapper = mount(iveFilterForm, {
+      propsData: {
+        formConfig: [{
+          prop: 'prop',
+          label: 'label',
+          tip: '提示语',
+        }, {
+          prop: 'prop2',
+          label: 'label2',
+        }],
+      },
+    });
+    const formItems = wrapper.findAll('.ivu-form-item');
+    expect(formItems.at(0).find(iveTooltip).exists()).to.equal(true);
+    expect(formItems.at(1).find(iveTooltip).exists()).to.equal(false);
   });
 });
