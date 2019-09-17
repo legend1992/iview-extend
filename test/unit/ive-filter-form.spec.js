@@ -19,5 +19,32 @@ describe('ive-filter-form.vue', () => {
     Array.from({ length: formItems.length }).forEach((formItem, index) => {
       expect(formItems.at(index).find('.ivu-form-item-content > *').name()).to.equal(tagNameList[index]);
     });
+    // model
+    const { model, formConfig: config } = wrapper.vm;
+    expect(Object.keys(model).length).to.equal(config.length);
+    config.forEach((item) => {
+      let itemValue = item.itemConfig && item.itemConfig.value;
+      if (item.itemConfig && item.itemConfig.tagName) {
+        if (item.itemConfig.tagName === 'ive-date-range-picker') {
+          itemValue = [];
+        }
+      }
+      expect(model[item.prop]).to.deep.equal(itemValue);
+    });
+  });
+  it('emit event: handleQuery', () => {
+    const wrapper = mount(iveFilterForm, {
+      propsData: {
+        formConfig,
+      },
+    });
+    const buttons = wrapper.findAll('.button-wrapper button');
+    buttons.at(0).trigger('click');
+    buttons.at(1).trigger('click');
+    const emitted = wrapper.emitted();
+    expect(emitted.query.length).to.equal(2);
+    const { model } = wrapper.vm;
+    expect(emitted.query[0][0]).to.deep.equal(model);
+    expect(emitted.query[1][0]).to.deep.equal(model);
   });
 });
