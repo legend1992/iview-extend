@@ -1,15 +1,6 @@
 import Vue from 'vue';
 import iView from 'iview';
 import moment from 'moment';
-import components from '../src/components/index';
-import iveModal from '../src/plugins/ive-modal';
-
-// 注册组件
-Object.keys(components).forEach((name) => {
-  Vue.component(name, components[name]);
-  // 安装插件
-  Vue.prototype.$iveModal = iveModal(Vue);
-});
 
 Vue.use(iView);
 export const oneDay = 24 * 60 * 60 * 1000;
