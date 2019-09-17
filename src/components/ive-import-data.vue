@@ -92,8 +92,8 @@ export default {
           formData.append('file', file);
         });
         formData.append('cover', cover);
-        await this.importApi(formData);
-        this.$emit('upload-success');
+        const resData = await this.importApi(formData);
+        this.$emit('upload-success', resData);
       } catch(error) {
         this.$Message.warning({
           content: error,
