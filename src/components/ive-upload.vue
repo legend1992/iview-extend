@@ -117,6 +117,7 @@ export default {
         checked = this.format.some(item => item.toLocaleLowerCase() === fileFormat);
         if (!checked) {
           this.$Message.error(`请选择后缀为${this.format.toString()}的文件`);
+          this.$emit('format-error', fileFormat, this.format);
         }
       }
       return checked;
