@@ -4,8 +4,8 @@
       <Button v-if="actions.add" type="primary" @click="$emit('showEditModal')">新增</Button>
       <Button v-if="actions.export" type="primary" @click="exportData">导出</Button>
       <Button v-if="actions.import" type="primary" @click="importData">导入</Button>
-      <Button v-if="actions.batchRemove" type="primary" @click="batchRemove">批量删除</Button>
-      <Button v-if="actions.batchEdit" type="primary" @click="batchEdit">批量修改</Button>
+      <Button v-if="actions.batchRemove" :disabled="batchDisabled" type="primary" @click="batchRemove">批量删除</Button>
+      <Button v-if="actions.batchEdit" :disabled="batchDisabled" type="primary" @click="batchEdit">批量修改</Button>
     </Row>
 
     <ive-import-data
@@ -53,6 +53,10 @@ export default {
       default: '导出数据',
     },
     columns: {
+      type: Array,
+      default: () => [],
+    },
+    exportColumns: {
       type: Array,
       default: () => [],
     },
@@ -113,6 +117,9 @@ export default {
     topActions() {
       return this.actions.add || this.actions.export || this.actions.import;
     },
+    batchDisabled() {
+      return this.selectionData.length < 1 ? true : false;
+    },
   },
   mounted() {
     if (this.getListApi) {
@@ -120,11 +127,15 @@ export default {
     }
   },
   methods: {
-    async getList(queryParams) {
+    async getList(queryParams, pageIndex) {
+      this.selectionData = [];
       if (queryParams && queryParams instanceof Object) {
         this.queryParams = { ...queryParams };
       } else {
         queryParams = { ...this.queryParams };
+      }
+      if (pageIndex) {
+        this.pager.pageIndex = pageIndex;
       }
 
       try {
@@ -169,7 +180,6 @@ export default {
           await this.deleteApi(id);
           this.$Message.success('删除成功');
           confirm.remove();
-          this.selectionData = [];
           this.getList();
         } catch (e) {
           confirm.remove();
@@ -192,15 +202,11 @@ export default {
     async exportData() {
       const resData = await this.getListAllApi(this.queryParams);
       const queryParamsData = resData.data.data;
-      let exportDataList = [];
-      if (this.selectionData.length === 0) {
-        exportDataList = queryParamsData;
-      } else {
-        exportDataList = this.selectionData;
-      }
+      const exportDataList = this.selectionData.length === 0 ? queryParamsData : this.selectionData;
+      const exportColumsList = this.exportColumns.length === 0 ? this.columns : this.exportColumns;
       this.$refs.table.exportCsv({
         filename: this.filename,
-        columns: this.columns,
+        columns: exportColumsList,
         data: exportDataList,
       });
       this.$refs.table.selectAll(false);
@@ -211,10 +217,10 @@ export default {
     handleClose() {
       this.importModal = false;
     },
-    uploadSuccess() {
+    uploadSuccess(resData) {
       this.handleClose();
       this.getList();
-      this.$emit('upload-success');
+      this.$emit('upload-success', resData);
     },
     async batchRemove(row) {
       if (this.selectionData.length === 0) {
@@ -226,11 +232,12 @@ export default {
       this.remove(confirm, idList, row);
     },
     batchEdit() {
-      if (this.selectionData.length === 0) {
-        this.$Message.warning('至少选择一条内容修改！')
-        return;
+      const { selectionData } = this;
+      if (selectionData.length === 1) {
+        this.handleShowEditModal(selectionData[0]);
+      } else {
+        this.$emit('showBatchEditModal', selectionData);
       }
-      this.$emit('showBatchEditModal', this.selectionData);
     },
   }
 };
