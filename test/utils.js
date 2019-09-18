@@ -46,3 +46,9 @@ function createFormConfig() {
   ]);
 }
 export const formConfig = createFormConfig();
+export function formatFormConfig(config, formatFn) {
+  return config.map((item) => {
+    item.itemConfig = formatFn(item.label, item.itemConfig);
+    return item;
+  });
+}
