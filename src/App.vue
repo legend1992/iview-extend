@@ -117,6 +117,9 @@ export default {
         prop: 'prop',
         label: 'label',
         tip: '提示语',
+      }, {
+        prop: 'prop2',
+        label: 'label2',
       }],
       formConfigBatchEdit: [
         {
