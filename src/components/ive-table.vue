@@ -75,6 +75,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    exportColumns: {
+      type: Array,
+      default: () => [],
+    },
     getListApi: {
       type: Function,
       required: true,
@@ -221,15 +225,11 @@ export default {
     async exportData() {
       const resData = await this.getListAllApi(this.queryParams);
       const queryParamsData = resData.data.data;
-      let exportDataList = [];
-      if (this.selectionData.length === 0) {
-        exportDataList = queryParamsData;
-      } else {
-        exportDataList = this.selectionData;
-      }
+      const exportDataList = this.selectionData.length === 0 ? queryParamsData : this.selectionData;
+      const exportColumsList = this.exportColumns.length === 0 ? this.columns : this.exportColumns;
       this.$refs.table.exportCsv({
         filename: this.filename,
-        columns: this.columns,
+        columns: exportColumsList,
         data: exportDataList,
       });
       this.$refs.table.selectAll(false);
