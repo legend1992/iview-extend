@@ -40,7 +40,7 @@ export default {
     value: undefined,
     action: {
       type: String,
-      required: true,
+      default: "",
     },
     multiple: {
       type: Boolean,
