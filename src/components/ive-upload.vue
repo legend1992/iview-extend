@@ -50,7 +50,7 @@ export default {
     value: undefined,
     action: {
       type: String,
-      default: '',
+      required: true,
     },
     multiple: {
       type: Boolean,
