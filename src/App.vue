@@ -47,6 +47,9 @@
     <h2>ive-page</h2>
     <ive-page v-bind="pageProps" />
 
+    <h2>ive-upload</h2>
+    <ive-upload action="//jsonplaceholder.typicode.com/posts/"/>
+
     <h2>ive-filter-form</h2>
     <ive-filter-form @query="query" :formConfig="formConfig" />
 
