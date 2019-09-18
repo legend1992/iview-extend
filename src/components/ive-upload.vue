@@ -42,8 +42,6 @@
   </div>
 </template>
 <script>
-// import _ from "lodash";
-
 export default {
   name: 'ive-upload',
   props: {
@@ -207,15 +205,8 @@ export default {
       }
       return false;
     },
-    // handleRemoveUploadedFile(file, fileList) {
-    //   const fileIndex = this.uploadedList.findIndex((item) => item === file);
-    //   this.uploadedList.splice(fileIndex, 1);
-    //   this.uploadedResultList.splice(fileIndex, 1);
-    //   const value = this.uploadedResultList.length ? _.cloneDeep(this.uploadedResultList) : null;
-    //   this.$emit('input', value);
-    // },
-    handleRemoveUploadedFile() {
-      this.$emit('input', null);
+    handleRemoveUploadedFile(file, fileList) {
+      this.$emit("input", null);
     },
     handleRemove(index) {
       this.fileList.splice(index, 1);
@@ -229,12 +220,6 @@ export default {
     handleProgress($event) {
       this.$emit('on-progress', $event);
     },
-    // handleSuccess(result, file, fileList) {
-    //   this.uploadedResultList.push(result);
-    //   this.uploadedList = [...fileList];
-    //   this.$emit('input', _.cloneDeep(this.uploadedResultList));
-    //   this.$emit('on-success', result);
-    // },
     handleSuccess(result) {
       this.fileUrl = result;
       this.$emit("input", result);
