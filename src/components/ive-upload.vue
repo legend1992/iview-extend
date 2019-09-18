@@ -123,58 +123,62 @@ export default {
       return checked;
     },
     checkResolutionRatio(file) {
-      let result = '';
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const data = e.target.result;
-        const image = new Image();
-        image.onload = () => {
-          const imgWidth = image.width;
-          const imgHeight = image.height;
-          const { width, height } = this.resolutionRatio;
-          if (typeof width === 'number' && imgWidth !== width) {
-            result = `图片宽度需等于${width}`;
-          } else if (typeof width === 'object' && width.toString() === '[object Object]') {
-            const { max, min } = width;
-            if (typeof max === 'number' && imgWidth > max) {
-              result = `图片最大宽度为${max}`;
-            } else if (typeof min === 'number' && imgWidth < min) {
-              result = `图片最小宽度为${min}`;
-            }
-          }
-          if (!result) {
-            if (typeof height === 'number' && imgHeight !== height) {
-              result = `图片高度需等于${height}`;
-            } else if (typeof height === 'object' && height.toString() === '[object Object]') {
-              const { max, min } = height;
-              if (typeof max === 'number' && imgHeight > max) {
-                result = `图片最大高度为${max}`;
-              } else if (typeof min === 'number' && imgHeight < min) {
-                result = `图片最小高度为${min}`;
+      return new Promise((resolve) => {
+        let result = '';
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const data = e.target.result;
+          const image = new Image();
+          image.onload = () => {
+            const imgWidth = image.width;
+            const imgHeight = image.height;
+            const { width, height } = this.resolutionRatio;
+            if (typeof width === 'number' && imgWidth !== width) {
+              result = `图片宽度需等于${width}`;
+            } else if (typeof width === 'object' && width.toString() === '[object Object]') {
+              const { max, min } = width;
+              if (typeof max === 'number' && imgWidth > max) {
+                result = `图片最大宽度为${max}`;
+              } else if (typeof min === 'number' && imgWidth < min) {
+                result = `图片最小宽度为${min}`;
               }
             }
-          }
+            if (!result) {
+              if (typeof height === 'number' && imgHeight !== height) {
+                result = `图片高度需等于${height}`;
+              } else if (typeof height === 'object' && height.toString() === '[object Object]') {
+                const { max, min } = height;
+                if (typeof max === 'number' && imgHeight > max) {
+                  result = `图片最大高度为${max}`;
+                } else if (typeof min === 'number' && imgHeight < min) {
+                  result = `图片最小高度为${min}`;
+                }
+              }
+            }
+            resolve(result);
+          };
+          image.onerror = (e) => {
+            resolve(e);
+          };
+          image.src = data;
+        };
+        reader.readAsDataURL(file);
+      });
+    },
+    async pickFile(file) {
+      if (this.uploadByManual) {
+        this.fileList.push(file);
+      } else if (this.checkFormat(file)) {
+        if (this.resolutionRatio) {
+          const result = await this.checkResolutionRatio(file);
           if (!result) {
             this.$refs.upload.post(file);
           } else {
             this.$Message.warning(result);
             this.$emit('resolution-ratio-error', result);
           }
-        };
-        image.src = data;
-      };
-      reader.readAsDataURL(file);
-    },
-    pickFile(file) {
-      if (this.uploadByManual) {
-        this.fileList.push(file);
-      } else {
-        if (this.checkFormat(file)) {
-          if (this.resolutionRatio) {
-            this.checkResolutionRatio(file);
-          } else {
-            this.$refs.upload.post(file);
-          }
+        } else {
+          this.$refs.upload.post(file);
         }
       }
       return false;
