@@ -40,12 +40,7 @@ function createFormConfig() {
       },
     });
     return acc;
-  }, [
-    {
-      prop: 'prop1',
-      label: 'label1',
-    },
-  ]);
+  }, []);
 }
 export const formConfig = createFormConfig();
 export const hideConfig = formConfig.map((config) => {
