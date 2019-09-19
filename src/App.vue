@@ -12,15 +12,15 @@
     />
 
     <h2>ive-date-picker</h2>
-    <ive-date-picker v-model="date" placeholder="请选择" :disabledDate="new Date('2019-9-5')" />
-    
+    <Button @click="changeDate">改日期</Button>
+    <ive-date-picker :value="date" @input="dateChange" placeholder="请选择" :disabledDate="new Date('2019-9-5')" />
+
     <h2>ive-date-range-picker</h2>
     <ive-date-range-picker
       v-model="rangeDate"
       :placeholder="['请选择开始时间', '请选择结束时间']"
       @input="dateRangeInput"
     />
-
     <h2>ive-icon-tooltip</h2>
     <ive-icon-tooltip />
 
@@ -28,10 +28,10 @@
     <ive-input />
 
     <h2>ive-textarea</h2>
-    <ive-textarea v-bind="textareaProps" v-model="textareaProps.value"/>
+    <ive-textarea v-bind="textareaProps" v-model="textareaProps.value" />
 
     <h2>ive-input-number</h2>
-    <ive-input-number v-bind="numberProps"/>
+    <ive-input-number v-bind="numberProps" />
 
     <h2>ive-radio</h2>
     <ive-radio v-bind="radioProps" />
@@ -48,26 +48,116 @@
     <ive-page v-bind="pageProps" />
 
     <h2>ive-upload</h2>
-    <ive-upload action="//jsonplaceholder.typicode.com/posts/"/>
+    <ive-upload action="//jsonplaceholder.typicode.com/posts/" />
 
     <h2>ive-filter-form</h2>
-    <ive-filter-form @query="query" :formConfig="formConfig" />
+    <!-- <ive-filter-form @query="query" :formConfig="formConfig" /> -->
 
     <h2>ive-edit-form</h2>
-    <ive-edit-form :formConfig="formConfig" />
+    <Button @click="getEditFormData">获取edit-form数据</Button>
+    <ive-edit-form
+      ref="editForm"
+      :formConfig.sync="editFormConfig"
+      :hideConfig.sync="editHideConfig"
+    />
     <!-- <ive-edit-modal id="1" :modal="true" :formConfig="formConfigBatchEdit" :getDetailApi="getDetailApi" /> -->
   </div>
 </template>
 
 <script>
+import _ from "lodash";
 export default {
   data() {
+    const formConfig = [
+      { prop: "prop1", label: "label1" },
+      {
+        prop: "prop2",
+        label: "label2",
+        itemConfig: { tagName: "ive-checkbox-group" }
+      },
+      {
+        prop: "prop3",
+        label: "label3",
+        itemConfig: { tagName: "ive-date-picker" }
+      },
+      {
+        prop: "prop4",
+        label: "label4",
+        itemConfig: { tagName: "ive-date-range-picker" }
+      },
+      {
+        prop: "prop5",
+        label: "label5",
+        itemConfig: { tagName: "ive-input-number" }
+      },
+      { prop: "prop6", label: "label6", itemConfig: { tagName: "ive-radio" } },
+      { prop: "prop7", label: "label7", itemConfig: { tagName: "ive-select" } },
+      {
+        prop: "prop8",
+        label: "label8",
+        itemConfig: { tagName: "ive-textarea" }
+      },
+      { prop: "prop9", label: "label9", itemConfig: { tagName: "ive-upload" } }
+    ];
+    const hideConfig = [
+      { prop: "prop1hide", label: "label1hide" },
+      {
+        prop: "prop2hide",
+        label: "label2hide",
+        itemConfig: { tagName: "ive-checkbox-group" }
+      },
+      {
+        prop: "prop3hide",
+        label: "label3hide",
+        itemConfig: { tagName: "ive-date-range-picker" }
+      },
+      {
+        prop: "prop4hide",
+        label: "label4hide",
+        itemConfig: { tagName: "ive-date-range-picker" }
+      },
+      {
+        prop: "prop5hide",
+        label: "label5hide",
+        itemConfig: { tagName: "ive-input-number" }
+      },
+      {
+        prop: "prop6hide",
+        label: "label6hide",
+        itemConfig: { tagName: "ive-radio" }
+      },
+      {
+        prop: "prop7hide",
+        label: "label7hide",
+        itemConfig: { tagName: "ive-select" }
+      },
+      {
+        prop: "prop8hide",
+        label: "label8hide",
+        itemConfig: { tagName: "ive-textarea" }
+      },
+      {
+        prop: "prop9hide",
+        label: "label9hide",
+        itemConfig: { tagName: "ive-upload" }
+      }
+    ];
+    // _.cloneDeep(formConfig).map((config) => {
+    //   const prop = `${config.prop}hide`;
+    //   const label = `${config.label}hide`;
+    //   return {
+    //     ...config,
+    //     prop,
+    //     label,
+    //   };
+    // });
     const oneDay = 24 * 60 * 60 * 1000;
     return {
+      formatValue: undefined,
       date: "2019-9-1",
       rangeDate: ["2019-9-15", "2019-9-16"],
       textareaProps: {
-        value: '值',
+        value: "值"
         // placeholder: '请输入文字',
         // maxlength: 100,
         // disabled: true,
@@ -76,8 +166,8 @@ export default {
         value: 99.13,
         max: 100,
         min: 99,
-        placeholder: '输入数字',
-        parseIntValue: true,
+        placeholder: "输入数字",
+        parseIntValue: true
         // step: 0.1,
       },
       radioProps: {
@@ -85,10 +175,10 @@ export default {
         // options: [0, 1, 2],
         parseIntKey: true,
         options: {
-          0: '选项1',
-          1: '选项2',
-          2: '选项3',
-        },
+          0: "选项1",
+          1: "选项2",
+          2: "选项3"
+        }
         // disabled: true,
       },
       selectProps: {
@@ -107,7 +197,7 @@ export default {
         // maxTagSelect: 3,
         // parseIntKey: true,
         // clearable: true,
-        filterable: true,
+        filterable: true
       },
       pageProps: {
         // total: 61,
@@ -115,7 +205,6 @@ export default {
         // showElevator: false,
         // showSizer: false,
       },
-      formConfig: [{"prop":"prop1","label":"label1"},{"prop":"prop2","label":"label2","itemConfig":{"tagName":"ive-checkbox-group"}},{"prop":"prop3","label":"label3","itemConfig":{"tagName":"ive-date-picker"}},{"prop":"prop4","label":"label4","itemConfig":{"tagName":"ive-date-range-picker"}},{"prop":"prop5","label":"label5","itemConfig":{"tagName":"ive-input-number"}},{"prop":"prop6","label":"label6","itemConfig":{"tagName":"ive-radio"}},{"prop":"prop7","label":"label7","itemConfig":{"tagName":"ive-select"}},{"prop":"prop8","label":"label8","itemConfig":{"tagName":"ive-textarea"}},{"prop":"prop9","label":"label9","itemConfig":{"tagName":"ive-upload"}}],
       // formConfig: [{
       //   prop: 'prop',
       //   label: 'label',
@@ -124,34 +213,42 @@ export default {
       //   prop: 'prop2',
       //   label: 'label2',
       // }],
-      formConfig: [{
-        prop: 'prop1',
-        label: 'label1',
-      }, {
-        prop: 'prop2',
-        label: 'label2',
-        itemConfig: {},
-      }, {
-        prop: 'prop3',
-        label: 'label3',
-        itemConfig: {
-          props: {},
+      formConfig: [
+        {
+          prop: "prop1",
+          label: "label1"
         },
-      }, {
-        prop: 'prop4',
-        label: 'label4',
-        itemConfig: {
-          tagName: 'ive-date-range-picker',
+        {
+          prop: "prop2",
+          label: "label2",
+          itemConfig: {}
         },
-      }, {
-        prop: 'prop5',
-        label: 'label5',
-        itemConfig: {
-          props: {
-            placeholder: 'placeholder5',
-          },
+        {
+          prop: "prop3",
+          label: "label3",
+          itemConfig: {
+            props: {}
+          }
         },
-      }],
+        {
+          prop: "prop4",
+          label: "label4",
+          itemConfig: {
+            tagName: "ive-date-range-picker"
+          }
+        },
+        {
+          prop: "prop5",
+          label: "label5",
+          itemConfig: {
+            props: {
+              placeholder: "placeholder5"
+            }
+          }
+        }
+      ],
+      editFormConfig: formConfig,
+      editHideConfig: hideConfig,
       formConfigBatchEdit: [
         {
           prop: "startAt",
@@ -271,7 +368,8 @@ export default {
             }
           }
         }
-      ]
+      ],
+      count: 0,
     };
   },
   methods: {
@@ -293,6 +391,17 @@ export default {
     selectInput(e) {
       console.log(e);
     },
+    getEditFormData() {
+      const data = this.$refs.editForm.getData();
+      console.log(data);
+    },
+    changeDate() {
+      this.count++;
+      this.date = '2019-8-1' + this.count;
+    },
+    dateChange(e) {
+      console.log(e)
+    }
   }
 };
 </script>
@@ -303,7 +412,7 @@ export default {
   margin-left: 1em;
 }
 h2 + * {
-  margin-left: 2em!important;
+  margin-left: 2em !important;
   margin-bottom: 1em;
 }
 </style>
