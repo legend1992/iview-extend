@@ -41,10 +41,6 @@ export default {
       type: Array,
       default: () => []
     },
-    inline: {
-      type: Boolean,
-      default: false
-    }
   },
   data() {
     return {
