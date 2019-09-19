@@ -123,7 +123,6 @@ describe('ive-filter-form.vue', () => {
       },
     });
     const formatedConfig = formatFormConfig(wrapper.vm.formConfig, wrapper.vm.setDefaultItemConfig);
-    console.log(formatedConfig[3].itemConfig.props);
     expect(formatedConfig[0].itemConfig.tagName).to.equal('ive-input');
     expect(formatedConfig[0].itemConfig.props.placeholder).to.equal('请输入label1');
     expect(formatedConfig[1].itemConfig.tagName).to.equal('ive-input');
