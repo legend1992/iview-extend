@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import iView from 'iview';
 import moment from 'moment';
+import _ from 'lodash';
 import components from '../src/components/index';
 import iveModal from '../src/plugins/ive-modal';
 
@@ -47,6 +48,15 @@ function createFormConfig() {
   ]);
 }
 export const formConfig = createFormConfig();
+export const hideConfig = formConfig.map((config) => {
+  const prop = `${config.prop}hide`;
+  const label = `${config.label}hide`;
+  return _.cloneDeep({
+    ...config,
+    prop,
+    label,
+  });
+});
 export function formatFormConfig(config, formatFn) {
   return config.map((item) => {
     item.itemConfig = formatFn(item.label, item.itemConfig);
