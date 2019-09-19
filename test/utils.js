@@ -18,6 +18,7 @@ export function momentFormatYYYYMMDD(date) {
 }
 
 export const tagNameList = [
+  'ive-input',
   'ive-checkbox-group',
   'ive-date-picker',
   'ive-date-range-picker',

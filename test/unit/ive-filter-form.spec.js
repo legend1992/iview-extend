@@ -18,7 +18,6 @@ describe('ive-filter-form.vue', () => {
     const formItems = wrapper.findAll('.ivu-form-item');
     expect(formItems.length).to.equal(wrapper.props('formConfig').length);
     // formConfig tagName
-    tagNameList.unshift('ive-input');
     Array.from({ length: formItems.length }).forEach((formItem, index) => {
       expect(formItems.at(index).find('.ivu-form-item-content > *').name()).to.equal(tagNameList[index]);
     });
