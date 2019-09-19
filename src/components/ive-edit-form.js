@@ -41,10 +41,6 @@ export default {
       type: Array,
       default: () => [],
     },
-    inline: {
-      type: Boolean,
-      default: false,
-    },
   },
   data() {
     return {
@@ -62,8 +58,8 @@ export default {
       return this.configFormat(_.cloneDeep(this.hideConfig));
     },
     allItemsProp() {
-      const formConfigProps = this.formConfig.map(({prop}) => prop);
-      const hideConfigProps = this.hideConfig.map(({prop}) => prop);
+      const formConfigProps = this.formConfig.map(({ prop }) => prop);
+      const hideConfigProps = this.hideConfig.map(({ prop }) => prop);
       return [
         ...formConfigProps,
         ...hideConfigProps,
@@ -225,7 +221,12 @@ export default {
             tip ? renderTip() : null,
           ];
         };
-        const { hide, label, prop, rules } = item;
+        const {
+          hide,
+          label,
+          prop,
+          rules,
+        } = item;
         return h(
           'FormItem',
           {
