@@ -1,7 +1,7 @@
 <template>
   <DatePicker
     :value="formatValue"
-    @input="handleInput"
+    @on-change="handleInput"
     :type="type"
     :options="options"
     :placeholder="placeholder"

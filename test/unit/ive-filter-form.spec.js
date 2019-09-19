@@ -27,9 +27,6 @@ describe('ive-filter-form.vue', () => {
     config.forEach((item) => {
       let itemValue = item.itemConfig && item.itemConfig.value;
       if (item.itemConfig && item.itemConfig.tagName) {
-        if (item.itemConfig.tagName === 'ive-date-picker') {
-          itemValue = null;
-        }
         if (item.itemConfig.tagName === 'ive-date-range-picker') {
           itemValue = [];
         }

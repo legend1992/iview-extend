@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import { mount } from '@vue/test-utils';
+import { DatePicker } from 'iview';
 import { momentFormatYYYYMMDD, oneDay } from '../utils';
 import iveDatePicker from '../../src/components/ive-date-picker.vue';
 
@@ -58,7 +59,7 @@ describe('ive-date-picker.vue', () => {
         disabledDate: null,
       },
     });
-    wrapper.find('span.ivu-date-picker-cells-cell-selected + span').trigger('click');
+    wrapper.find(DatePicker).vm.$emit('on-change', '2019-08-16');
     const emitted = wrapper.emitted();
     expect(momentFormatYYYYMMDD(emitted.input[0][0])).to.equal('2019-08-16');
   });
