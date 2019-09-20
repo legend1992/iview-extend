@@ -82,6 +82,7 @@
 .ive-form-item .inline-tip {
   color: #858585;
   margin-left: 5px;
+  white-space: nowrap;
 }
 /* ive-input-slot */
 .ivu-input-group-append .ivu-btn, .ivu-input-group-prepend .ivu-btn {

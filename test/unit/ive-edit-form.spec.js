@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { mount } from '@vue/test-utils';
 import sinon from 'sinon';
+import { FormItem } from 'iview';
 import {
   formConfig,
   hideConfig,
@@ -36,7 +37,7 @@ describe('ive-edit-form.vue', () => {
       expect(model[item.prop]).to.deep.equal(itemValue);
     });
   });
-  it('check props: formConfig - tip', () => {
+  it('check props: formConfig - tip & inlineTip', () => {
     const wrapper = mount(iveEditForm, {
       propsData: {
         formConfig: [{
@@ -46,12 +47,44 @@ describe('ive-edit-form.vue', () => {
         }, {
           prop: 'prop2',
           label: 'label2',
+          inlineTip: '行内提示',
         }],
       },
     });
     const formItems = wrapper.findAll('.ivu-form-item');
+    // tip
     expect(formItems.at(0).find(iveTooltip).exists()).to.equal(true);
     expect(formItems.at(1).find(iveTooltip).exists()).to.equal(false);
+    // inlineTip
+    expect(formItems.at(0).find('.inline-tip').exists()).to.equal(false);
+    expect(formItems.at(1).find('.inline-tip').text()).to.equal('行内提示');
+  });
+  it('check props: hideConfig', () => {
+    const wrapper = mount(iveEditForm, {
+      propsData: {
+        formConfig,
+        hideConfig,
+      },
+    });
+    expect(wrapper.vm.moreIsShow).to.equal(false);
+    const hidePartWrapper = wrapper.find('.hidePart-wrapper');
+    expect(hidePartWrapper.exists()).to.equal(true);
+    expect(wrapper.findAll('.toggle-button').length).to.equal(2);
+    const showMoreButton = wrapper.findAll('.toggle-button').at(0);
+    expect(showMoreButton.classes()).to.not.include('hide');
+    // showMoreButton.trigger('click')
+    showMoreButton.trigger('click');
+    expect(wrapper.vm.moreIsShow).to.equal(true);
+    wrapper.vm.$forceUpdate();
+    expect(showMoreButton.classes()).to.include('hide');
+    expect(hidePartWrapper.classes()).to.include('show');
+    // hideMoreButton.trigger('click')
+    const hideMoreButton = wrapper.findAll('.toggle-button').at(1);
+    hideMoreButton.trigger('click');
+    expect(wrapper.vm.moreIsShow).to.equal(false);
+    wrapper.vm.$forceUpdate();
+    expect(showMoreButton.classes()).to.not.include('hide');
+    expect(hidePartWrapper.classes()).to.not.include('show');
   });
   it('check formItem input event change model', () => {
     const spy = sinon.spy();
@@ -175,14 +208,15 @@ describe('ive-edit-form.vue', () => {
     expect(formConfigFormat[4].rules).to.deep.equal([{ required: false }]);
     expect(formConfigFormat[5].rules).to.deep.equal([{ required: false }]);
   });
-  it('check method: cleaningModel', async () => {
+  it('check method: cleaningModel & validateField', async () => {
     const formConfig1 = [{
       prop: 'prop1',
       label: 'label1',
       tip: '提示语',
       itemConfig: {
-        value: 'value1',
+        value: '',
       },
+      required: true,
     }, {
       prop: 'prop2',
       label: 'label2',
@@ -195,13 +229,16 @@ describe('ive-edit-form.vue', () => {
         formConfig: formConfig1,
       },
     });
-    expect(wrapper.vm.model).to.deep.equal({ prop1: 'value1', prop2: 'value2' });
-    formConfig1.splice(1, 1);
+    expect(wrapper.vm.model).to.deep.equal({ prop1: '', prop2: 'value2' });
+    expect(wrapper.vm.validate()).to.equal(false);
+    expect(wrapper.findAll(FormItem).at(0).vm.validateState).to.equal('error');
+    formConfig1.splice(0, 1);
     wrapper.setProps({
       formConfig: [...formConfig1],
     });
     await wrapper.vm.$nextTick();
-    expect(wrapper.vm.model).to.deep.equal({ prop1: 'value1' });
+    expect(wrapper.findAll(FormItem).at(0).vm.validateState).to.equal('success');
+    expect(wrapper.vm.model).to.deep.equal({ prop2: 'value2' });
   });
   it('check method: getData', async () => {
     const formConfig1 = [{
@@ -223,7 +260,32 @@ describe('ive-edit-form.vue', () => {
     });
     let data = wrapper.vm.getData();
     expect(data).to.equal(undefined);
+    expect(wrapper.findAll(FormItem).at(0).vm.validateState).to.equal('error');
     data = wrapper.vm.getData(false);
     expect(data).to.deep.equal({ prop1: undefined, prop2: 'value2' });
   });
+  it('renders slots', () => {
+    const spy = sinon.spy();
+    const wrapper = mount(iveEditForm, {
+      propsData: {
+        formConfig: [{
+          prop: 'prop',
+          label: 'label',
+        }],
+      },
+      slots: {
+        prop: `<Button slot="prepend" class="slot-prepend" @click="${spy}">slot测试prepend</Button><Button slot="append" class="slot-append">slot测试append</Button>`,
+      },
+    });
+    // render
+    expect(wrapper.find('.ivu-form-item .ivu-input-group-prepend').exists()).to.equal(true);
+    expect(wrapper.find('.ivu-form-item .ivu-input-group-prepend + i + .ivu-input').exists()).to.equal(true);
+    expect(wrapper.find('.ivu-form-item .ivu-input-group-prepend + i + .ivu-input + .ivu-input-group-append').exists()).to.equal(true);
+    expect(wrapper.find('.ivu-form-item .ivu-input-group-prepend .slot-prepend').text()).to.equal('slot测试prepend');
+    expect(wrapper.find('.ivu-form-item .ivu-input-group-append .slot-append').text()).to.equal('slot测试append');
+    // click
+    wrapper.find('.ivu-form-item .ivu-input-group-prepend').trigger('click');
+    expect(spy.called).to.equal(true);
+  });
+  // reset
 });

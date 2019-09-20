@@ -61,6 +61,7 @@
       :hideConfig.sync="editHideConfig"
     >
       <template slot="prop1">
+        <Button slot="prepend" class="slot-prepend" @click="removeFormItem">删除formItem</Button>
         <Button slot="append" @click="removeFormItem">删除formItem</Button>
       </template>
     </ive-edit-form>
@@ -73,7 +74,7 @@ import _ from "lodash";
 export default {
   data() {
     const formConfig = [
-      { prop: "prop1", label: "label1" },
+      { prop: "prop1", label: "label1", required: true, inlineTip: 'xxx' },
       {
         prop: "prop2",
         label: "label2",
@@ -113,7 +114,7 @@ export default {
       {
         prop: "prop3hide",
         label: "label3hide",
-        itemConfig: { tagName: "ive-date-range-picker" }
+        itemConfig: { tagName: "ive-date-picker" }
       },
       {
         prop: "prop4hide",
