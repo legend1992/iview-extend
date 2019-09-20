@@ -1,11 +1,17 @@
 import { expect } from 'chai';
 import { mount } from '@vue/test-utils';
 import sinon from 'sinon';
-import { formConfig, tagNameList, formatFormConfig } from '../utils';
+import { formConfig, tagNameList } from '../utils';
 import iveFilterForm from '../../src/components/ive-filter-form';
 import iveInput from '../../src/components/ive-input.vue';
 import iveTooltip from '../../src/components/ive-icon-tooltip.vue';
 
+function formatFormConfig(config, formatFn) {
+  return config.map((item) => {
+    item.itemConfig = formatFn(item.label, item.itemConfig);
+    return item;
+  });
+}
 describe('ive-filter-form.vue', () => {
   it('renders the correct markup & check props', () => {
     const wrapper = mount(iveFilterForm, {
