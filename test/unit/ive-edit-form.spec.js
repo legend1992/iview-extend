@@ -203,4 +203,27 @@ describe('ive-edit-form.vue', () => {
     await wrapper.vm.$nextTick();
     expect(wrapper.vm.model).to.deep.equal({ prop1: 'value1' });
   });
+  it('check method: getData', async () => {
+    const formConfig1 = [{
+      prop: 'prop1',
+      label: 'label1',
+      tip: '提示语',
+      required: true,
+    }, {
+      prop: 'prop2',
+      label: 'label2',
+      itemConfig: {
+        value: 'value2',
+      },
+    }];
+    const wrapper = mount(iveEditForm, {
+      propsData: {
+        formConfig: formConfig1,
+      },
+    });
+    let data = wrapper.vm.getData();
+    expect(data).to.equal(undefined);
+    data = wrapper.vm.getData(false);
+    expect(data).to.deep.equal({ prop1: undefined, prop2: 'value2' });
+  });
 });
