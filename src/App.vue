@@ -59,7 +59,11 @@
       ref="editForm"
       :formConfig.sync="editFormConfig"
       :hideConfig.sync="editHideConfig"
-    />
+    >
+      <template slot="prop1">
+        <Button slot="append" @click="removeFormItem">删除formItem</Button>
+      </template>
+    </ive-edit-form>
     <!-- <ive-edit-modal id="1" :modal="true" :formConfig="formConfigBatchEdit" :getDetailApi="getDetailApi" /> -->
   </div>
 </template>
@@ -216,7 +220,7 @@ export default {
       formConfig: [
         {
           prop: "prop1",
-          label: "label1"
+          label: "label1",
         },
         {
           prop: "prop2",
@@ -401,6 +405,9 @@ export default {
     },
     dateChange(e) {
       console.log(e)
+    },
+    removeFormItem() {
+      this.editFormConfig.splice(1, 1);
     }
   }
 };

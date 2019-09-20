@@ -116,7 +116,7 @@ describe('ive-edit-form.vue', () => {
     expect(formConfigFormat[4].itemConfig.tagName).to.equal('ive-input');
     expect(formConfigFormat[4].itemConfig.props.placeholder).to.equal('placeholder5');
   });
-  it('emit event: setDefaultRules', () => {
+  it('check method: setDefaultRules', () => {
     const wrapper = mount(iveEditForm, {
       propsData: {
         formConfig: [
@@ -174,5 +174,33 @@ describe('ive-edit-form.vue', () => {
     expect(formConfigFormat[3].rules).to.deep.equal([{ required: false }]);
     expect(formConfigFormat[4].rules).to.deep.equal([{ required: false }]);
     expect(formConfigFormat[5].rules).to.deep.equal([{ required: false }]);
+  });
+  it('check method: cleaningModel', async () => {
+    const formConfig1 = [{
+      prop: 'prop1',
+      label: 'label1',
+      tip: '提示语',
+      itemConfig: {
+        value: 'value1',
+      },
+    }, {
+      prop: 'prop2',
+      label: 'label2',
+      itemConfig: {
+        value: 'value2',
+      },
+    }];
+    const wrapper = mount(iveEditForm, {
+      propsData: {
+        formConfig: formConfig1,
+      },
+    });
+    expect(wrapper.vm.model).to.deep.equal({ prop1: 'value1', prop2: 'value2' });
+    formConfig1.splice(1, 1);
+    wrapper.setProps({
+      formConfig: [...formConfig1],
+    });
+    await wrapper.vm.$nextTick();
+    expect(wrapper.vm.model).to.deep.equal({ prop1: 'value1' });
   });
 });
