@@ -5,7 +5,6 @@ import {
   formConfig,
   hideConfig,
   tagNameList,
-  formatFormConfig,
 } from '../utils';
 import iveEditForm from '../../src/components/ive-edit-form';
 import iveInput from '../../src/components/ive-input.vue';
@@ -106,42 +105,74 @@ describe('ive-edit-form.vue', () => {
         }],
       },
     });
-    const formatedConfig = formatFormConfig(wrapper.vm.formConfig, wrapper.vm.setDefaultItemConfig);
-    expect(formatedConfig[0].itemConfig.tagName).to.equal('ive-input');
-    expect(formatedConfig[0].itemConfig.props.placeholder).to.equal('请输入label1');
-    expect(formatedConfig[1].itemConfig.tagName).to.equal('ive-input');
-    expect(formatedConfig[1].itemConfig.props.placeholder).to.equal('请输入label2');
-    expect(formatedConfig[2].itemConfig.tagName).to.equal('ive-input');
-    expect(formatedConfig[2].itemConfig.props.placeholder).to.equal('请输入label3');
-    expect(formatedConfig[3].itemConfig.props.placeholder).to.equal(undefined);
-    expect(formatedConfig[4].itemConfig.tagName).to.equal('ive-input');
-    expect(formatedConfig[4].itemConfig.props.placeholder).to.equal('placeholder5');
+    const { formConfigFormat } = wrapper.vm;
+    expect(formConfigFormat[0].itemConfig.tagName).to.equal('ive-input');
+    expect(formConfigFormat[0].itemConfig.props.placeholder).to.equal('请输入label1');
+    expect(formConfigFormat[1].itemConfig.tagName).to.equal('ive-input');
+    expect(formConfigFormat[1].itemConfig.props.placeholder).to.equal('请输入label2');
+    expect(formConfigFormat[2].itemConfig.tagName).to.equal('ive-input');
+    expect(formConfigFormat[2].itemConfig.props.placeholder).to.equal('请输入label3');
+    expect(formConfigFormat[3].itemConfig.props.placeholder).to.equal(undefined);
+    expect(formConfigFormat[4].itemConfig.tagName).to.equal('ive-input');
+    expect(formConfigFormat[4].itemConfig.props.placeholder).to.equal('placeholder5');
   });
   it('emit event: setDefaultRules', () => {
     const wrapper = mount(iveEditForm, {
       propsData: {
         formConfig: [
+          // branuch1: required == true
           {
-            prop: 'prop1',
+            prop: 'prop1-1',
+            label: 'label1-1',
             required: true,
           },
           {
-            prop: 'prop2',
-            rules: [],
+            prop: 'prop1-2',
+            label: 'label1-2',
+            required: true,
+            rules: [{
+              type: 'email',
+            }],
           },
           {
+            prop: 'prop1-3',
+            label: 'label1-3',
+            required: true,
+            rules: [
+              {
+                required: false,
+              },
+            ],
+          },
+          // branuch2: required !== true && item.rules && item.rules instanceof Array
+          {
+            prop: 'prop2-1',
+            label: 'label2-1',
+            rules: [
+              {
+                required: 'test',
+              },
+            ],
+          },
+          {
+            prop: 'prop2-2',
+            label: 'label2-2',
+            rules: [],
+          },
+          // branuch3: else
+          {
             prop: 'prop3',
+            label: 'label3',
           },
         ],
       },
     });
-    const buttons = wrapper.findAll('.button-wrapper button');
-    buttons.at(0).trigger('click');
-    buttons.at(1).trigger('click');
-    const emitted = wrapper.emitted();
-    expect(emitted.query.length).to.equal(2);
-    const { model } = wrapper.vm;
-    expect(emitted.query[0][0]).to.deep.equal(model);
-    expect(emitted.query[1][0]).to.deep.equal(model);
+    const { formConfigFormat } = wrapper.vm;
+    expect(formConfigFormat[0].rules).to.deep.equal([{ required: true, message: 'label1-1不为空' }]);
+    expect(formConfigFormat[1].rules).to.deep.equal([{ required: true, message: 'label1-2不为空' }, { type: 'email' }]);
+    expect(formConfigFormat[2].rules).to.deep.equal([{ required: true, message: 'label1-3不为空' }]);
+    expect(formConfigFormat[3].rules).to.deep.equal([{ required: false }]);
+    expect(formConfigFormat[4].rules).to.deep.equal([{ required: false }]);
+    expect(formConfigFormat[5].rules).to.deep.equal([{ required: false }]);
   });
 });
