@@ -12,7 +12,7 @@ import iveInput from '../../src/components/ive-input.vue';
 import iveTooltip from '../../src/components/ive-icon-tooltip.vue';
 
 describe('ive-edit-form.vue', () => {
-  it('renders the correct markup & check props', () => {
+  it('renders the correct markup & check props', async () => {
     const wrapper = mount(iveEditForm, {
       propsData: {
         formConfig,
@@ -36,6 +36,14 @@ describe('ive-edit-form.vue', () => {
       const itemValue = item.itemConfig && item.itemConfig.value;
       expect(model[item.prop]).to.deep.equal(itemValue);
     });
+    // labelWidth
+    const ivuFormItemLabel = wrapper.find('.ivu-form-item-label').element;
+    expect(ivuFormItemLabel.style.width).to.equal('80px');
+    wrapper.setProps({
+      labelWidth: 90,
+    });
+    await wrapper.vm.$nextTick();
+    expect(ivuFormItemLabel.style.width).to.equal('90px');
   });
   it('check props: formConfig - tip & inlineTip', () => {
     const wrapper = mount(iveEditForm, {
@@ -230,7 +238,8 @@ describe('ive-edit-form.vue', () => {
       },
     });
     expect(wrapper.vm.model).to.deep.equal({ prop1: '', prop2: 'value2' });
-    expect(wrapper.vm.validate()).to.equal(false);
+    const validateResult = await wrapper.vm.validate();
+    expect(validateResult).to.equal(false);
     expect(wrapper.findAll(FormItem).at(0).vm.validateState).to.equal('error');
     formConfig1.splice(0, 1);
     wrapper.setProps({
@@ -258,10 +267,10 @@ describe('ive-edit-form.vue', () => {
         formConfig: formConfig1,
       },
     });
-    let data = wrapper.vm.getData();
+    let data = await wrapper.vm.getData();
     expect(data).to.equal(undefined);
     expect(wrapper.findAll(FormItem).at(0).vm.validateState).to.equal('error');
-    data = wrapper.vm.getData(false);
+    data = await wrapper.vm.getData(false);
     expect(data).to.deep.equal({ prop1: undefined, prop2: 'value2' });
   });
   it('renders slots', () => {
