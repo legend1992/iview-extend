@@ -1,6 +1,7 @@
 <template>
   <Modal
     class="ive-edit-modal"
+    :class="{ loading }"
     :value="modal"
     :width="width"
     :mask-closable="false"
@@ -121,9 +122,6 @@ export default {
     async init() {
       if (this.id && this.getDetailApi) {
         await this.getDetail(this.id);
-        this.loading = false;
-      } else {
-        this.loading = false;
       }
     },
     async getDetail(id) {
@@ -133,8 +131,10 @@ export default {
         this.setFormConfig('formConfig', data);
         this.setFormConfig('hideConfig', data);
       } catch (e) {
-        console.error(e);
         this.$Message.error(e);
+        throw (e);
+      } finally {
+        this.loading = false;
       }
     },
     // 设置请求参数
