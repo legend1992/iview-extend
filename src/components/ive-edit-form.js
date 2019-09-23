@@ -127,9 +127,10 @@ export default {
         }
       });
     },
-    getData(needValidate = true) {
+    async getData(needValidate = true) {
       let model;
-      if (needValidate && !this.validate()) {
+      const validate = await this.validate();
+      if (needValidate && !validate) {
         this.$Message.warning('请将表单填写完整');
       } else {
         model = _.cloneDeep(this.model);
