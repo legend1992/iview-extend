@@ -108,6 +108,9 @@
 }
 
 /* 模态框 */
+.ive-edit-modal.loading .ivu-modal-body {
+  overflow: hidden;
+}
 .ive-edit-modal .ivu-modal {
   top: 10vh;
 }

@@ -1,6 +1,7 @@
 <template>
   <Modal
     class="ive-edit-modal"
+    :class="{ loading }"
     :value="modal"
     :width="width"
     :mask-closable="false"
@@ -123,9 +124,6 @@ export default {
     async init() {
       if (this.id && this.getDetailApi) {
         await this.getDetail(this.id);
-        this.loading = false;
-      } else {
-        this.loading = false;
       }
     },
     async getDetail(id) {
@@ -137,6 +135,8 @@ export default {
       } catch (e) {
         this.$Message.error(e);
         throw (e);
+      } finally {
+        this.loading = false;
       }
     },
     // 设置请求参数
