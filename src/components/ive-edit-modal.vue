@@ -178,8 +178,8 @@ export default {
     validateField(prop) {
       return this.$refs.baseForm.validateField(prop);
     },
-    handleSubmit() {
-      const reqData = this.$refs.baseForm.getData();
+    async handleSubmit() {
+      const reqData = await this.$refs.baseForm.getData();
       if (reqData) {
         if (this.editApi) {
           this.submit(this.setReqData(reqData));

@@ -129,13 +129,10 @@ export default {
         }
       });
     },
-    getData(needValidate = true) {
-      if (needValidate) {
-        if (this.validate()) {
-          return _.cloneDeep(this.model);
-        } else {
-          this.$Message.warning("请将表单填写完整");
-        }
+    async getData(needValidate = true) {
+      const validate = await this.validate()
+      if (needValidate && !validate) {
+        this.$Message.warning("请将表单填写完整");
       } else {
         return _.cloneDeep(this.model);
       }
