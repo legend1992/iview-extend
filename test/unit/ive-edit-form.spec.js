@@ -284,5 +284,49 @@ describe('ive-edit-form.vue', () => {
     expect(wrapper.find('.ivu-form-item .ivu-input-group-append .slot-append').text()).to.equal('slot测试append');
     // click: 暂未找到模拟slot上触发click事件的方法
   });
-  // reset
+  it('check method: reset', () => {
+    const wrapper = mount(iveEditForm, {
+      propsData: {
+        formConfig: [{
+          prop: 'prop',
+          label: 'label',
+        }],
+        hideConfig: [{
+          prop: 'prop-hide',
+          label: 'label-hide',
+          required: true,
+        }],
+      },
+    });
+    // change formConfig & hideConfig
+    wrapper.find(iveInput).vm.$emit('input', 'input-value');
+    expect(wrapper.vm.model.prop).to.equal('input-value');
+    // change validateState
+    wrapper.findAll(iveInput).at(1).find('input').trigger('focus');
+    wrapper.findAll(iveInput).at(1).find('input').trigger('blur');
+    expect(wrapper.findAll(FormItem).at(1).vm.validateState).to.equal('error');
+    // change moreIsShow
+    wrapper.findAll('.toggle-button').at(0).trigger('click');
+    expect(wrapper.vm.moreIsShow).to.equal(true);
+    wrapper.vm.$forceUpdate();
+    expect(wrapper.find('.hidePart-wrapper').classes()).to.include('show');
+    wrapper.vm.reset();
+    // reset formConfig & hideConfig
+    const emitted = wrapper.emitted();
+    const resetFormConfig = emitted['update:formConfig'][0][0];
+    const resetHideConfig = emitted['update:hideConfig'][0][0];
+    resetFormConfig.forEach((item) => {
+      const oItem2 = wrapper.vm.formConfigOriginal.find(oItem => oItem.prop === item.prop) || {};
+      expect(item.itemConfig.value).to.equal(oItem2.itemConfig && oItem2.itemConfig.value);
+    });
+    resetHideConfig.forEach((item) => {
+      const oItem2 = wrapper.vm.hideConfigOriginal.find(oItem => oItem.prop === item.prop) || {};
+      expect(item.itemConfig.value).to.equal(oItem2.itemConfig && oItem2.itemConfig.value);
+    });
+    // reset validateState
+    expect(wrapper.findAll(FormItem).at(1).vm.validateState).to.equal('');
+    // reset moreIsShow
+    expect(wrapper.vm.moreIsShow).to.equal(false);
+    expect(wrapper.find('.hidePart-wrapper').classes()).to.not.include('show');
+  });
 });
