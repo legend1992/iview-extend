@@ -65,6 +65,9 @@
         <Button slot="append" @click="removeFormItem">删除formItem</Button>
       </template>
     </ive-edit-form>
+
+    <h2>ive-edit-modal</h2>
+    <ive-edit-modal v-bind="editModalProps"/>
     <!-- <ive-edit-modal id="1" :modal="true" :formConfig="formConfigBatchEdit" :getDetailApi="getDetailApi" /> -->
   </div>
 </template>
@@ -375,6 +378,13 @@ export default {
         }
       ],
       count: 0,
+      editModalProps: {
+        modal: true,
+        formConfig,
+        hideConfig,
+        id: '1',
+        getDetailApi: () => Promise.resolve(),
+      },
     };
   },
   methods: {
@@ -396,8 +406,8 @@ export default {
     selectInput(e) {
       console.log(e);
     },
-    getEditFormData() {
-      const data = this.$refs.editForm.getData();
+    async getEditFormData() {
+      const data = await this.$refs.editForm.getData();
       console.log(data);
     },
     changeDate() {
