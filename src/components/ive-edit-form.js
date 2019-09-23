@@ -136,9 +136,9 @@ export default {
       }
       return model;
     },
-    validate() {
+    async validate() {
       let validate;
-      this.$refs.form.validate((valid) => {
+      await this.$refs.form.validate((valid) => {
         validate = valid;
       });
       return validate;
