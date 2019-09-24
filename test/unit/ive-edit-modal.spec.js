@@ -3,15 +3,16 @@ import { mount } from '@vue/test-utils';
 import sinon from 'sinon';
 import flushPromises from 'flush-promises';
 import { FormItem, Modal, Input } from 'iview';
-import {
-  formConfig,
-  hideConfig,
-} from '../utils';
+import { localVue, formConfig, hideConfig } from '../utils';
+import iveEditForm from '../../src/components/ive-edit-form';
 import iveEditModal from '../../src/components/ive-edit-modal.vue';
+
+localVue.component('ive-edit-form', iveEditForm);
 
 describe('ive-edit-modal.vue', () => {
   it('renders the correct markup & check props', async () => {
     const wrapper = mount(iveEditModal, {
+      localVue,
       propsData: {
         formConfig,
         hideConfig,
@@ -69,6 +70,7 @@ describe('ive-edit-modal.vue', () => {
   });
   it('renders slot', async () => {
     const wrapper = mount(iveEditModal, {
+      localVue,
       propsData: {
         modal: true,
         formConfig: [{
@@ -101,6 +103,7 @@ describe('ive-edit-modal.vue', () => {
       'hide-prop1': 'hide-value1',
     };
     const wrapper = mount(iveEditModal, {
+      localVue,
       propsData: {
         id: '1',
         formConfig: [{
@@ -142,6 +145,7 @@ describe('ive-edit-modal.vue', () => {
   });
   it('check method: handleSubmit & submit & setReqData & reset & validateField', async () => {
     const wrapper = mount(iveEditModal, {
+      localVue,
       propsData: {
         id: '1',
         formConfig: [{
@@ -200,6 +204,7 @@ describe('ive-edit-modal.vue', () => {
   });
   it('check emit event: cancel', async () => {
     const wrapper = mount(iveEditModal, {
+      localVue,
       propsData: {
         modal: true,
       },
@@ -214,6 +219,7 @@ describe('ive-edit-modal.vue', () => {
   });
   it('check emit event: ive-edit-form update:formConfig', async () => {
     const wrapper = mount(iveEditModal, {
+      localVue,
       propsData: {
         modal: true,
       },

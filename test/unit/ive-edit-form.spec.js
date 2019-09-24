@@ -3,6 +3,7 @@ import { mount } from '@vue/test-utils';
 import sinon from 'sinon';
 import { FormItem } from 'iview';
 import {
+  localVue,
   formConfig,
   hideConfig,
   tagNameList,
@@ -14,6 +15,7 @@ import iveTooltip from '../../src/components/ive-icon-tooltip.vue';
 describe('ive-edit-form.vue', () => {
   it('renders the correct markup & check props', async () => {
     const wrapper = mount(iveEditForm, {
+      localVue,
       propsData: {
         formConfig,
         hideConfig,
@@ -47,6 +49,7 @@ describe('ive-edit-form.vue', () => {
   });
   it('check props: formConfig - tip & inlineTip', () => {
     const wrapper = mount(iveEditForm, {
+      localVue,
       propsData: {
         formConfig: [{
           prop: 'prop',
@@ -69,6 +72,7 @@ describe('ive-edit-form.vue', () => {
   });
   it('check props: hideConfig', () => {
     const wrapper = mount(iveEditForm, {
+      localVue,
       propsData: {
         formConfig,
         hideConfig,
@@ -97,6 +101,7 @@ describe('ive-edit-form.vue', () => {
   it('check formItem input event change model', () => {
     const spy = sinon.spy();
     const wrapper = mount(iveEditForm, {
+      localVue,
       propsData: {
         formConfig: [{
           prop: 'prop',
@@ -115,6 +120,7 @@ describe('ive-edit-form.vue', () => {
   });
   it('check method: setDefaultItemConfig', () => {
     const wrapper = mount(iveEditForm, {
+      localVue,
       propsData: {
         formConfig: [{
           prop: 'prop1',
@@ -159,6 +165,7 @@ describe('ive-edit-form.vue', () => {
   });
   it('check method: setDefaultRules', () => {
     const wrapper = mount(iveEditForm, {
+      localVue,
       propsData: {
         formConfig: [
           // branuch1: required == true
@@ -233,6 +240,7 @@ describe('ive-edit-form.vue', () => {
       },
     }];
     const wrapper = mount(iveEditForm, {
+      localVue,
       propsData: {
         formConfig: formConfig1,
       },
@@ -263,6 +271,7 @@ describe('ive-edit-form.vue', () => {
       },
     }];
     const wrapper = mount(iveEditForm, {
+      localVue,
       propsData: {
         formConfig: formConfig1,
       },
@@ -275,6 +284,7 @@ describe('ive-edit-form.vue', () => {
   });
   it('renders slots', () => {
     const wrapper = mount(iveEditForm, {
+      localVue,
       propsData: {
         formConfig: [{
           prop: 'prop',
@@ -295,6 +305,7 @@ describe('ive-edit-form.vue', () => {
   });
   it('check method: reset', () => {
     const wrapper = mount(iveEditForm, {
+      localVue,
       propsData: {
         formConfig: [{
           prop: 'prop',

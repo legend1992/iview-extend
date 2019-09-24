@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { mount } from '@vue/test-utils';
 import sinon from 'sinon';
-import { formConfig, tagNameList } from '../utils';
+import { localVue, formConfig, tagNameList } from '../utils';
 import iveFilterForm from '../../src/components/ive-filter-form';
 import iveInput from '../../src/components/ive-input.vue';
 import iveTooltip from '../../src/components/ive-icon-tooltip.vue';
@@ -15,6 +15,7 @@ function formatFormConfig(config, formatFn) {
 describe('ive-filter-form.vue', () => {
   it('renders the correct markup & check props', () => {
     const wrapper = mount(iveFilterForm, {
+      localVue,
       propsData: {
         formConfig,
       },
@@ -42,6 +43,7 @@ describe('ive-filter-form.vue', () => {
   });
   it('emit event: handleQuery', () => {
     const wrapper = mount(iveFilterForm, {
+      localVue,
       propsData: {
         formConfig,
       },
@@ -57,6 +59,7 @@ describe('ive-filter-form.vue', () => {
   });
   it('check props: formConfig - tip', () => {
     const wrapper = mount(iveFilterForm, {
+      localVue,
       propsData: {
         formConfig: [{
           prop: 'prop',
@@ -75,6 +78,7 @@ describe('ive-filter-form.vue', () => {
   it('check formItem input event change model', () => {
     const spy = sinon.spy();
     const wrapper = mount(iveFilterForm, {
+      localVue,
       propsData: {
         formConfig: [{
           prop: 'prop',
@@ -93,6 +97,7 @@ describe('ive-filter-form.vue', () => {
   });
   it('check method: setDefaultItemConfig', () => {
     const wrapper = mount(iveFilterForm, {
+      localVue,
       propsData: {
         formConfig: [{
           prop: 'prop1',
