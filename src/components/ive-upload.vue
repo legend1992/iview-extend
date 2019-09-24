@@ -20,25 +20,7 @@
         <Button icon="md-add">选择文件</Button>
       </Upload>
       <span class="fileUrl" :title="fileUrl">{{ fileUrl }}</span>
-      <Button
-        v-if="uploadByManual"
-        icon="ios-cloud-upload-outline"
-        @click="handleUpload">
-        点击上传
-      </Button>
     </Row>
-    <ul v-if="uploadByManual && fileList.length" class="ivu-upload-list manual-upload-list">
-      <li v-for="(file, index) in fileList" :key="file.name + index" class="ivu-upload-list-file">
-        <span>
-          <i class="ivu-icon ivu-icon-md-document"></i>
-          {{ file.name }}
-        </span>
-        <i
-          class="ivu-icon ivu-icon-ios-close ivu-upload-list-remove"
-          @click="handleRemove(index)">
-        </i>
-      </li>
-    </ul>
   </div>
 </template>
 <script>
@@ -70,12 +52,8 @@ export default {
       type: Array,
       default: () => ['jpg', 'png', 'jpeg'],
     },
-    'max-size': {
-      type: Number,
-    },
-    'upload-by-manual': {
-      type: Boolean,
-      default: false,
+    maxSize: {
+      type: Number
     },
     // 分辨率
     resolutionRatio: {
@@ -116,10 +94,7 @@ export default {
   },
   data() {
     return {
-      fileList: [],
-      uploadedList: [],
-      uploadedResultList: [],
-      fileUrl: '',
+      fileUrl: ""
     };
   },
   watch: {
@@ -189,9 +164,7 @@ export default {
       });
     },
     async pickFile(file) {
-      if (this.uploadByManual) {
-        this.fileList.push(file);
-      } else if (this.checkFormat(file)) {
+      if (this.checkFormat(file)) {
         if (this.resolutionRatio) {
           const result = await this.checkResolutionRatio(file);
           if (!result) {
@@ -208,12 +181,6 @@ export default {
     },
     handleRemoveUploadedFile(file, fileList) {
       this.$emit("input", null);
-    },
-    handleRemove(index) {
-      this.fileList.splice(index, 1);
-    },
-    handleUpload() {
-      this.$emit('on-upload', this.fileList);
     },
     handleError($event) {
       this.$emit('on-error', $event);
