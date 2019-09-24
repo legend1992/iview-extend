@@ -182,6 +182,9 @@ export default {
       this.$Message.warning('图片尺寸超出限制');
       this.$emit("on-exceeded-size", $event);
     }
-  }
+  },
+  created() {
+    this.fileUrl = this.value;
+  },
 };
 </script>
