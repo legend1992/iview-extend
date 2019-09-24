@@ -51,7 +51,7 @@
     <ive-upload action="//jsonplaceholder.typicode.com/posts/" />
 
     <h2>ive-filter-form</h2>
-    <!-- <ive-filter-form @query="query" :formConfig="formConfig" /> -->
+    <ive-filter-form @query="query" :formConfig="formConfig" />
 
     <h2>ive-edit-form</h2>
     <Button @click="getEditFormData">获取edit-form数据</Button>
@@ -75,7 +75,6 @@
         <Button slot="prepend" class="slot-prepend">slot测试prepend</Button><Button slot="append" class="slot-append">slot测试append</Button>
       </template>
     </ive-edit-modal>
-    <!-- <ive-edit-modal id="1" :modal="true" :formConfig="formConfigBatchEdit" :getDetailApi="getDetailApi" /> -->
   </div>
 </template>
 
@@ -386,11 +385,11 @@ export default {
       ],
       count: 0,
       editModalProps: {
-        modal: true,
+        modal: false,
         formConfig,
         hideConfig,
         id: '1',
-        getDetailApi: () => Promise.resolve(),
+        getDetailApi: () => Promise.resolve({data: {data: {}}}),
       },
     };
   },
