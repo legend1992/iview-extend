@@ -67,7 +67,14 @@
     </ive-edit-form>
 
     <h2>ive-edit-modal</h2>
-    <ive-edit-modal v-bind="editModalProps"/>
+    <ive-edit-modal v-bind="editModalProps">
+      <span class="default">default</span>
+      <span slot="prepend" class="prepend">prepend</span>
+      <span slot="append" class="append">append</span>
+      <template slot="prop1">
+        <Button slot="prepend" class="slot-prepend">slot测试prepend</Button><Button slot="append" class="slot-append">slot测试append</Button>
+      </template>
+    </ive-edit-modal>
     <!-- <ive-edit-modal id="1" :modal="true" :formConfig="formConfigBatchEdit" :getDetailApi="getDetailApi" /> -->
   </div>
 </template>
