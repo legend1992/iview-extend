@@ -2,7 +2,10 @@
   <div class="ive-table">
     <Row v-if="topActions" class="add-button-wrapper" type="flex" justify="start">
       <Button v-if="actions.add" type="primary" @click="$emit('showEditModal')">新增</Button>
-      <Button v-if="actions.export" type="primary" @click="exportData">导出</Button>
+      <Button v-if="actions.export" type="primary" :disabled="batchDisabled" @click="exportData">批量导出</Button>
+      <Button v-if="actions.exportAll" type="primary" @click="loadingMessage">
+        <a :href="exportAllApi" target="_blank">全部导出</a>
+      </Button>
       <Button v-if="actions.import" type="primary" @click="importData">导入</Button>
       <Button v-if="actions.batchRemove" :disabled="batchDisabled" type="primary" @click="batchRemove">批量删除</Button>
       <Button v-if="actions.batchEdit" :disabled="batchDisabled" type="primary" @click="batchEdit">批量修改</Button>
@@ -75,6 +78,7 @@ export default {
         edit: true,
         remove: true,
         export: false,
+        exportAll: false,
         import: false,
         batchRemove: false,
         batchEdit: false,
@@ -83,6 +87,10 @@ export default {
     idKey: {
       type: [String, Number],
       default: '_id',
+    },
+    exportAllApi: {
+      type: String,
+      default: 'javascript:;',
     },
     deleteKey: {
       type: String,
@@ -127,7 +135,7 @@ export default {
     }
   },
   methods: {
-    async getList(queryParams, pageIndex) {
+     async getList(queryParams, pageIndex) {
       this.selectionData = [];
       if (queryParams && queryParams instanceof Object) {
         this.queryParams = { ...queryParams };
@@ -200,14 +208,11 @@ export default {
       this.selectionData = selectionData;
     },
     async exportData() {
-      const resData = await this.getListAllApi(this.queryParams);
-      const queryParamsData = resData.data.data;
-      const exportDataList = this.selectionData.length === 0 ? queryParamsData : this.selectionData;
       const exportColumsList = this.exportColumns.length === 0 ? this.columns : this.exportColumns;
       this.$refs.table.exportCsv({
         filename: this.filename,
         columns: exportColumsList,
-        data: exportDataList,
+        data: this.selectionData,
       });
       this.$refs.table.selectAll(false);
     },
@@ -238,6 +243,12 @@ export default {
       } else {
         this.$emit('showBatchEditModal', selectionData);
       }
+    },
+    loadingMessage() {
+      this.$Message.loading({
+        content: '下载文件内容太大请耐心等待...',
+        duration: 5,
+      });
     },
   }
 };
