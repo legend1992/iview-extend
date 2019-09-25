@@ -4,7 +4,7 @@
       <Button v-if="actions.add" type="primary" @click="$emit('showEditModal')">新增</Button>
       <Button v-if="actions.export" type="primary" :disabled="batchDisabled" @click="exportData">批量导出</Button>
       <Button v-if="actions.exportAll" type="primary" @click="loadingMessage">
-        <a :href="exportAllApi" target="_blank">全部导出</a>
+        <a :href="queryParamsChange" target="_blank">全部导出</a>
       </Button>
       <Button v-if="actions.import" type="primary" @click="importData">导入</Button>
       <Button v-if="actions.batchRemove" :disabled="batchDisabled" type="primary" @click="batchRemove">批量删除</Button>
@@ -128,6 +128,16 @@ export default {
     batchDisabled() {
       return this.selectionData.length < 1 ? true : false;
     },
+    queryParamsChange() {
+      const query = this.queryParams;
+      const queryKey = Object.keys(query);
+      const hasQueryVal = queryKey.every(key => query[key] === '');
+      const queryUrl = queryKey.reduce((acc, currVal, currentIndex) => {
+        const connector = currentIndex ? '&' : '?';
+        return acc + connector + currVal + '=' + encodeURI(query[currVal]);
+      }, this.exportAllApi);
+      return hasQueryVal ? this.exportAllApi : queryUrl;
+    },
   },
   mounted() {
     if (this.getListApi) {
@@ -228,10 +238,6 @@ export default {
       this.$emit('upload-success', resData);
     },
     async batchRemove(row) {
-      if (this.selectionData.length === 0) {
-        this.$Message.warning('至少选择一条内容删除！')
-        return;
-      }
       const idList = this.selectionData.map(item => item.id);
       const confirm = await this.$iveModal.confirm(`确定删除要这${idList.length}条内容吗？`);
       this.remove(confirm, idList, row);
