@@ -145,7 +145,7 @@ export default {
     }
   },
   methods: {
-     async getList(queryParams, pageIndex) {
+    async getList(queryParams, pageIndex) {
       this.selectionData = [];
       if (queryParams && queryParams instanceof Object) {
         this.queryParams = { ...queryParams };
