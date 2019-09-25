@@ -73,3 +73,52 @@ export const hideConfig = formConfig.map((config) => {
     label,
   });
 });
+
+function convertImgToBase64(url, width, height) {
+  return new Promise((resolve) => {
+    let canvas = document.createElement('CANVAS');
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+    img.crossOrigin = 'Anonymous';
+    img.onload = () => {
+      canvas.width = width || img.width;
+      canvas.height = height || img.height;
+      ctx.drawImage(img, 0, 0);
+      resolve(canvas.toDataURL('image/png'));
+      canvas = null;
+    };
+    img.onerror = (e) => {
+      throw (e);
+    };
+    img.src = url;
+  });
+}
+
+function base64toBlob(b64Data, type) {
+  const byteCharacters = atob(b64Data.substring(b64Data.indexOf(',') + 1));
+  const byteArrays = [];
+  const sliceSize = 512;
+  for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+    const slice = byteCharacters.slice(offset, offset + sliceSize);
+    const byteNumbers = new Array(slice.length);
+    /* eslint-disable no-plusplus */
+    for (let i = 0; i < slice.length; i++) {
+      byteNumbers[i] = slice.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    byteArrays.push(byteArray);
+  }
+  return new Blob(byteArrays, { type });
+}
+
+export async function createImage({
+  name = 'testImage.png',
+  width,
+  height,
+  url = 'https://tse3-mm.cn.bing.net/th?id=OIP.pk-ZGQhPQ8un_8vHS7G-NgHaE8&w=271&h=179&c=7&o=5&dpr=1.5&pid=1.7',
+}) {
+  const dataURL = await convertImgToBase64(url, width, height);
+  const image = base64toBlob(dataURL, 'image/png');
+  image.name = name;
+  return image;
+}
