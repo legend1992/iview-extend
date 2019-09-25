@@ -130,13 +130,13 @@ export default {
     },
     queryParamsChange() {
       const query = this.queryParams;
-      const queryKey = Object.keys(query);
-      const hasQueryVal = queryKey.every(key => query[key] === '');
+      const queryKey = Object.keys(query).filter(key => query[key] !== '' || query[key] !== undefined || query[key] !== null);
+
       const queryUrl = queryKey.reduce((acc, currVal, currentIndex) => {
         const connector = currentIndex ? '&' : '?';
         return acc + connector + currVal + '=' + encodeURI(query[currVal]);
       }, this.exportAllApi);
-      return hasQueryVal ? this.exportAllApi : queryUrl;
+      return queryUrl;
     },
   },
   mounted() {
