@@ -116,7 +116,7 @@ export async function createImage({
   width,
   height,
   url = 'https://tse3-mm.cn.bing.net/th?id=OIP.pk-ZGQhPQ8un_8vHS7G-NgHaE8&w=271&h=179&c=7&o=5&dpr=1.5&pid=1.7',
-}) {
+} = {}) {
   const dataURL = await convertImgToBase64(url, width, height);
   const image = base64toBlob(dataURL, 'image/png');
   image.name = name;
