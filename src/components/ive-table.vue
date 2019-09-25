@@ -130,8 +130,7 @@ export default {
     },
     queryParamsChange() {
       const query = this.queryParams;
-      const queryKey = Object.keys(query).filter(key => query[key] !== '' || query[key] !== undefined || query[key] !== null);
-
+      const queryKey = Object.keys(query).filter(key => query[key] !== '' && query[key] !== undefined && query[key] !== null);
       const queryUrl = queryKey.reduce((acc, currVal, currentIndex) => {
         const connector = currentIndex ? '&' : '?';
         return acc + connector + currVal + '=' + encodeURI(query[currVal]);
