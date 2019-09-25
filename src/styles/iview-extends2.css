@@ -158,6 +158,9 @@
   padding: 5px 10px;
   background-color: #f5f7f9;
 }
+.ive-table .ivu-btn a {
+  color: #ffffff;
+}
 
 /* 确认弹窗 */
 .ivu-modal-confirm-body b {
