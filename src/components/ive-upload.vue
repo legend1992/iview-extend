@@ -5,14 +5,12 @@
         ref="upload"
         :before-upload="pickFile"
         :action="action"
-        :multiple="multiple"
         :data="data"
         :name="name"
         :accept="accept"
         :max-size="maxSize"
         :show-upload-list="false"
         :on-error="handleError"
-        :on-remove="handleRemoveUploadedFile"
         :on-progress="handleProgress"
         :on-success="handleSuccess"
         :on-exceeded-size="handleExceededSize"
@@ -31,10 +29,6 @@ export default {
     action: {
       type: String,
       default: "",
-    },
-    multiple: {
-      type: Boolean,
-      default: false
     },
     data: {
       type: Object,
@@ -163,9 +157,6 @@ export default {
         }
       }
       return false;
-    },
-    handleRemoveUploadedFile(file, fileList) {
-      this.$emit("input", null);
     },
     handleError($event) {
       this.$emit("on-error", $event);
