@@ -48,7 +48,7 @@
     <ive-page v-bind="pageProps" />
 
     <h2>ive-upload</h2>
-    <ive-upload action="//jsonplaceholder.typicode.com/posts/" />
+    <ive-upload ref="upload" v-bind="uploadProps" @on-exceeded-size="exceededSize"/>
 
     <h2>ive-filter-form</h2>
     <ive-filter-form @query="query" :formConfig="formConfig" />
@@ -80,6 +80,7 @@
 
 <script>
 import _ from "lodash";
+import { createImage } from '../test/utils';
 export default {
   data() {
     const formConfig = [
@@ -391,6 +392,15 @@ export default {
         id: '1',
         getDetailApi: () => Promise.resolve({data: {data: {}}}),
       },
+      uploadProps: {
+        action: "//jsonplaceholder.typicode.com/posts/",
+        maxSize: 29,
+        name: 'xxx',
+        data: {
+          a: 'data1',
+          b: 'data2',
+        },
+      },
     };
   },
   methods: {
@@ -425,8 +435,11 @@ export default {
     },
     removeFormItem() {
       this.editFormConfig.splice(1, 1);
+    },
+    exceededSize(e) {
+      console.log(e);
     }
-  }
+  },
 };
 </script>
 
