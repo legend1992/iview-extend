@@ -3,7 +3,7 @@
     class="ive-import-modal"
     title="导入详情"
     :mask-closable="false"
-    :value="importModal"
+    :value="modal"
     @input="$emit('close')"
   >
     <Upload
@@ -55,7 +55,7 @@ export default {
       type: Array,
       default: () => ['xls', 'xlsx'],
     },
-    importModal: {
+    modal: {
       type: Boolean,
       default: false,
     },
