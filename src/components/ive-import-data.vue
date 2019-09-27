@@ -101,10 +101,6 @@ export default {
       return false;
     },
     async upload(cover) {
-      if (this.uploadFile.length === 0) {
-        this.$Message.warning('没有选择上传文件！');
-        return;
-      }
       try {
         const formData = new FormData();
         this.uploadFile.forEach((file) => {
