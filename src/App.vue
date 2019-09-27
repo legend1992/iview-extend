@@ -53,6 +53,9 @@
     <h2>ive-filter-form</h2>
     <ive-filter-form @query="query" :formConfig="formConfig" />
 
+    <h2>ive-import-data</h2>
+    <span><ive-import-data ref="importData" :modal="true" :importApi="importApi" /></span>
+
     <h2>ive-edit-form</h2>
     <Button @click="getEditFormData">获取edit-form数据</Button>
     <ive-edit-form
@@ -228,6 +231,9 @@ export default {
       //   prop: 'prop2',
       //   label: 'label2',
       // }],
+      importApi: (e) => {
+        console.log(e);
+      },
       formConfig: [
         {
           prop: "prop1",
@@ -440,6 +446,9 @@ export default {
       console.log(e);
     }
   },
+  mounted() {
+    this.$refs.importData.$refs.upload.handleChange({ target: { files: [new File([JSON.stringify('foo')], 'test.xlsx', { type: 'application/vnd.ms-excel' })] } });
+  }
 };
 </script>
 
