@@ -13,7 +13,7 @@
 
     <ive-import-data
       v-if="actions.import"
-      :importModal="importModal"
+      :modal="importModal"
       :importApi="importApi"
       @upload-success="uploadSuccess"
       @close="handleClose"
