@@ -54,7 +54,7 @@
     <ive-filter-form @query="query" :formConfig="formConfig" />
 
     <h2>ive-import-data</h2>
-    <span><ive-import-data ref="importData" :modal="true" :importApi="importApi" /></span>
+    <span><ive-import-data ref="importData" :modal="false" :importApi="importApi" /></span>
 
     <h2>ive-edit-form</h2>
     <Button @click="getEditFormData">获取edit-form数据</Button>
@@ -78,6 +78,7 @@
         <Button slot="prepend" class="slot-prepend">slot测试prepend</Button><Button slot="append" class="slot-append">slot测试append</Button>
       </template>
     </ive-edit-modal>
+    <ive-table v-bind="tableProps"></ive-table>
   </div>
 </template>
 
@@ -406,6 +407,42 @@ export default {
           a: 'data1',
           b: 'data2',
         },
+      },
+      tableProps: {
+        getListApi: () => ({
+          data: {
+            data: [{
+              id: 1,
+            },{
+              id: 2,
+            },{
+              id: 3,
+            }],
+          },
+        }),
+        columns: [
+          {
+            title: 'id',
+            key: 'id',
+          },{
+            title: '列2',
+            key: 'sd',
+          }, {
+            title: '操作',
+            slot: 'action',
+          }
+        ],
+        actions: {
+          add: true,
+          edit: true,
+          remove: true,
+          export: true,
+          exportAll: true,
+          import: true,
+          batchRemove: true,
+          batchEdit: true,
+        },
+        importApi: () => {},
       },
     };
   },
