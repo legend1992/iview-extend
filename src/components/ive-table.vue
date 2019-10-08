@@ -57,7 +57,7 @@ export default {
     },
     columns: {
       type: Array,
-      default: () => [],
+      required: true,
     },
     exportColumns: {
       type: Array,
