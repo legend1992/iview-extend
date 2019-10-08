@@ -230,7 +230,7 @@ export default {
     },
     async handleRemove(row) {
       const id = row[this.idKey] || row.id;
-      const title = row[this.deleteKey] || '';
+      const title = row[this.deleteKey] || id;
       const confirm = await this.$iveModal.confirm(
         `确定删除<b>${title}</b>吗？`,
       );
