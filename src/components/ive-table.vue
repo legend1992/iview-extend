@@ -1,6 +1,6 @@
 <template>
   <div class="ive-table">
-    <Row v-if="topActions" class="add-button-wrapper" type="flex" justify="start">
+    <Row v-if="topActions" class="top-button-wrapper" type="flex" justify="start">
       <Button v-if="actions.add" type="primary" @click="$emit('showEditModal')">新增</Button>
       <Button v-if="actions.export" type="primary" :disabled="batchDisabled" @click="exportData">批量导出</Button>
       <Button v-if="actions.exportAll" type="primary" @click="loadingMessage">
