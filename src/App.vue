@@ -78,7 +78,7 @@
         <Button slot="prepend" class="slot-prepend">slot测试prepend</Button><Button slot="append" class="slot-append">slot测试append</Button>
       </template>
     </ive-edit-modal>
-    <ive-table v-bind="tableProps"></ive-table>
+    <ive-table ref="table" v-bind="tableProps"></ive-table>
   </div>
 </template>
 
@@ -411,6 +411,7 @@ export default {
       tableProps: {
         getListApi: () => ({
           data: {
+            count: 3,
             data: [{
               id: 1,
             },{
@@ -424,24 +425,25 @@ export default {
           {
             title: 'id',
             key: 'id',
-          },{
+          }, {
             title: '列2',
             key: 'sd',
           }, {
             title: '操作',
             slot: 'action',
-          }
+          },
         ],
         actions: {
-          add: true,
+          // add: true,
           edit: true,
           remove: true,
-          export: true,
+          // export: true,
           exportAll: true,
-          import: true,
-          batchRemove: true,
-          batchEdit: true,
+          // import: true,
+          // batchRemove: true,
+          // batchEdit: true,
         },
+        exportAllApi: '/xxx',
         importApi: () => {},
       },
     };
@@ -485,6 +487,7 @@ export default {
   },
   mounted() {
     this.$refs.importData.$refs.upload.handleChange({ target: { files: [new File([JSON.stringify('foo')], 'test.xlsx', { type: 'application/vnd.ms-excel' })] } });
+    this.$refs.table.$refs.table.$emit('on-selection-change', [{ id: 1 }]);
   }
 };
 </script>

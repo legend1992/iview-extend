@@ -11,6 +11,7 @@ import ivePage from '../../src/components/ive-page.vue';
 localVue.component('ive-import-data', iveImportData);
 localVue.component('ive-page', ivePage);
 localVue.prototype.$iveModal = iveModal(Vue);
+const cleanCSV = str => str.split('\n').map(s => s.trim()).filter(Boolean).join('\n');
 describe('ive-table.vue', () => {
   describe('renders the correct markup', () => {
     let wrapper;
@@ -61,6 +62,7 @@ describe('ive-table.vue', () => {
           batchRemove: true,
           batchEdit: true,
         },
+        importApi: () => {},
       });
       await wrapper.vm.$nextTick();
       const allButton = wrapper.find('.top-button-wrapper').findAll('button');
@@ -75,6 +77,10 @@ describe('ive-table.vue', () => {
       expect(allButton.at(1).attributes('disabled')).equal('disabled');
       expect(allButton.at(4).attributes('disabled')).equal('disabled');
       expect(allButton.at(5).attributes('disabled')).equal('disabled');
+      wrapper.find({ ref: 'table' }).vm.$emit('on-selection-change', [{ id: 1 }]);
+      expect(allButton.at(1).attributes('disabled')).equal(undefined);
+      expect(allButton.at(4).attributes('disabled')).equal(undefined);
+      expect(allButton.at(5).attributes('disabled')).equal(undefined);
     });
     it('renders ivu-table', async () => {
       expect(wrapper.find('.top-button-wrapper + .ivu-table-wrapper').exists()).to.equal(true);
@@ -83,7 +89,60 @@ describe('ive-table.vue', () => {
       expect(wrapper.find('.top-button-wrapper + .ivu-table-wrapper + .ive-pager').exists()).to.equal(true);
     });
   });
-  describe('check computed', () => {});
+  it('check computed', () => {
+    const wrapper = mount(iveTable, {
+      localVue,
+      propsData: {
+        columns: [
+          {
+            title: 'id',
+            key: 'id',
+          }, {
+            title: '列2',
+            key: 'sd',
+          },
+        ],
+        exportAllApi: '/testApi',
+        getListApi: () => {},
+      },
+    });
+    const {
+      tableSlots, columns, checkboxColumns, formatColumns, topActions, batchDisabled,
+      queryParamsChange,
+    } = wrapper.vm;
+    // tableSlots
+    const { $scopedSlots: slots } = wrapper.vm;
+    delete slots.topButtons;
+    expect(tableSlots).eql(slots);
+    // checkboxColumns
+    columns.forEach((column) => {
+      // eslint-disable-next-line no-underscore-dangle
+      delete column.__id;
+    });
+    columns.unshift({ type: 'selection', width: 50 });
+    checkboxColumns.forEach((column, index) => {
+      expect(column).eql(columns[index]);
+    });
+    // formatColumns
+    expect(formatColumns).eql(columns);
+    wrapper.setProps({
+      actions: {
+        export: true,
+      },
+    });
+    expect(formatColumns).eql(checkboxColumns);
+    // topActions
+    expect(topActions).equal(true);
+    // batchDisabled
+    expect(batchDisabled).equal(true);
+    wrapper.find({ ref: 'table' }).vm.$emit('on-selection-change', [{ id: 1 }]);
+    expect(wrapper.vm.batchDisabled).equal(false);
+    // queryParamsChange
+    // eslint-disable-next-line no-script-url
+    expect(queryParamsChange).equal('/testApi');
+    wrapper.vm.queryParams = { a: 1, b: 2 };
+    expect(wrapper.vm.queryParamsChange).equal('/testApi?a=1&b=2');
+  });
   describe('check methods', () => {
     const data = [{
       id: 1,
@@ -219,37 +278,12 @@ describe('ive-table.vue', () => {
       // eslint-disable-next-line no-underscore-dangle
       expect(emitted.showEditModal[1][0]).to.equal('_1');
     });
-    // pending
-    it('handleRemove & remove & deleteKey', async () => {
-      // wrapper.setProps({
-      //   columns: [{
-      //     title: 'id',
-      //     key: 'id',
-      //   }, {
-      //     title: '列2',
-      //     key: 'sd',
-      //   }, {
-      //     title: '操作',
-      //     slot: 'action',
-      //   }],
-      // });
-      // await wrapper.vm.$nextTick();
-      // const row1OperationButton = wrapper.find('.ivu-table-wrapper .ivu-table-body .ivu-table-row td:last-child').findAll('button');
-      // const removeButton = row1OperationButton.at(1);
-      // removeButton.trigger('click');
-      // await wrapper.vm.$nextTick();
-      // document.querySelectorAll('.ivu-modal-confirm-footer button')[1].click();
-      // await wrapper.vm.$nextTick();
-      // const emitted = wrapper.emitted();
-      // expect(Object.keys(emitted).length).to.equal(1);
-      // expect(emitted.remove[0][0]).to.equal(data[0].id);
-      // expect(emitted.remove[0][1]).to.equal(true);
-    });
     it('importData & handleClose & uploadSuccess', async () => {
       wrapper.setProps({
         actions: {
           import: true,
         },
+        importApi: () => {},
       });
       await wrapper.vm.$nextTick();
       // importData
@@ -270,7 +304,112 @@ describe('ive-table.vue', () => {
       expect(spy.called).to.equal(true);
       expect(wrapper.emitted()['upload-success'][0][0]).to.eql(res);
     });
-    // pending
-    it('changeChoose, exportData, batchRemove, batchEdit, loadingMessage');
+    it('changeChoose', () => {
+      const selectionData = [{ id: 1 }];
+      expect(wrapper.vm.selectionData).eql([]);
+      wrapper.find({ ref: 'table' }).vm.$emit('on-selection-change', selectionData);
+      expect(wrapper.vm.selectionData).eql(selectionData);
+    });
+    it('exportData', async () => {
+      const str = `"id";"列2"
+        "1";""`;
+      wrapper.find({ ref: 'table' }).vm.$emit('on-selection-change', [{ id: 1 }]);
+      wrapper.vm.$refs.table.exportCsv({
+        columns: wrapper.vm.columns,
+        data: wrapper.vm.selectionData,
+        separator: ';',
+        quoted: true,
+        callback: (exportData) => {
+          expect(cleanCSV(exportData)).to.equal(cleanCSV(str));
+          expect(cleanCSV(exportData).length > 0).to.equal(true);
+        },
+      });
+    });
+    it('batchEdit', async () => {
+      wrapper.setProps({
+        actions: {
+          batchEdit: true,
+        },
+      });
+      const emitted = wrapper.emitted();
+      wrapper.find('.top-button-wrapper').findAll('button').at(0).trigger('click');
+      expect(Object.keys(emitted).length).to.equal(0);
+      wrapper.find({ ref: 'table' }).vm.$emit('on-selection-change', [{ id: 1 }]);
+      wrapper.find('.top-button-wrapper').findAll('button').at(0).trigger('click');
+      expect(emitted.showEditModal.length).to.equal(1);
+      expect(emitted.showEditModal[0][0]).to.equal(1);
+      wrapper.find({ ref: 'table' }).vm.$emit('on-selection-change', [{ id: 1 }, { id: 2 }]);
+      wrapper.find('.top-button-wrapper').findAll('button').at(0).trigger('click');
+      expect(emitted.showBatchEditModal.length).to.equal(1);
+      expect(emitted.showBatchEditModal[0][0]).to.eql([{ id: 1 }, { id: 2 }]);
+    });
+    it('emit showEditModal', () => {
+      expect(wrapper.emitted().showEditModal === undefined).to.equal(true);
+      wrapper.find('.top-button-wrapper').findAll('button').at(0).trigger('click');
+      expect(wrapper.emitted().showEditModal.length).to.equal(1);
+    });
+    it('loadingMessage', () => {
+      wrapper.setProps({
+        actions: {
+          exportAll: true,
+        },
+        exportAllApi: '/xxx',
+      });
+      wrapper.find('.top-button-wrapper').findAll('button').at(0).trigger('click');
+      const messageNode = document.querySelectorAll('.ivu-message')[document.querySelectorAll('.ivu-message').length - 1];
+      expect(messageNode !== undefined).to.equal(true);
+      expect(messageNode.querySelector('.ivu-message-loading.ivu-message-custom-content span').textContent).to.equal('下载文件内容太大请耐心等待...');
+    });
+    it('handleRemove & batchRemove & remove & deleteKey', async () => {
+      const row = data[0];
+      wrapper.setProps({
+        columns: [{
+          title: 'id',
+          key: 'id',
+        }, {
+          title: '列2',
+          key: 'sd',
+        }, {
+          title: '操作',
+          slot: 'action',
+        }],
+      });
+      const emitted = wrapper.emitted();
+      const removeSpy = sinon.spy();
+      const confirm = { remove: removeSpy };
+      const confirmSpy = sinon.spy();
+      wrapper.vm.$iveModal.confirm = (content) => {
+        confirmSpy(content);
+        return Promise.resolve(confirm);
+      };
+      // handleRemove
+      wrapper.vm.handleRemove(row);
+      await wrapper.vm.$nextTick();
+      expect(Object.keys(emitted.remove).length).to.equal(1);
+      expect(emitted.remove[0][0]).to.equal(row.id);
+      expect(emitted.remove[0][1]).to.equal(confirm);
+      // batchRemove
+      wrapper.find({ ref: 'table' }).vm.$emit('on-selection-change', [{ id: 1 }, { id: 2 }]);
+      wrapper.vm.batchRemove();
+      await wrapper.vm.$nextTick();
+      expect(Object.keys(emitted.remove).length).to.equal(2);
+      expect(emitted.remove[1][0]).to.eql(wrapper.vm.selectionData.map(item => item.id));
+      expect(emitted.remove[1][1]).to.equal(confirm);
+      // remove: deleteApi !== undefined
+      const deleteSpy = sinon.spy();
+      wrapper.setProps({
+        deleteApi: deleteSpy,
+      });
+      wrapper.vm.handleRemove(row);
+      await wrapper.vm.$nextTick();
+      expect(Object.keys(emitted.remove).length).to.equal(2);
+      expect(deleteSpy.calledOnceWith(row.id)).to.equal(true);
+      expect(removeSpy.calledOnce).to.equal(true);
+      // deleteKey
+      const { idKey, deleteKey } = wrapper.vm;
+      const id = row[idKey] || row.id;
+      const title = row[deleteKey] || id;
+      expect(confirmSpy.calledOnceWith(`确定删除<b>${title}</b>吗？`));
+    });
   });
 });
