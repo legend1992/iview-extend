@@ -123,7 +123,8 @@ export default {
       return columns;
     },
     topActions() {
-      return this.actions.add || this.actions.export || this.actions.import;
+      const { actions } = this;
+      return Object.keys(actions).map(key => actions[key]).some(item => item);
     },
     batchDisabled() {
       return this.selectionData.length < 1 ? true : false;
@@ -219,7 +220,8 @@ export default {
     async exportData() {
       const exportColumsList = this.exportColumns.length === 0 ? this.columns : this.exportColumns;
       this.$refs.table.exportCsv({
-        filename: this.filename,
+        filename: 
+        this.filename,
         columns: exportColumsList,
         data: this.selectionData,
       });
