@@ -109,7 +109,7 @@ export default {
         formData.append('cover', cover);
         const resData = await this.importApi(formData);
         this.$emit('upload-success', resData);
-      } catch(error) {
+      } catch (error) {
         this.$Message.warning({
           content: error,
           duration: 3,

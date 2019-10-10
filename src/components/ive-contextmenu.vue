@@ -40,7 +40,7 @@ export default {
       if (option.onClick && option.onClick instanceof Function) {
         option.onClick(index, option, options);
       } else {
-        this.$emit('click', index, option, options)
+        this.$emit('click', index, option, options);
       }
     },
   },

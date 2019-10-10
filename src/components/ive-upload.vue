@@ -28,7 +28,7 @@ export default {
     value: undefined,
     action: {
       type: String,
-      default: "",
+      default: '',
     },
     data: {
       type: Object,
@@ -47,7 +47,7 @@ export default {
       default: () => ['jpg', 'png', 'jpeg'],
     },
     maxSize: {
-      type: Number
+      type: Number,
     },
     // 分辨率
     resolutionRatio: {
@@ -88,7 +88,7 @@ export default {
   },
   data() {
     return {
-      fileUrl: ""
+      fileUrl: '',
     };
   },
   watch: {
@@ -149,8 +149,8 @@ export default {
             }
             resolve(result);
           };
-          image.onerror = (e) => {
-            resolve(e);
+          image.onerror = (err) => {
+            resolve(err);
           };
           image.src = data;
         };
@@ -181,13 +181,13 @@ export default {
     },
     handleSuccess(result) {
       this.fileUrl = result;
-      this.$emit("input", result);
-      this.$emit("on-success", result);
+      this.$emit('input', result);
+      this.$emit('on-success', result);
     },
     handleExceededSize($event) {
       this.$Message.warning('图片尺寸超出限制');
-      this.$emit("on-exceeded-size", $event);
-    }
+      this.$emit('on-exceeded-size', $event);
+    },
   },
   created() {
     this.fileUrl = this.value;
