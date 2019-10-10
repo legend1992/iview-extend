@@ -1,5 +1,5 @@
 <template>
-  <vue-context ref="menu" class="ive-contextmenu">
+  <vue-context ref="menu" class="ive-contextmenu" :close-on-scroll="true">
     <li
       v-for="(option, index) in lastOptions"
       :key="option.name"
@@ -11,6 +11,7 @@
 import { VueContext } from 'vue-context';
 
 export default {
+  name: 'ive-contextmenu',
   props: {
     options: {
       type: Array,

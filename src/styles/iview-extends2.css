@@ -192,6 +192,12 @@
 }
 
 /* 右键菜单 */
+.ive-contextmenu.v-context {
+  padding: 5px 0;
+}
+.ive-contextmenu.v-context > li > a {
+  padding: 0.2rem 1.5rem;
+}
 .ive-contextmenu.v-context > li > a:hover, .ive-contextmenu.v-context > li > a:focus {
   background-color: #f2f2f2;
 }
