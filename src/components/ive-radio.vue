@@ -1,5 +1,5 @@
 <template>
-  <RadioGroup v-if="optionsLength" :value="value" @input="$emit('input', $event)">
+  <RadioGroup v-if="optionsLength" :value="value" :type="type" @input="$emit('input', $event)">
     <Radio
       v-for="(value, key) in options"
       :key="key"
@@ -36,6 +36,9 @@ export default {
     noDataMessage: {
       type: String,
       default: '无可选数据',
+    },
+    type: {
+      type: String,
     },
   },
   computed: {
