@@ -11,5 +11,5 @@ export default {
 
     // 安装插件
     Vue.prototype.$iveModal = iveModal(Vue);
-  }
-}
+  },
+};

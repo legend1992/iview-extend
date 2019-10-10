@@ -23,7 +23,7 @@
 </template>
 <script>
 export default {
-  name: "ive-upload",
+  name: 'ive-upload',
   props: {
     value: undefined,
     action: {
@@ -32,15 +32,15 @@ export default {
     },
     data: {
       type: Object,
-      default: () => ({})
+      default: () => ({}),
     },
     name: {
       type: String,
-      default: "file"
+      default: 'file',
     },
     accept: {
       type: String,
-      default: "image/jpg, image/png, image/jpeg",
+      default: 'image/jpg, image/png, image/jpeg',
     },
     format: {
       type: Array,
@@ -59,15 +59,25 @@ export default {
           const { width, height } = val;
           const widthType = typeof width;
           const heightType = typeof height;
-          if (widthType === 'object' && width.toString() === '[object Object]') {
+          if (
+            widthType === 'object'
+            && width.toString() === '[object Object]'
+          ) {
             const { max: maxWidth, min: minWidth } = width;
-            result = [maxWidth, minWidth].every((value) => value === undefined || typeof value === 'number');
+            result = [maxWidth, minWidth].every(
+              value => value === undefined || typeof value === 'number',
+            );
           } else if (width && widthType !== 'number') {
             result = false;
           }
-          if (heightType === 'object' && height.toString() === '[object Object]') {
+          if (
+            heightType === 'object'
+            && height.toString() === '[object Object]'
+          ) {
             const { max: maxHeight, min: minHeight } = height;
-            result = [maxHeight, minHeight].every((value) => value === undefined || typeof value === 'number');
+            result = [maxHeight, minHeight].every(
+              value => value === undefined || typeof value === 'number',
+            );
           } else if (height && heightType !== 'number') {
             result = false;
           }
@@ -84,14 +94,19 @@ export default {
   watch: {
     value(value) {
       this.fileUrl = value;
-    }
+    },
   },
   methods: {
     checkFormat(file) {
       let checked = true;
       if (this.format && this.format.length) {
-        const fileFormat = file.name.split('.').pop().toLocaleLowerCase();
-        checked = this.format.some(item => item.toLocaleLowerCase() === fileFormat);
+        const fileFormat = file.name
+          .split('.')
+          .pop()
+          .toLocaleLowerCase();
+        checked = this.format.some(
+          item => item.toLocaleLowerCase() === fileFormat,
+        );
         if (!checked) {
           this.$Message.error(`请选择后缀为${this.format.toString()}的文件`);
           this.$emit('format-error', fileFormat, this.format);
@@ -159,10 +174,10 @@ export default {
       return false;
     },
     handleError($event) {
-      this.$emit("on-error", $event);
+      this.$emit('on-error', $event);
     },
     handleProgress($event) {
-      this.$emit("on-progress", $event);
+      this.$emit('on-progress', $event);
     },
     handleSuccess(result) {
       this.fileUrl = result;

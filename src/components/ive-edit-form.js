@@ -1,9 +1,9 @@
-import _ from "lodash";
-import baseForm_mixin from '../mixins/baseForm_mixin';
+import _ from 'lodash';
+import baseFormMixin from '../mixins/baseForm_mixin';
 
 export default {
-  name: "ive-form",
-  mixins: [baseForm_mixin],
+  name: 'ive-form',
+  mixins: [baseFormMixin],
   props: {
     /**
      * formConfig: {
@@ -39,7 +39,7 @@ export default {
      */
     hideConfig: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
   },
   data() {
@@ -58,8 +58,8 @@ export default {
       return this.configFormat(_.cloneDeep(this.hideConfig));
     },
     allItemsProp() {
-      const formConfigProps = this.formConfig.map(({prop}) => prop);
-      const hideConfigProps = this.hideConfig.map(({prop}) => prop);
+      const formConfigProps = this.formConfig.map(({ prop }) => prop);
+      const hideConfigProps = this.hideConfig.map(({ prop }) => prop);
       return [
         ...formConfigProps,
         ...hideConfigProps,
@@ -83,17 +83,15 @@ export default {
           item.rules = [
             {
               required: true,
-              message: `${item.label}不为空`
-            }
+              message: `${item.label}不为空`,
+            },
           ];
         } else {
-          const [requiredRule] = item.rules.filter(rule => {
-            return rule.required !== undefined;
-          });
+          const [requiredRule] = item.rules.filter(rule => rule.required !== undefined);
           if (!requiredRule) {
             item.rules.unshift({
               required: true,
-              message: `${item.label}不为空`
+              message: `${item.label}不为空`,
             });
           } else {
             requiredRule.required = true;
@@ -130,16 +128,18 @@ export default {
       });
     },
     async getData(needValidate = true) {
-      const validate = await this.validate()
+      let model;
+      const validate = await this.validate();
       if (needValidate && !validate) {
-        this.$Message.warning("请将表单填写完整");
+        this.$Message.warning('请将表单填写完整');
       } else {
-        return _.cloneDeep(this.model);
+        model = _.cloneDeep(this.model);
       }
+      return model;
     },
     async validate() {
       let validate;
-      await this.$refs.form.validate(valid => {
+      await this.$refs.form.validate((valid) => {
         validate = valid;
       });
       return validate;
@@ -150,16 +150,12 @@ export default {
     reset() {
       this.moreIsShow = false;
       const resetFormConfig = this.formConfigFormat.map((item) => {
-        let originalItem = this.formConfigOriginal.find((oItem) => {
-          return oItem.prop === item.prop;
-        }) || {};
+        const originalItem = this.formConfigOriginal.find(oItem => oItem.prop === item.prop) || {};
         item.itemConfig.value = originalItem.itemConfig && originalItem.itemConfig.value;
         return item;
       });
       const resetHideConfig = this.hideConfigFormat.map((item) => {
-        let originalItem = this.hideConfigOriginal.find((oItem) => {
-          return oItem.prop === item.prop;
-        }) || {};
+        const originalItem = this.hideConfigOriginal.find(oItem => oItem.prop === item.prop) || {};
         item.itemConfig.value = originalItem.itemConfig && originalItem.itemConfig.value;
         return item;
       });
@@ -174,18 +170,20 @@ export default {
       // 渲染FormItem
       const renderFormItem = (item, type = 'formConfig') => {
         // 渲染控件
-        const renderItem = ({ prop, inlineTip, tip, itemConfig: config }, type) => {
-          const renderInlineTip = (inlineTip) => h('span', {
+        const renderItem = ({
+          prop, inlineTip, tip, itemConfig: config,
+        }) => {
+          const renderInlineTip = () => h('span', {
             class: 'inline-tip',
           }, inlineTip);
-          const renderTip = (tip) => h('ive-icon-tooltip', {
+          const renderTip = () => h('ive-icon-tooltip', {
             props: {
               content: tip,
             },
           });
           const renderSlots = () => {
             const defaultSlots = this.$slots[prop];
-            let slots = [];
+            const slots = [];
             if (defaultSlots && defaultSlots.length) {
               defaultSlots.forEach((defaultSlot) => {
                 slots.push(
@@ -195,7 +193,7 @@ export default {
                       slot: defaultSlot.data.slot,
                     },
                     [defaultSlot],
-                  )
+                  ),
                 );
               });
             }
@@ -213,20 +211,28 @@ export default {
                   this.model[prop] = value;
                   config.value = value;
                   this.$emit(`update:${type}`, this[`${type}Format`]);
-                  config.on && config.on.input && config.on.input(value);
+                  const { on } = config;
+                  if (on && on.input && on.input instanceof Function) {
+                    on.input(value);
+                  }
                 },
               },
             }, renderSlots()),
-            inlineTip ? renderInlineTip(inlineTip) : null,
-            tip ? renderTip(tip) : null,
+            inlineTip ? renderInlineTip() : null,
+            tip ? renderTip() : null,
           ];
         };
-        const { hide, label, prop, rules } = item;
+        const {
+          hide,
+          label,
+          prop,
+          rules,
+        } = item;
         return h(
           'FormItem',
           {
             class: {
-              hide: hide,
+              hide,
               'ive-form-item': true,
             },
             props: {
@@ -236,7 +242,7 @@ export default {
             },
             key: prop,
           },
-          renderItem(item, type),
+          renderItem(item),
         );
       };
       // 渲染隐藏部分
@@ -256,7 +262,7 @@ export default {
             },
           },
         }, '点击查看更多内容');
-        
+
         // 渲染默认隐藏部分和收起按钮
         const renderHidePartWrapper = () => {
           // 渲染收起按钮
@@ -309,7 +315,7 @@ export default {
             e.preventDefault();
           },
         },
-        ref: 'form'
+        ref: 'form',
       },
       renderFormChilds(),
     );

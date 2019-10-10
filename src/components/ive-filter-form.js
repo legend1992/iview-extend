@@ -1,9 +1,9 @@
 import _ from 'lodash';
-import baseForm_mixin from '../mixins/baseForm_mixin';
+import baseFormMixin from '../mixins/baseForm_mixin';
 
 export default {
   name: 'ive-filter-form',
-  mixins: [baseForm_mixin],
+  mixins: [baseFormMixin],
   props: {
     /**
      * formConfig: {
@@ -23,8 +23,8 @@ export default {
      *  */
     inline: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   watch: {
     formConfig: {
@@ -62,33 +62,33 @@ export default {
         {
           class: 'button-wrapper',
           style: {
-            marginLeft: this.labelWidth + 'px',
-          }
+            marginLeft: `${this.labelWidth}px`,
+          },
         },
         [
           h(
             'Button',
             {
               props: {
-                type: 'primary'
+                type: 'primary',
               },
               on: {
-                click: this.handleQuery
-              }
+                click: this.handleQuery,
+              },
             },
-            '查询'
+            '查询',
           ),
           h(
             'Button',
             {
               on: {
-                click: this.handleReset
-              }
+                click: this.handleReset,
+              },
             },
-            '重置'
-          )
-        ]
-      )
+            '重置',
+          ),
+        ],
+      ),
     ];
     const renderTip = (tip) => {
       if (tip) {
@@ -97,12 +97,13 @@ export default {
             content: tip,
           },
         });
-      } else {
-        return null;
       }
+      return null;
     };
     // 渲染控件
-    const renderItem = ({ prop, label, tip, itemConfig: config }) => {
+    const renderItem = ({
+      prop, label, tip, itemConfig: config,
+    }) => {
       config = this.setDefaultItemConfig(label, config);
       return [
         h(config.tagName, {
@@ -121,25 +122,23 @@ export default {
           },
         }),
         renderTip(tip),
-      ]
+      ];
     };
     // 渲染FormItem
-    const renderFormItem = (item) => {
-      return h(
-        'FormItem',
-        {
-          props: {
-            label: item.label,
-            prop: item.prop
-          }
+    const renderFormItem = item => h(
+      'FormItem',
+      {
+        props: {
+          label: item.label,
+          prop: item.prop,
         },
-        renderItem(item)
-      )
-    };
+      },
+      renderItem(item),
+    );
     // 渲染表单子组件
     const renderFormChilds = () => [
       this.formConfig.map(item => renderFormItem(item)),
-      renderButtons()
+      renderButtons(),
     ];
     const { model, labelWidth, inline } = this;
     return h(
@@ -149,16 +148,16 @@ export default {
         props: {
           model,
           labelWidth,
-          inline
+          inline,
         },
         nativeOn: {
           submit: (e) => {
             e.preventDefault();
           },
         },
-        ref: 'form'
+        ref: 'form',
       },
-      renderFormChilds()
+      renderFormChilds(),
     );
-  }
+  },
 };

@@ -20,6 +20,7 @@
 </template>
 <script>
 import _ from 'lodash';
+
 export default {
   name: 'ive-select',
   props: {
@@ -72,7 +73,7 @@ export default {
   data() {
     return {
       currentValue: [],
-    }
+    };
   },
   watch: {
     value: {
@@ -94,11 +95,12 @@ export default {
       return value;
     },
     handleInput(e) {
-      let { multiple, maxTagSelect: maxTag, currentValue } = this;
+      const { multiple, maxTagSelect: maxTag } = this;
+      let { currentValue } = this;
       currentValue = e;
       if (multiple && maxTag && currentValue.length > maxTag) {
         currentValue.length = maxTag;
-        this.$Message.warning(`最多可选择${ maxTag }条数据`);
+        this.$Message.warning(`最多可选择${maxTag}条数据`);
       }
       this.$emit('input', currentValue);
     },
