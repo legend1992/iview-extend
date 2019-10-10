@@ -1,9 +1,7 @@
 # iview-extend
 [![Build Status](https://travis-ci.org/legend1992/iview-extend.svg?branch=unit-test2)](https://travis-ci.org/legend1992/iview-extend)
-
 [![codecov](https://codecov.io/gh/legend1992/iview-extend/branch/unit-test2/graph/badge.svg)](https://codecov.io/gh/legend1992/iview-extend)
-
-[![NPM](https://nodei.co/npm/iview-extends2.png?compact=true)](https://npmjs.org/package/iview-extends2)
+[![npm version](https://badge.fury.io/js/iview-extends2.svg)](https://badge.fury.io/js/iview-extends2)
 ## Project setup
 ```
 本项目是基于iview开发，使用前请先在main.js写入语句
