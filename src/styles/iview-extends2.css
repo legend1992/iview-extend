@@ -190,3 +190,8 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+/* 右键菜单 */
+.ive-contextmenu.v-context > li > a:hover, .ive-contextmenu.v-context > li > a:focus {
+  background-color: #f2f2f2;
+}
