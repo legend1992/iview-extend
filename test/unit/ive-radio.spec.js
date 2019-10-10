@@ -29,28 +29,44 @@ describe('ive-radio.vue', () => {
     const disabledRadioItems = wrapper.findAll('.ivu-radio.ivu-radio-disabled');
     expect(disabledRadioItems.length).to.equal(3);
   });
-  it('check props: parseIntKey & options is Object', async () => {
-    const wrapper = mount(iveRadio, {
-      propsData: {
-        value: 1,
-        options: {
-          0: '选项1',
-          1: '选项2',
-          2: '选项3',
-          3: '选项4',
+  describe('check props', () => {
+    let wrapper;
+    beforeEach(() => {
+      wrapper = mount(iveRadio, {
+        propsData: {
+          value: 1,
+          options: {
+            0: '选项1',
+            1: '选项2',
+            2: '选项3',
+            3: '选项4',
+          },
         },
-      },
+      });
     });
-    expect(wrapper.vm.optionsLength).to.equal(4);
-    let radioGroupItems = wrapper.findAll('.ivu-radio-checked');
-    expect(radioGroupItems.length).to.equal(0);
-    wrapper.setProps({
-      parseIntKey: true,
-      value: 2,
+    afterEach(() => {
+      wrapper = null;
     });
-    await wrapper.vm.$nextTick();
-    radioGroupItems = wrapper.findAll('.ivu-radio-checked');
-    expect(radioGroupItems.length).to.equal(1);
+    it('parseIntKey & options is Object', async () => {
+      expect(wrapper.vm.optionsLength).to.equal(4);
+      let radioGroupItems = wrapper.findAll('.ivu-radio-checked');
+      expect(radioGroupItems.length).to.equal(0);
+      wrapper.setProps({
+        parseIntKey: true,
+        value: 2,
+      });
+      await wrapper.vm.$nextTick();
+      radioGroupItems = wrapper.findAll('.ivu-radio-checked');
+      expect(radioGroupItems.length).to.equal(1);
+    });
+    it('type', async () => {
+      expect(wrapper.classes()).to.not.include('ivu-radio-group-button');
+      wrapper.setProps({
+        type: 'button',
+      });
+      expect(wrapper.classes()).to.include('ivu-radio-group-button');
+      await wrapper.vm.$nextTick();
+    });
   });
   it('check event: emit input', () => {
     const wrapper = mount(iveRadio, {
