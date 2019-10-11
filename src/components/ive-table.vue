@@ -2,13 +2,28 @@
   <div class="ive-table">
     <Row v-if="topActions" class="top-button-wrapper" type="flex" justify="start">
       <Button v-if="actions.add" type="primary" @click="$emit('showEditModal')">新增</Button>
-      <Button v-if="actions.export" type="primary" :disabled="batchDisabled" @click="exportData">批量导出</Button>
+      <Button
+        v-if="actions.export"
+        type="primary"
+        :disabled="batchDisabled"
+        @click="exportData">批量导出
+      </Button>
       <Button v-if="actions.exportAll" type="primary" @click="loadingMessage">
         <a :href="queryParamsChange" target="_blank">全部导出</a>
       </Button>
       <Button v-if="actions.import" type="primary" @click="importData">导入</Button>
-      <Button v-if="actions.batchRemove" :disabled="batchDisabled" type="primary" @click="batchRemove">批量删除</Button>
-      <Button v-if="actions.batchEdit" :disabled="batchDisabled" type="primary" @click="batchEdit">批量修改</Button>
+      <Button
+        v-if="actions.batchRemove"
+        :disabled="batchDisabled"
+        type="primary"
+        @click="batchRemove">批量删除
+      </Button>
+      <Button
+        v-if="actions.batchEdit"
+        :disabled="batchDisabled"
+        type="primary"
+        @click="batchEdit">批量修改
+      </Button>
     </Row>
 
     <ive-import-data
@@ -109,6 +124,7 @@ export default {
     },
     exportAllApi: {
       type: String,
+      // eslint-disable-next-line no-script-url
       default: 'javascript:;',
     },
     deleteKey: {
@@ -151,14 +167,14 @@ export default {
       return Object.keys(actions).map(key => actions[key]).some(item => item);
     },
     batchDisabled() {
-      return this.selectionData.length < 1 ? true : false;
+      return this.selectionData.length < 1;
     },
     queryParamsChange() {
       const query = this.queryParams;
       const queryKey = Object.keys(query).filter(key => query[key] !== '' && query[key] !== undefined && query[key] !== null);
       const queryUrl = queryKey.reduce((acc, currVal, currentIndex) => {
         const connector = currentIndex ? '&' : '?';
-        return acc + connector + currVal + '=' + encodeURI(query[currVal]);
+        return `${acc + connector + currVal}=${encodeURI(query[currVal])}`;
       }, this.exportAllApi);
       return queryUrl;
     },
@@ -243,7 +259,7 @@ export default {
     async exportData() {
       const exportColumsList = this.exportColumns.length === 0 ? this.columns : this.exportColumns;
       this.$refs.table.exportCsv({
-        filename: 
+        filename:
         this.filename,
         columns: exportColumsList,
         data: this.selectionData,
@@ -282,6 +298,6 @@ export default {
         duration: 5,
       });
     },
-  }
+  },
 };
 </script>
