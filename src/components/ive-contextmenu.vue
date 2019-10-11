@@ -1,10 +1,12 @@
 <template>
   <vue-context ref="menu" class="ive-contextmenu" :close-on-scroll="true">
-    <li
-      v-for="(option, index) in lastOptions"
-      :key="option.name"
-      @click="onClick(index, option, lastOptions)"
-    ><a href="javascript:;">{{ option.name }}</a></li>
+    <template slot-scope="child">
+      <li
+        v-for="(option, index) in lastOptions"
+        :key="option.name"
+        @click="onClick(index, option, child.data)"
+      ><a href="javascript:;">{{ option.name }}</a></li>
+    </template>
   </vue-context>
 </template>
 <script>
@@ -33,15 +35,15 @@ export default {
     },
   },
   methods: {
-    open($event, options) {
+    open($event, data, options) {
       this.newOptions = options;
-      this.$refs.menu.open($event);
+      this.$refs.menu.open($event, data);
     },
-    onClick(index, option, options) {
+    onClick(index, option, data) {
       if (option.onClick && option.onClick instanceof Function) {
-        option.onClick(index, option, options);
+        option.onClick(data, index);
       } else {
-        this.$emit('click', index, option, options);
+        this.$emit('click', data, index, option);
       }
     },
   },

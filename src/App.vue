@@ -2,10 +2,10 @@
   <div class="ui-list">
     <ive-radio v-model="selected" :options="options" type="button" @input="input" />
 
-    <p @contextmenu.prevent="$refs.menu.open($event)">
+    <p @contextmenu.prevent="$refs.menu.open($event, { a: 1 })">
       Right click on me
     </p>
-    <p @contextmenu.prevent="$refs.menu.open($event, menuOptions2)">
+    <p @contextmenu.prevent="$refs.menu.open($event, { b: 2, c: 3 }, menuOptions2)">
       Right click on me
     </p>
     <ive-contextmenu ref="menu" :options="menuOptions" @click="menuClick" />
