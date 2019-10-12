@@ -15,6 +15,7 @@ import iveUpload from '../src/components/ive-upload.vue';
 import iveToolTip from '../src/components/ive-icon-tooltip.vue';
 import iveSpin from '../src/components/ive-spin';
 
+Vue.config.silent = true;
 export const components = {
   'ive-input': iveInput,
   'ive-checkbox-group': iveCheckboxGroup,
