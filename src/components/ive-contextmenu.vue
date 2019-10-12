@@ -35,6 +35,9 @@ export default {
     },
   },
   methods: {
+    /**
+     * @param { Event } $event 用来给contextmenu定位
+     */
     open($event, data, options) {
       this.newOptions = options;
       this.$refs.menu.open($event, data);
