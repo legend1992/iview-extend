@@ -3,6 +3,7 @@
     class="ive-editor"
     ref='editor'
     :defaultOpen="inEditMode ? 'edit' : 'preview'"
+    :editable="inEditMode"
     :toolbarsFlag="inEditMode"
     :toolbars="toolbars"
     :subfield="false"
@@ -68,10 +69,10 @@ export default {
     };
   },
   methods: {
-    async onImgAdd (pos, img) {
+    async onImgAdd (index, img) {
       if (this.uploadApi) {
         const url = await this.uploadApi(img);
-        this.$refs.editor.$img2Url(pos, url);
+        this.$refs.editor.$img2Url(index, url);
       } else {
         this.$Message.warning('未配置上传api，无法上传图片！');
       }
