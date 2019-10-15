@@ -1,21 +1,28 @@
 import { expect } from 'chai';
 import { mount } from '@vue/test-utils';
 import sinon from 'sinon';
-import '../utils';
+import flushPromise from 'flush-promises';
+import { createImage } from '../utils';
 import iveEditor from '../../src/components/ive-editor.vue';
 
 describe('ive-editor.vue', () => {
   let wrapper;
   const inputSpy = sinon.spy();
   const uploadSpy = sinon.spy();
+  const url = 'http://image.com/test.jpg';
   beforeEach(() => {
     wrapper = mount(iveEditor, {
       propsData: {
         value: 'editorValue',
-        uploadApi: uploadSpy,
+        uploadApi: async (img) => {
+          uploadSpy(img);
+          return url;
+        },
       },
       listeners: {
-        input: inputSpy,
+        input: (e) => {
+          inputSpy(e);
+        },
       },
     });
   });
@@ -38,5 +45,15 @@ describe('ive-editor.vue', () => {
     const testContent = 'test-content';
     wrapper.find('.ive-editor').vm.$emit('input', testContent);
     expect(inputSpy.calledWith(testContent)).to.equal(true);
+  });
+  it('methods: onImgAdd', async () => {
+    const image = await createImage();
+    wrapper.find('.v-left-item').vm.$imgFileAdd(image);
+    // 存疑，是碰巧3次flushPromise时间够长还是？
+    await flushPromise();
+    await flushPromise();
+    await flushPromise();
+    expect(uploadSpy.called).to.equal(true);
+    expect(wrapper.find('.v-note-panel textarea').element.value).to.equal('editorValue![testImage.png](http://image.com/test.jpg)');
   });
 });
