@@ -1,6 +1,6 @@
 {
   "name": "iview-extends2",
-  "version": "1.0.01",
+  "version": "1.0.02",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
