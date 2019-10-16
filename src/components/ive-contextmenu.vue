@@ -21,7 +21,7 @@ export default {
     },
   },
   components: {
-    VueContext,
+    'vue-context': VueContext,
   },
   data() {
     return {
