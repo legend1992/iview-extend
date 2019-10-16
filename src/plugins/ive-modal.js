@@ -5,30 +5,73 @@ const titleMap = {
   info: '信息提示框',
   confirm: '确认框',
 };
+let inputValue;
+function promptOptions(content) {
+  let title;
+  let placeholder;
+  inputValue = undefined;
+  if (typeof content === 'string') {
+    title = content;
+    placeholder = '请输入';
+  } else {
+    title = (content && content.title) || '请输入';
+    placeholder = (content && content.placeholder) || '请输入';
+  }
+  return {
+    render: h => h('div', null, [
+      h('h3', {
+        class: 'confirm-input',
+      }, title),
+      h('Input', {
+        props: {
+          autofocus: true,
+          placeholder,
+        },
+        on: {
+          input: (val) => {
+            inputValue = val;
+          },
+        },
+      }),
+    ]),
+  };
+}
 function initMethod(method, content) {
   return new Promise((resolve) => {
-    const options = {
+    let options;
+    if (method === 'prompt') {
+      options = promptOptions(content);
+    } else {
+      options = {
+        title: titleMap[method],
+        content,
+      };
+    }
+    Object.assign(options, {
       loading: true,
       onOk: () => {
-        resolve(instance.$Modal);
+        if (method === 'prompt') {
+          resolve({
+            modal: instance.$Modal,
+            value: inputValue,
+          });
+        } else {
+          resolve(instance.$Modal);
+        }
       },
       onCancel: () => {
         resolve(false);
       },
-    };
-    Object.assign(options, {
-      title: titleMap[method],
-      content,
     });
-
-    instance.$Modal[method](options);
+    const $method = method === 'prompt' ? 'confirm' : method;
+    instance.$Modal[$method](options);
   });
 }
 function createModal(Vue) {
   const modal = {};
   instance = new Vue();
   Vue.use(iview);
-  const methods = ['info', 'confirm'];
+  const methods = ['info', 'confirm', 'prompt'];
   methods.forEach((name) => {
     modal[name] = content => initMethod(name, content);
   });
