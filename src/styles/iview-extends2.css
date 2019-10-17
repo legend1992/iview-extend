@@ -192,12 +192,11 @@
 }
 
 /* 右键菜单 */
-.ive-contextmenu.v-context {
-  padding: 5px 0;
+.ctx-menu.ctx-menu-left > li > a {
+  display: block;
+  padding: 0.2rem 1rem;
+  color: #373a3c;
 }
-.ive-contextmenu.v-context > li > a {
-  padding: 0.2rem 1.5rem;
-}
-.ive-contextmenu.v-context > li > a:hover, .ive-contextmenu.v-context > li > a:focus {
+.ctx-menu.ctx-menu-left > li > a:hover, .ctx-menu.ctx-menu-left > li > a:focus {
   background-color: #f2f2f2;
 }

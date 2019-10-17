@@ -24,7 +24,7 @@ describe('ive-contextmenu.vue', () => {
   });
   it('renders the correct markup', () => {
     expect(wrapper.element.style.display).to.equal('none');
-    expect(wrapper.classes()).to.eql(['v-context', 'ive-contextmenu']);
+    expect(wrapper.classes()).to.eql(['ctx-menu-container', 'ive-contextmenu']);
     const menuItems = wrapper.findAll('li');
     expect(menuItems.length).to.equal(3);
     expect(menuItems.at(0).find('a').text()).to.equal('选项一');
@@ -33,12 +33,23 @@ describe('ive-contextmenu.vue', () => {
   });
   describe('check methods', () => {
     it('open', async () => {
-      wrapper.vm.open(new MouseEvent('contextmenu', { clientX: 10, clientY: 20 }), { test: 1 });
+      const options2 = [{ name: '选项一' }];
+      const data = { test: 1 };
+      wrapper.vm.open(new MouseEvent('contextmenu', { clientX: 10, clientY: 20 }), data, options2);
       await wrapper.vm.$nextTick();
+      // 组件展示及其位置
       const { display, top, left } = wrapper.element.style;
-      expect(display).to.equal('');
+      expect(display).to.equal('block');
       expect(top).to.equal('20px');
       expect(left).to.equal('10px');
+      // 组件选项及数据
+      const { newOptions, menuData, lastOptions } = wrapper.vm;
+      expect(menuData).to.eql(data);
+      expect(newOptions).to.equal(options2);
+      expect(lastOptions).to.equal(newOptions);
+      const menuItems = wrapper.findAll('li');
+      expect(menuItems.length).to.equal(1);
+      expect(menuItems.at(0).find('a').text()).to.equal('选项一');
     });
     it('onClick', async () => {
       const data = { test: 1 };

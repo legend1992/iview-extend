@@ -1,16 +1,17 @@
 <template>
-  <vue-context ref="menu" class="ive-contextmenu" :close-on-scroll="true">
-    <template slot-scope="child">
-      <li
-        v-for="(option, index) in lastOptions"
-        :key="option.name"
-        @click="onClick(index, option, child.data)"
-      ><a href="javascript:;">{{ option.name }}</a></li>
-    </template>
-  </vue-context>
+  <vue-context-menu
+    ref="menu"
+    class="ive-contextmenu"
+  >
+    <li
+      v-for="(option, index) in lastOptions"
+      :key="option.name"
+      @click="onClick(index, option)"
+    ><a href="javascript:;">{{ option.name }}</a></li>
+  </vue-context-menu>
 </template>
 <script>
-import { VueContext } from 'vue-context';
+import vueContextMenu from 'vue-context-menu';
 
 export default {
   name: 'ive-contextmenu',
@@ -21,11 +22,12 @@ export default {
     },
   },
   components: {
-    'vue-context': VueContext,
+    vueContextMenu,
   },
   data() {
     return {
       newOptions: null,
+      menuData: null,
     };
   },
   computed: {
@@ -41,12 +43,14 @@ export default {
     open($event, data, options) {
       this.newOptions = options;
       this.$refs.menu.open($event, data);
+      this.menuData = data;
     },
-    onClick(index, option, data) {
+    onClick(index, option) {
+      const { menuData } = this;
       if (option.onClick && option.onClick instanceof Function) {
-        option.onClick(data, index);
+        option.onClick(menuData, index);
       } else {
-        this.$emit('click', data, index, option);
+        this.$emit('click', menuData, index, option);
       }
     },
   },
