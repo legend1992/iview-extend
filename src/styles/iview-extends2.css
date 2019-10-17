@@ -196,6 +196,7 @@
   display: block;
   padding: 0.2rem 1rem;
   color: #373a3c;
+  white-space: nowrap;
 }
 .ctx-menu.ctx-menu-left > li > a:hover, .ctx-menu.ctx-menu-left > li > a:focus {
   background-color: #f2f2f2;
