@@ -9,6 +9,7 @@
     :subfield="false"
     :value="value"
     @input="$emit('input', $event)"
+    @change="onEditorChanged"
     @imgAdd="onImgAdd"
   />
 </template>
@@ -76,6 +77,9 @@ export default {
       } else {
         this.$Message.warning('未配置上传api，无法上传图片！');
       }
+    },
+    onEditorChanged(value, render) {
+      this.$emit('change', value, render);
     },
   },
 };

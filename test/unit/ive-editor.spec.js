@@ -46,6 +46,12 @@ describe('ive-editor.vue', () => {
     wrapper.find('.ive-editor').vm.$emit('input', testContent);
     expect(inputSpy.calledWith(testContent)).to.equal(true);
   });
+  it('emit change', async () => {
+    await wrapper.vm.$nextTick();
+    const emitted = wrapper.emitted();
+    expect(emitted.change[0][0]).to.equal('editorValue');
+    expect(emitted.change[0][1].trim()).to.equal('<p>editorValue</p>');
+  });
   it('methods: onImgAdd', async () => {
     const image = await createImage();
     wrapper.find('.v-left-item').vm.$imgFileAdd(image);
