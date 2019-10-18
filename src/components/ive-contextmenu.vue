@@ -2,6 +2,8 @@
   <vue-context-menu
     ref="menu"
     class="ive-contextmenu"
+    @ctx-cancel="$emit('cancel')"
+    @ctx-close="$emit('close')"
   >
     <li
       v-for="(option, index) in lastOptions"
