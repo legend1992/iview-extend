@@ -26,6 +26,7 @@ function promptOptions(content) {
         props: {
           autofocus: true,
           placeholder,
+          value: content.value,
         },
         on: {
           input: (val) => {
