@@ -82,5 +82,35 @@ export default {
       this.$emit('change', value, render);
     },
   },
+  mounted() {
+    this.$nextTick(() => {
+      const $editor = this.$refs.editor;
+      var timer1, timer2;
+      $editor.$el.querySelector('.v-note-edit').addEventListener('scroll', function(e) {
+        if (timer1) {
+          clearTimeout(timer1);
+        }
+        timer1 = setTimeout(() => {
+          clearTimeout(timer1);
+          timer1 = null;
+        }, 50);
+      });
+      $editor.$el.querySelector('.v-note-show .v-show-content').addEventListener('scroll', function(e) {
+        if (timer1) {
+          return;
+        }
+        let element = e.srcElement ? e.srcElement : e.target;
+        let ratio = element.scrollTop / (element.scrollHeight - element.offsetHeight);
+        if ($editor.edit_scroll_height >= 0 && element.scrollHeight !== $editor.edit_scroll_height && (element.scrollHeight - element.offsetHeight - element.scrollTop <= 30)) {
+          $editor.$refs.vNoteEdit.scrollTop = element.scrollHeight - element.offsetHeight;
+          ratio = 1;
+        }
+        $editor.edit_scroll_height = element.scrollHeight;
+        if ($editor.$refs.vNoteEdit.scrollHeight > $editor.$refs.vNoteEdit.offsetHeight) {
+          $editor.$refs.vNoteEdit.scrollTop = ($editor.$refs.vNoteEdit.scrollHeight - $editor.$refs.vNoteEdit.offsetHeight) * ratio;
+        }
+      });
+    });
+  },
 };
 </script>

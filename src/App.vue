@@ -9,7 +9,7 @@
       Right click on me
     </p>
     <ive-contextmenu ref="menu" :options="menuOptions" @click="menuClick" />
-    <!-- <ive-editor v-model="editorValue"/> -->
+    <ive-editor v-model="editorValue"/>
     <ive-timeline :items="timelineItems" >
       <template slot="itemSlot" slot-scope="item">
         <h2>{{ item.status }}</h2>
