@@ -85,7 +85,7 @@ export default {
   mounted() {
     this.$nextTick(() => {
       const $editor = this.$refs.editor;
-      var timer1, timer2;
+      var timer1;
       $editor.$el.querySelector('.v-note-edit').addEventListener('scroll', function(e) {
         if (timer1) {
           clearTimeout(timer1);
