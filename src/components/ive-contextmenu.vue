@@ -8,6 +8,7 @@
     <li
       v-for="(option, index) in lastOptions"
       :key="option.name"
+      :class="{ disabled: option.disabled }"
       @click="onClick(index, option)"
     ><a href="javascript:;">{{ option.name }}</a></li>
   </vue-context-menu>
@@ -48,6 +49,9 @@ export default {
       this.menuData = data;
     },
     onClick(index, option) {
+      if (option.disabled) {
+        return;
+      }
       const { menuData } = this;
       if (option.onClick && option.onClick instanceof Function) {
         option.onClick(menuData, index);

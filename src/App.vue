@@ -36,10 +36,25 @@ export default {
       ],
       menuOptions2: [
         {
-          name: '2',
+          name: '22222',
+          disabled: true,
         },
         {
-          name: '3',
+          name: '312312',
+        },
+        {
+          name: '211111',
+          disabled: true,
+        },
+        {
+          name: '3123123',
+        },
+        {
+          name: '244444',
+          disabled: true,
+        },
+        {
+          name: '312123',
         },
       ],
       editorValue: '',
