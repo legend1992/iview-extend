@@ -10,7 +10,7 @@ describe('ive-contextmenu.vue', () => {
   const options = [
     { name: '选项一', onClick: spy },
     { name: '选项二' },
-    { name: '选项三' },
+    { name: '选项三', disabled: true },
   ];
   beforeEach(() => {
     wrapper = mount(iveContextmenu, {
@@ -30,6 +30,7 @@ describe('ive-contextmenu.vue', () => {
     expect(menuItems.at(0).find('a').text()).to.equal('选项一');
     expect(menuItems.at(1).find('a').text()).to.equal('选项二');
     expect(menuItems.at(2).find('a').text()).to.equal('选项三');
+    expect(menuItems.at(2).classes()).to.include('disabled');
   });
   describe('check methods', () => {
     it('open', async () => {
@@ -62,11 +63,15 @@ describe('ive-contextmenu.vue', () => {
       // branch2 $emit('click')
       wrapper.vm.open(new MouseEvent('contextmenu'), data);
       menuItems.at(1).find('a').trigger('click');
-      const emittedClick = wrapper.emitted().click;
-      expect(emittedClick.length).to.equal(1);
-      expect(emittedClick[0][0]).to.eql(data);
+      const emitted = wrapper.emitted();
+      expect(emitted.click.length).to.equal(1);
+      expect(emitted.click[0][0]).to.eql(data);
       expect(wrapper.emitted().click[0][1]).to.eql(1);
       expect(wrapper.emitted().click[0][2]).to.eql(options[1]);
+      // disabled option click
+      wrapper.vm.open(new MouseEvent('contextmenu'), data);
+      menuItems.at(2).find('a').trigger('click');
+      expect(emitted.click.length).to.equal(1);
     });
   });
 });
