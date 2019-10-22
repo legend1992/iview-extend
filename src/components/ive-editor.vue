@@ -85,8 +85,11 @@ export default {
   mounted() {
     this.$nextTick(() => {
       const $editor = this.$refs.editor;
-      var timer1;
+      var timer1, timer2;
       $editor.$el.querySelector('.v-note-edit').addEventListener('scroll', function(e) {
+        if (timer2) {
+          return;
+        }
         if (timer1) {
           clearTimeout(timer1);
         }
@@ -99,16 +102,23 @@ export default {
         if (timer1) {
           return;
         }
-        let element = e.srcElement ? e.srcElement : e.target;
-        let ratio = element.scrollTop / (element.scrollHeight - element.offsetHeight);
-        if ($editor.edit_scroll_height >= 0 && element.scrollHeight !== $editor.edit_scroll_height && (element.scrollHeight - element.offsetHeight - element.scrollTop <= 30)) {
-          $editor.$refs.vNoteEdit.scrollTop = element.scrollHeight - element.offsetHeight;
-          ratio = 1;
+        if (timer2) {
+          clearTimeout(timer2);
         }
-        $editor.edit_scroll_height = element.scrollHeight;
-        if ($editor.$refs.vNoteEdit.scrollHeight > $editor.$refs.vNoteEdit.offsetHeight) {
-          $editor.$refs.vNoteEdit.scrollTop = ($editor.$refs.vNoteEdit.scrollHeight - $editor.$refs.vNoteEdit.offsetHeight) * ratio;
-        }
+        timer2 = setTimeout(() => {
+          let element = e.srcElement ? e.srcElement : e.target;
+          let ratio = element.scrollTop / (element.scrollHeight - element.offsetHeight);
+          if ($editor.edit_scroll_height >= 0 && element.scrollHeight !== $editor.edit_scroll_height && (element.scrollHeight - element.offsetHeight - element.scrollTop <= 30)) {
+            $editor.$refs.vNoteEdit.scrollTop = element.scrollHeight - element.offsetHeight;
+            ratio = 1;
+          }
+          $editor.edit_scroll_height = element.scrollHeight;
+          if ($editor.$refs.vNoteEdit.scrollHeight > $editor.$refs.vNoteEdit.offsetHeight) {
+            $editor.$refs.vNoteEdit.scrollTop = ($editor.$refs.vNoteEdit.scrollHeight - $editor.$refs.vNoteEdit.offsetHeight) * ratio;
+          }
+          clearTimeout(timer2);
+          timer2 = null;
+        }, 50);
       });
     });
   },
