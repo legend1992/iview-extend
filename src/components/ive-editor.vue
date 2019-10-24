@@ -16,6 +16,7 @@
 <script>
 import { mavonEditor } from 'mavon-editor';
 import 'mavon-editor/dist/css/index.css';
+import headings from 'markdown-it-github-headings';
 
 export default {
   name: 'ive-editor',
@@ -78,7 +79,11 @@ export default {
         this.$Message.warning('未配置上传api，无法上传图片！');
       }
     },
-    onEditorChanged(value, render) {
+    onEditorChanged(value) {
+      const render = mavonEditor.getMarkdownIt().use(headings, {
+        prefixHeadingIds: false,
+        enableHeadingLinkIcons: false,
+      }).render(value);
       this.$emit('change', value, render);
     },
   },
