@@ -82,37 +82,37 @@ module.exports = {
           //     },
           //   ],
           // },
-          // {
-          //   text: '视图',
-          //   items: [
-          //     {
-          //       text: 'iveModal 对话框',
-          //       link: '/views/iveModal'
-          //     },
-          //     {
-          //       text: 'ive-icon-tooltip 文字提示',
-          //       link: '/views/ive-icon-tooltip'
-          //     },
-          //     {
-          //       text: 'ive-timeline 时间轴',
-          //       link: '/views/ive-timeline'
-          //     },
-          //   ],
-          // },
+          {
+            text: '视图',
+            items: [
+              {
+                text: 'iveModal 对话框',
+                link: '/views/iveModal'
+              },
+              {
+                text: 'ive-icon-tooltip 文字提示',
+                link: '/views/ive-icon-tooltip'
+              },
+              {
+                text: 'ive-timeline 时间轴',
+                link: '/views/ive-timeline'
+              },
+            ],
+          },
           // {
           //   text: '其它',
           //   items: [
           //     {
           //       text: 'ive-spin 加载圈',
-          //       link: '/components/ive-spin'
+          //       link: '/others/ive-spin'
           //     },
           //     {
           //       text: 'ive-contextmenu 右键菜单',
-          //       link: '/components/ive-contextmenu'
+          //       link: '/others/ive-contextmenu'
           //     },
           //     {
           //       text: 'ive-editor 富文本编辑器',
-          //       link: '/components/ive-editor'
+          //       link: '/others/ive-editor'
           //     },
           //   ],
           // },
@@ -134,6 +134,40 @@ module.exports = {
           },
         ]
       },
+      {
+        title: '视图',
+        children: [
+          {
+            title: 'iveModal 对话框',
+            path: '/views/iveModal',
+          },
+          {
+            title: 'ive-icon-tooltip 文字提示',
+            path: '/views/ive-icon-tooltip',
+          },
+          {
+            title: 'ive-timeline 时间轴',
+            path: '/views/ive-timeline',
+          },
+        ]
+      },
+      // {
+      //   title: '其它',
+      //   children: [
+      //     {
+      //       title: 'ive-spin 加载圈',
+      //       path: '/others/ive-spin',
+      //     },
+      //     {
+      //       title: 'ive-contextmenu 右键菜单',
+      //       path: '/others/ive-contextmenu',
+      //     },
+      //     {
+      //       title: 'ive-editor 富文本编辑器',
+      //       path: '/others/ive-editor',
+      //     },
+      //   ]
+      // },
     ],
     lastUpdated: 'Last Updated',
     smoothScroll: true,
