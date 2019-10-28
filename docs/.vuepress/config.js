@@ -137,8 +137,8 @@ module.exports = {
     ],
     lastUpdated: 'Last Updated',
     smoothScroll: true,
-    markdown: {
-      lineNumbers: true,
-    },
+  },
+  markdown: {
+    lineNumbers: true,
   },
 }
