@@ -21,67 +21,6 @@ module.exports = {
               },
             ],
           },
-          // {
-          //   text: '表单',
-          //   items: [
-          //     {
-          //       text: 'ive-checkbox-group 多选框',
-          //       link: '/components/ive-checkbox-group'
-          //     },
-          //     {
-          //       text: 'ive-date-picker 日期选择器',
-          //       link: '/components/ive-date-picker'
-          //     },
-          //     {
-          //       text: 'ive-date-range-picker 日期范围选择器',
-          //       link: '/components/ive-date-range-picker'
-          //     },
-          //     {
-          //       text: 'ive-input 输入框',
-          //       link: '/components/ive-input'
-          //     },
-          //     {
-          //       text: 'ive-input-number 数字输入框',
-          //       link: '/components/ive-input-number'
-          //     },
-          //     {
-          //       text: 'ive-radio 单选框',
-          //       link: '/components/ive-radio'
-          //     },
-          //     {
-          //       text: 'ive-select 选择器',
-          //       link: '/components/ive-select'
-          //     },
-          //     {
-          //       text: 'ive-textarea 多行文本',
-          //       link: '/components/ive-textarea'
-          //     },
-          //     {
-          //       text: 'ive-table 表格',
-          //       link: '/components/ive-table'
-          //     },
-          //     {
-          //       text: 'ive-upload 单张图片上传',
-          //       link: '/components/ive-upload'
-          //     },
-          //     {
-          //       text: 'ive-import-data 数据导入',
-          //       link: '/components/ive-import-data'
-          //     },
-          //     {
-          //       text: 'ive-filter-form 条件查询',
-          //       link: '/components/ive-filter-form'
-          //     },
-          //     {
-          //       text: 'ive-edit-form 表单',
-          //       link: '/components/ive-edit-form'
-          //     },
-          //     {
-          //       text: 'ive-edit-modal 编辑表单对话框',
-          //       link: '/components/ive-edit-modal'
-          //     },
-          //   ],
-          // },
           {
             text: '视图',
             items: [
@@ -96,6 +35,67 @@ module.exports = {
               {
                 text: 'ive-timeline 时间轴',
                 link: '/views/ive-timeline'
+              },
+            ],
+          },
+          {
+            text: '表单',
+            items: [
+              {
+                text: 'ive-checkbox-group 多选框',
+                link: '/form/ive-checkbox-group'
+              },
+              {
+                text: 'ive-date-picker 日期选择器',
+                link: '/form/ive-date-picker'
+              },
+              {
+                text: 'ive-date-range-picker 日期范围选择器',
+                link: '/form/ive-date-range-picker'
+              },
+              {
+                text: 'ive-input 输入框',
+                link: '/form/ive-input'
+              },
+              {
+                text: 'ive-input-number 数字输入框',
+                link: '/form/ive-input-number'
+              },
+              {
+                text: 'ive-radio 单选框',
+                link: '/form/ive-radio'
+              },
+              {
+                text: 'ive-select 选择器',
+                link: '/form/ive-select'
+              },
+              {
+                text: 'ive-textarea 多行文本',
+                link: '/form/ive-textarea'
+              },
+              {
+                text: 'ive-table 表格',
+                link: '/form/ive-table'
+              },
+              {
+                text: 'ive-upload 单张图片上传',
+                link: '/form/ive-upload'
+              },
+              {
+                text: 'ive-import-data 数据导入',
+                link: '/form/ive-import-data'
+              },
+              {
+                text: 'ive-filter-form 条件查询',
+                link: '/form/ive-filter-form'
+              },
+              {
+                text: 'ive-edit-form 表单',
+                link: '/form/ive-edit-form'
+              },
+              {
+                text: 'ive-edit-modal 编辑表单对话框',
+                link: '/form/ive-edit-modal'
               },
             ],
           },
@@ -150,6 +150,67 @@ module.exports = {
             path: '/views/ive-timeline',
           },
         ]
+      },
+      {
+        title: '表单',
+        children: [
+          {
+            title: 'ive-checkbox-group 多选框',
+            path: '/form/ive-checkbox-group'
+          },
+          {
+            title: 'ive-date-picker 日期选择器',
+            path: '/form/ive-date-picker'
+          },
+          {
+            title: 'ive-date-range-picker 日期范围选择器',
+            path: '/form/ive-date-range-picker'
+          },
+          {
+            title: 'ive-input 输入框',
+            path: '/form/ive-input'
+          },
+          {
+            title: 'ive-input-number 数字输入框',
+            path: '/form/ive-input-number'
+          },
+          {
+            title: 'ive-radio 单选框',
+            path: '/form/ive-radio'
+          },
+          {
+            title: 'ive-select 选择器',
+            path: '/form/ive-select'
+          },
+          {
+            title: 'ive-titlearea 多行文本',
+            path: '/form/ive-titlearea'
+          },
+          {
+            title: 'ive-table 表格',
+            path: '/form/ive-table'
+          },
+          {
+            title: 'ive-upload 单张图片上传',
+            path: '/form/ive-upload'
+          },
+          {
+            title: 'ive-import-data 数据导入',
+            path: '/form/ive-import-data'
+          },
+          {
+            title: 'ive-filter-form 条件查询',
+            path: '/form/ive-filter-form'
+          },
+          {
+            title: 'ive-edit-form 表单',
+            path: '/form/ive-edit-form'
+          },
+          {
+            title: 'ive-edit-modal 编辑表单对话框',
+            path: '/form/ive-edit-modal'
+          },
+        ],
       },
       {
         title: '其它',
