@@ -99,23 +99,23 @@ module.exports = {
               },
             ],
           },
-          // {
-          //   text: '其它',
-          //   items: [
-          //     {
-          //       text: 'ive-spin 加载圈',
-          //       link: '/others/ive-spin'
-          //     },
-          //     {
-          //       text: 'ive-contextmenu 右键菜单',
-          //       link: '/others/ive-contextmenu'
-          //     },
-          //     {
-          //       text: 'ive-editor 富文本编辑器',
-          //       link: '/others/ive-editor'
-          //     },
-          //   ],
-          // },
+          {
+            text: '其它',
+            items: [
+              {
+                text: 'ive-spin 加载圈',
+                link: '/others/ive-spin'
+              },
+              {
+                text: 'ive-contextmenu 右键菜单',
+                link: '/others/ive-contextmenu'
+              },
+              {
+                text: 'ive-editor 富文本编辑器',
+                link: '/others/ive-editor'
+              },
+            ],
+          },
         ],
       },
       { text: 'github', link: 'https://github.com/legend1992/iview-extend' },
@@ -151,23 +151,23 @@ module.exports = {
           },
         ]
       },
-      // {
-      //   title: '其它',
-      //   children: [
-      //     {
-      //       title: 'ive-spin 加载圈',
-      //       path: '/others/ive-spin',
-      //     },
-      //     {
-      //       title: 'ive-contextmenu 右键菜单',
-      //       path: '/others/ive-contextmenu',
-      //     },
-      //     {
-      //       title: 'ive-editor 富文本编辑器',
-      //       path: '/others/ive-editor',
-      //     },
-      //   ]
-      // },
+      {
+        title: '其它',
+        children: [
+          {
+            title: 'ive-spin 加载圈',
+            path: '/others/ive-spin',
+          },
+          {
+            title: 'ive-contextmenu 右键菜单',
+            path: '/others/ive-contextmenu',
+          },
+          {
+            title: 'ive-editor 富文本编辑器',
+            path: '/others/ive-editor',
+          },
+        ]
+      },
     ],
     lastUpdated: 'Last Updated',
     smoothScroll: true,
