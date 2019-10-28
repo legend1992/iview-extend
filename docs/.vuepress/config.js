@@ -183,8 +183,8 @@ module.exports = {
             path: '/form/ive-select'
           },
           {
-            title: 'ive-titlearea 多行文本',
-            path: '/form/ive-titlearea'
+            title: 'ive-textarea 多行文本',
+            path: '/form/ive-textarea'
           },
           {
             title: 'ive-table 表格',
