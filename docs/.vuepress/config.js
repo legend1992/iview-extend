@@ -6,10 +6,9 @@ module.exports = {
       { text: 'Home', link: '/' },
       {
         text: '组件',
-        link: '/components/',
         items: [
           {
-            text: '导航',
+            text: '导航类',
             items: [
               {
                 text: 'ive-page 分页',
@@ -22,7 +21,7 @@ module.exports = {
             ],
           },
           {
-            text: '视图',
+            text: '视图类',
             items: [
               {
                 text: 'iveModal 对话框',
@@ -39,7 +38,7 @@ module.exports = {
             ],
           },
           {
-            text: '表单',
+            text: '表单类',
             items: [
               {
                 text: 'ive-checkbox-group 多选框',
@@ -122,7 +121,7 @@ module.exports = {
     ],
     sidebar: [
       {
-        title: '导航',
+        title: '导航类',
         children: [
           {
             title: 'ive-page 分页',
@@ -135,7 +134,7 @@ module.exports = {
         ]
       },
       {
-        title: '视图',
+        title: '视图类',
         children: [
           {
             title: 'iveModal 对话框',
@@ -152,7 +151,7 @@ module.exports = {
         ]
       },
       {
-        title: '表单',
+        title: '表单类',
         children: [
           {
             title: 'ive-checkbox-group 多选框',
