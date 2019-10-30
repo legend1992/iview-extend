@@ -43,7 +43,9 @@ export default {
 ### 方法（methods）
 | 方法名 | 说明 | 参数 | 返回值 |
 | ------ | ------ | ------ | ------ |
-| info | 信息提示弹窗 | 标题 | modal |
+| info | 信息提示弹窗 | 标题 | 无 |
 | confirm | 确认弹窗 | 标题 | false \| modal |
 | prompt | 确认窗口带输入控件 | title: 标题; value: 默认值 | false \| { value: 用户输入值, modal: modal } |
-<span style="color: #999;">（confirm和prompt方法，用户点击了"取消"按钮都会返回false。modal为弹窗实例，因为“确认”按钮使用了加载圈，需要手动调用modal.remove()来关闭弹窗，故将其返回）</span>
+<p style="color: #999; padding-left: 2em; text-indent: -2em;">注：1.confirm和prompt方法返回结果都为promise，上面说的返回值是await promise之后的返回值；<br>
+2.confirm和prompt方法，用户点击了"取消"按钮都会返回false；<br>
+3.modal为弹窗实例，因为confirm和prompt方法的“确认”按钮使用了加载圈，需要手动调用modal.remove()来关闭弹窗，故将其返回）</p>
