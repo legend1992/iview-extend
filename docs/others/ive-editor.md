@@ -51,5 +51,5 @@ export default {
 ### 事件（events）
 | 事件名 | 说明 | 返回值 |
 | ------ | ------ | ------ |
-| input | 用户输入 | value |
-| change | 用户输入 | value, render(markdown转换成html) |
+| input | 用户输入 | 用户在编辑器中输入的值 |
+| change | 用户输入 | 1. 用户在编辑器中输入的值<br>2. 用户在编辑器中输入的值markdown格式转换成html |
