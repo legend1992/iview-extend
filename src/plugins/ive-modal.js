@@ -49,7 +49,7 @@ function initMethod(method, content) {
       };
     }
     Object.assign(options, {
-      loading: true,
+      loading: method !== 'info',
       onOk: () => {
         if (method === 'prompt') {
           resolve({
