@@ -32,7 +32,7 @@ export default {
 | 属性 | 说明 | 类型 | 默认值 |
 | ------ | ------ | ------ | ------ |
 | value | 选中值 | Array | [] |
-| options | 选项 | Array | Object | {} |
+| options | 选项 | Array \| Object | {} |
 | parseIntKey | 将options中的key格式化为数字 | Boolean | false |
 | noDataMessage | 无选项时展示的文字 | String | 无可选数据 |
 ### 事件（events）
