@@ -236,6 +236,7 @@ export default {
           this.$Message.success('删除成功');
           confirm.remove();
           this.getList();
+          this.$emit('remove-success', id);
         } catch (e) {
           confirm.remove();
           this.$Message.error(e);
