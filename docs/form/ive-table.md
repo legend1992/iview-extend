@@ -38,18 +38,6 @@ export default {
           slot: 'action',
         },
       ],
-      getListApi: () => ({
-        data: {
-          count: 3,
-          data: [{
-            id: 1,
-          },{
-            id: 2,
-          },{
-            id: 3,
-          }],
-        },
-      }),
       actions: {
         add: true,
         edit: true,
@@ -60,12 +48,26 @@ export default {
         batchRemove: true,
         batchEdit: true,
       },
-      importApi: (formData) => {}
-      deleteApi: (id) => {},
       exportAllUrl: '/exportAll',
     }
   },
   methods: {
+    getListApi() {
+      return {
+        data: {
+          count: 3,
+          data: [{
+            id: 1,
+          },{
+            id: 2,
+          },{
+            id: 3,
+          }],
+        }
+      },
+    },
+    importApi(formData) {},
+    deleteApi(id) {},
     showEditModal(id, row) {
       console.log(id, row);
     },
