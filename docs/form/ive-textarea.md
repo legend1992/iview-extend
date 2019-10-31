@@ -1,4 +1,4 @@
-# ive-input
+# ive-textarea
 ## 一、代码示例
 ### html
 ```html
