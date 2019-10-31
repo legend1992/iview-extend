@@ -102,7 +102,7 @@ describe('ive-table.vue', () => {
             key: 'sd',
           },
         ],
-        exportAllApi: '/testApi',
+        exportAllUrl: '/testApi',
         getListApi: () => {},
       },
     });
@@ -353,7 +353,7 @@ describe('ive-table.vue', () => {
         actions: {
           exportAll: true,
         },
-        exportAllApi: '/xxx',
+        exportAllUrl: '/xxx',
       });
       wrapper.find('.top-button-wrapper').findAll('button').at(0).trigger('click');
       const messageNode = document.querySelectorAll('.ivu-message')[document.querySelectorAll('.ivu-message').length - 1];

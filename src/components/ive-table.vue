@@ -122,7 +122,7 @@ export default {
       type: [String, Number],
       default: '_id',
     },
-    exportAllApi: {
+    exportAllUrl: {
       type: String,
       // eslint-disable-next-line no-script-url
       default: 'javascript:;',
@@ -175,7 +175,7 @@ export default {
       const queryUrl = queryKey.reduce((acc, currVal, currentIndex) => {
         const connector = currentIndex ? '&' : '?';
         return `${acc + connector + currVal}=${encodeURI(query[currVal])}`;
-      }, this.exportAllApi);
+      }, this.exportAllUrl);
       return queryUrl;
     },
   },
