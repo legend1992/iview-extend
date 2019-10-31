@@ -13,7 +13,11 @@
       @showBatchEditModal="showBatchEditModal"
       @remove="remove"
       @upload-success="uploadSuccess"
-    ></ive-table>
+    >
+      <template slot-scope="{ row }" slot="id">
+        <span>{{ row.id }}</span>
+      </template>
+    </ive-table>
   </div>
 </template>
 ```
@@ -25,7 +29,7 @@ export default {
       columns: [
         {
           title: 'id',
-          key: 'id',
+          slot: 'id',
         }, {
           title: '列2',
           key: 'c2',
@@ -99,3 +103,5 @@ export default {
 | showBatchEditModal | 用户点击批量编辑且数据大于一条时触发 | selectionData: 用户选中的所有数据 |
 | remove | 用户点击删除按钮时且deleteApi为null时触发 | id(行数据id), modal(确认弹窗实例，删除成功后需要手动调用modal.remove()关闭弹窗)), row(行数据) |
 | upload-success | 导入文件成功后触发 | resData(后台返回的结果) |
+### 作用域插槽（slot-scope）
+如果需要在某列用作用域插槽，将插槽标签上slot的值和columns中该列对应项的slot赋值一致即可
