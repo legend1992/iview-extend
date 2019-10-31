@@ -9,6 +9,10 @@
       :columns="columns"
       :getListApi="getListApi"
       :deleteApi="deleteApi"
+      @showEditModal="showEditModal"
+      @showBatchEditModal="showBatchEditModal"
+      @remove="remove"
+      @upload-success="uploadSuccess"
     ></ive-table>
   </div>
 </template>
@@ -55,6 +59,22 @@ export default {
       importApi: (formData) => {}
       deleteApi: (id) => {},
       exportAllUrl: '/exportAll',
+    }
+  },
+  methods: {
+    showEditModal(id, row) {
+      console.log(id, row);
+    },
+    showBatchEditModal(selectData) {
+      console.log(selectData);
+    },
+    async remove(id, modal, row) {
+      // 如果没传deleteApi，则会执行此方法，删除逻辑需自行实现
+      // await remove(id);
+      modal.remove();
+    },
+    uploadSuccess(resData) {
+      console.log(resData);
     }
   },
 }
