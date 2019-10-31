@@ -77,6 +77,7 @@ export default {
     async remove(id, modal, row) {
       // 如果没传deleteApi，则会执行此方法，删除逻辑需自行实现
       // await remove(id);
+      // 删除成功后需调用modal.remove()将modal关闭
       modal.remove();
     },
     uploadSuccess(resData) {
