@@ -78,10 +78,6 @@ import _ from 'lodash';
 export default {
   name: 'ive-table',
   props: {
-    getListAllApi: {
-      type: Function,
-      default: null,
-    },
     importApi: {
       type: Function,
     },

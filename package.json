@@ -5,18 +5,20 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "test": "cross-env BABEL_ENV=test karma start --single-run"
+    "test": "cross-env BABEL_ENV=test karma start --single-run",
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
   },
   "dependencies": {
     "@vue/cli-service": "^3.9.0",
     "core-js": "^2.6.5",
     "iview": "^3.4.2",
     "lodash": "^4.17.14",
-    "moment": "^2.24.0",
-    "mavon-editor": "^2.7.6",
-    "vue-context-menu": "^2.0.6",
     "markdown-it-github-headings": "^1.1.2",
-    "vue": "^2.6.10"
+    "mavon-editor": "^2.7.6",
+    "moment": "^2.24.0",
+    "vue": "^2.6.10",
+    "vue-context-menu": "^2.0.6"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.9.0",
@@ -41,7 +43,8 @@
     "mocha": "^6.2.0",
     "sinon": "^7.4.2",
     "vue-router": "^3.1.3",
-    "vue-template-compiler": "^2.6.10"
+    "vue-template-compiler": "^2.6.10",
+    "vuepress": "^1.2.0"
   },
   "peerDependencies": {
     "iview": "^3.4.2"
