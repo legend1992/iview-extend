@@ -42,7 +42,7 @@ export default {
 | showTotal | 显示总数 | Boolean | true |
 | showElevator | 显示电梯，可以快速切换到某一页 | Boolean | true |
 | showSizer | 显示分页，用来改变page-size | Boolean | true |
-### 方法（events）
+### 事件（events）
 | 事件名 | 说明 | 返回值 |
 | ------ | ------ | ------ |
 | on-change | 页码改变的回调，返回改变后的页码 | 页码 |
