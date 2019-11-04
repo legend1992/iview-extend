@@ -59,6 +59,12 @@ export default {
 | ------ | ------ | ------ |
 | update:formConfig | formConfig中控件的值有变动时触发 | 子项对象的itemConfig.value被更新后的formConfig副本 |
 | update:hideConfig | hideConfig中控件的值有变动时触发 | 子项对象的itemConfig.value被更新后的hideConfig副本 |
+### 方法（methods）
+| 方法名 | 说明 | 参数 | 返回值 |
+| ------ | ------ | ------ | ------ |
+| reset | 将formConfig和hideConfig中每个控件的value重置为第一次传入时的值（根据业务需求，除了value属性被重置，其它属性不会重置），然后调用iview form组件的resetFields方法重置每个控件的校验状态 | 无 | 无 |
+| validateField | 验证某个控件的校验状态 | prop（控件的prop属性） | 控件的校验状态（调用iview form组件的validateField方法） |
+| getData | 获取所有控件值的集合 | 参数1：needValidate（是否需要校验。默认为true，若传入false，则不用校验可直接拿到数据） | 所有控件值的集合 |
 ### config\<Object\>（formConfig的子项）
 | 属性 | 说明 | 类型 | 默认值 |
 | ------ | ------ | ------ | ------ |
