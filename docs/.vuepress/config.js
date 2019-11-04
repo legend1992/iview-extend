@@ -1,6 +1,7 @@
 module.exports = {
   title: 'iview-extends2',
   description: '基于iview拓展的一些组件，适用于vue',
+  base: '/iview-extend/',
   themeConfig: {
     nav: [
       { text: 'Home', link: '/' },
