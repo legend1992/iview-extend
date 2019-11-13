@@ -31,7 +31,7 @@ export default {
         }, config);
 
         let defaultProps = {
-          placeholder: `请输入${label}`,
+          placeholder: config.tagName === 'ive-select' ? `请选择${label}` : `请输入${label}`,
         };
         if (config.tagName === 'ive-date-range-picker') {
           defaultProps = {};
