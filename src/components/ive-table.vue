@@ -1,6 +1,7 @@
 <template>
   <div class="ive-table">
     <Row v-if="topActions" class="top-button-wrapper" type="flex" justify="start">
+      <slot name="topButton-prepend" />
       <Button v-if="actions.add" type="primary" @click="$emit('showEditModal')">新增</Button>
       <Button
         v-if="actions.export"
@@ -24,6 +25,7 @@
         type="primary"
         @click="batchEdit">批量修改
       </Button>
+      <slot name="topButton-append" />
     </Row>
 
     <ive-import-data
