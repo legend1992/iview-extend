@@ -35,14 +35,19 @@ export default {
     },
   },
   computed: {
+    isRange() {
+      return ['daterange', 'datetimerange'].includes(this.type);
+    },
     formatValue() {
       let formatValue = this.formatDate(this.value);
-      if (['daterange', 'datetimerange'].includes(this.type)) {
-        formatValue = [null, null];
+      if (this.isRange) {
+        formatValue = [];
         if (Array.isArray(this.value)) {
           this.value.forEach((item) => {
             formatValue.push(this.formatDate(item));
           });
+        } else {
+          formatValue = ['', ''];
         }
       }
 
@@ -71,7 +76,7 @@ export default {
     },
     pickerClass() {
       return {
-        'range-picker': ['daterange', 'datetimerange'].includes(this.type),
+        'range-picker': this.isRange,
       };
     },
   },
