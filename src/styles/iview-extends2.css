@@ -7,6 +7,7 @@
 /* 日期范围选择器 */
 .ivu-date-picker.range-picker {
   display: block;
+  width: 100%;
 }
 .ive-date-range .separator {
   margin: 0 10px;
