@@ -79,7 +79,7 @@ export default {
   },
   data() {
     return {
-      loading: true,
+      loading: false,
       submitLoading: false,
       formConfigCopy: _.cloneDeep(this.formConfig),
       hideConfigCopy: _.cloneDeep(this.hideConfig),
