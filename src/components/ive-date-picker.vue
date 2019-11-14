@@ -1,5 +1,6 @@
 <template>
   <DatePicker
+    :class="pickerClass"
     :value="formatValue"
     @on-change="handleInput"
     :type="type"
@@ -66,6 +67,11 @@ export default {
       }
       return {
         disabledDate: disabledDateFn,
+      };
+    },
+    pickerClass() {
+      return {
+        'range-picker': ['daterange', 'datetimerange'].includes(this.type),
       };
     },
   },

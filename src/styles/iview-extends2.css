@@ -5,6 +5,9 @@
 }
 
 /* 日期范围选择器 */
+.ivu-date-picker.range-picker {
+  display: block;
+}
 .ive-date-range .separator {
   margin: 0 10px;
 }
