@@ -14,7 +14,7 @@ export default {
   name: 'ive-date-picker',
   props: {
     value: {
-      type: [Date, String, Number],
+      type: [Date, String, Number, Array],
       default: null,
     },
     placeholder: {
@@ -35,9 +35,14 @@ export default {
   },
   computed: {
     formatValue() {
-      let formatValue = new Date(this.value);
-      if (!this.value || formatValue.toString() === 'Invalid Date') {
-        formatValue = null;
+      let formatValue = this.formatDate(this.value);
+      if (['daterange', 'datetimerange'].includes(this.type)) {
+        formatValue = [null, null];
+        if (Array.isArray(this.value)) {
+          this.value.forEach((item) => {
+            formatValue.push(this.formatDate(item));
+          });
+        }
       }
 
       return formatValue;
@@ -65,6 +70,13 @@ export default {
     },
   },
   methods: {
+    formatDate(value) {
+      let formatValue = new Date(value);
+      if (!value || formatValue.toString() === 'Invalid Date') {
+        formatValue = null;
+      }
+      return formatValue;
+    },
     handleInput($event) {
       const value = $event || null;
       this.$emit('input', value);
