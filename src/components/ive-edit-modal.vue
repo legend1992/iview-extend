@@ -45,7 +45,7 @@ export default {
       default: 570,
     },
     id: {
-      type: [String, Number],
+      type: [String, Number, Array],
       default: '',
     },
     modal: {
