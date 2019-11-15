@@ -7,6 +7,7 @@
     :options="options"
     :placeholder="placeholder"
     :disabled="disabled"
+    :transfer="transfer"
   ></DatePicker>
 </template>
 
@@ -32,6 +33,10 @@ export default {
     disabled: {
       type: Boolean,
       default: false,
+    },
+    transfer: {
+      type: Boolean,
+      default: true,
     },
   },
   computed: {
