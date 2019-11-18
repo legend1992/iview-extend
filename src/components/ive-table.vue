@@ -277,9 +277,9 @@ export default {
       this.$emit('upload-success', resData);
     },
     async batchRemove() {
-      const idList = this.selectionData.map(item => item.id);
+      const idList = this.selectionData.map(item => item[this.idKey] || item.id);
       const confirm = await this.$iveModal.confirm(
-        `确定删除要这${idList.length}条内容吗？`,
+        `确定删除要这 ${idList.length} 条内容吗？`,
       );
       this.remove(confirm, idList);
     },
