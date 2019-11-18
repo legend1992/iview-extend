@@ -16,7 +16,7 @@
         :on-success="handleSuccess"
         :on-exceeded-size="handleExceededSize"
       >
-        <Button icon="md-add">选择文件</Button>
+        <Button icon="md-add" :loading="loading">选择文件</Button>
       </Upload>
       <ul v-if="fileList.length && isImg" class="imgList">
         <li v-for="(item, index) in fileList" :key="item">
@@ -104,6 +104,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       fileList: [],
     };
   },
@@ -184,12 +185,14 @@ export default {
           if (this.resolutionRatio) {
             const result = await this.checkResolutionRatio(file);
             if (!result) {
+              this.loading = true;
               this.$refs.upload.post(file);
             } else {
               this.$Message.warning(result);
               this.$emit('resolution-ratio-error', result);
             }
           } else {
+            this.loading = true;
             this.$refs.upload.post(file);
           }
         }
@@ -197,12 +200,14 @@ export default {
       return false;
     },
     handleError($event) {
+      this.loading = false;
       this.$emit('on-error', $event);
     },
     handleProgress($event) {
       this.$emit('on-progress', $event);
     },
     handleSuccess(result) {
+      this.loading = false;
       let value = result;
       if (this.multiple) {
         if (Array.isArray(result)) {
@@ -219,6 +224,7 @@ export default {
       this.$emit('on-success', value);
     },
     handleExceededSize($event) {
+      this.loading = false;
       this.$Message.warning('图片尺寸超出限制');
       this.$emit('on-exceeded-size', $event);
     },
