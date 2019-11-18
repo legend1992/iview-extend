@@ -237,6 +237,8 @@ export default {
         }
       } else if (value) {
         this.fileList = [value];
+      } else {
+        this.fileList = [];
       }
     },
     remove(index) {
