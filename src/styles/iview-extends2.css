@@ -188,11 +188,39 @@
 }
 
 /* 上传文件 */
-.ive-upload .fileUrl {
-  max-width: 300px;
+.ive-upload .imgList {
+  display: flex;
+}
+.ive-upload .imgList li {
+  display: flex;
+  margin-left: 5px;
+  position: relative;
+  border-radius: 5px;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+}
+.ive-upload .imgList li img{
+  width: 80px;
+  height: 80px;
+}
+.ive-upload .imgList li .cover {
+  display: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0,0,0,.6);
+  text-align: center;
+  line-height: 80px;
+}
+.ive-upload .imgList li:hover .cover {
+  display: block;
+}
+.ive-upload .imgList li .cover i {
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  margin: 0 2px;
 }
 
 /* 右键菜单 */
