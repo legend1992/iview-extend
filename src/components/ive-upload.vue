@@ -1,6 +1,6 @@
 <template>
   <div class="ive-upload">
-    <Row type="flex" justify="space-between">
+    <Row type="flex">
       <Upload
         ref="upload"
         :before-upload="pickFile"
@@ -9,6 +9,7 @@
         :name="name"
         :accept="accept"
         :max-size="maxSize"
+        :multiple="multiple"
         :show-upload-list="false"
         :on-error="handleError"
         :on-progress="handleProgress"
@@ -17,7 +18,18 @@
       >
         <Button icon="md-add">选择文件</Button>
       </Upload>
-      <span class="fileUrl" :title="fileUrl">{{ fileUrl }}</span>
+      <ul v-if="fileList.length && isImg" class="imgList">
+        <li v-for="(item, index) in fileList" :key="item">
+          <img :src="item" :alt="item || `图片${index}`">
+          <div class="cover">
+            <i class="ivu-icon ivu-icon-ios-eye-outline"></i>
+            <i class="ivu-icon ivu-icon-ios-trash-outline" @click="remove(index)"></i>
+          </div>
+        </li>
+      </ul>
+      <ul v-else>
+        <li v-for="item in fileList" :key="item">{{item}}</li>
+      </ul>
     </Row>
   </div>
 </template>
@@ -85,15 +97,24 @@ export default {
         return result;
       },
     },
+    multiple: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
-      fileUrl: '',
+      fileList: [],
     };
+  },
+  computed: {
+    isImg() {
+      return this.format.join() === ['jpg', 'png', 'jpeg'].join();
+    },
   },
   watch: {
     value(value) {
-      this.fileUrl = value;
+      this.formatImgList(value);
     },
   },
   methods: {
@@ -157,20 +178,22 @@ export default {
         reader.readAsDataURL(file);
       });
     },
-    async pickFile(file) {
-      if (this.checkFormat(file)) {
-        if (this.resolutionRatio) {
-          const result = await this.checkResolutionRatio(file);
-          if (!result) {
-            this.$refs.upload.post(file);
+    pickFile(file) {
+      (async () => {
+        if (this.checkFormat(file)) {
+          if (this.resolutionRatio) {
+            const result = await this.checkResolutionRatio(file);
+            if (!result) {
+              this.$refs.upload.post(file);
+            } else {
+              this.$Message.warning(result);
+              this.$emit('resolution-ratio-error', result);
+            }
           } else {
-            this.$Message.warning(result);
-            this.$emit('resolution-ratio-error', result);
+            this.$refs.upload.post(file);
           }
-        } else {
-          this.$refs.upload.post(file);
         }
-      }
+      })();
       return false;
     },
     handleError($event) {
@@ -180,17 +203,44 @@ export default {
       this.$emit('on-progress', $event);
     },
     handleSuccess(result) {
-      this.fileUrl = result;
-      this.$emit('input', result);
-      this.$emit('on-success', result);
+      let value = result;
+      if (this.multiple) {
+        if (Array.isArray(result)) {
+          this.fileList = this.fileList.concat(result);
+        } else {
+          this.fileList.push(result);
+        }
+        this.fileList = Array.from(new Set(this.fileList));
+        value = this.fileList;
+      } else {
+        this.fileList = [result];
+      }
+      this.$emit('input', value);
+      this.$emit('on-success', value);
     },
     handleExceededSize($event) {
       this.$Message.warning('图片尺寸超出限制');
       this.$emit('on-exceeded-size', $event);
     },
+    formatImgList(value) {
+      if (Array.isArray(value)) {
+        if (this.multiple) {
+          this.fileList = value;
+        } else {
+          this.fileList = value[0] ? [value[0]] : [];
+        }
+      } else if (value) {
+        this.fileList = [value];
+      }
+    },
+    remove(index) {
+      this.fileList.splice(index, 1);
+      let value = this.fileList.length ? this.fileList : '';
+      this.$emit('input', value);
+    },
   },
   created() {
-    this.fileUrl = this.value;
+    this.formatImgList(this.value);
   },
 };
 </script>
