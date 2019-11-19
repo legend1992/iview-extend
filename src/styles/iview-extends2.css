@@ -33,7 +33,7 @@
   margin-bottom: 12px;
 }
 .ive-filter-form .ivu-form-item-label:after {
-  content: '：';
+  content: "：";
   display: inline-block;
   line-height: 1;
 }
@@ -65,7 +65,7 @@
   display: block;
 }
 .ive-edit-form .ivu-form-item-label:after {
-  content: '：';
+  content: "：";
   display: inline-block;
   line-height: 1;
 }
@@ -89,7 +89,8 @@
   white-space: nowrap;
 }
 /* ive-input-slot */
-.ivu-input-group-append .ivu-btn, .ivu-input-group-prepend .ivu-btn {
+.ivu-input-group-append .ivu-btn,
+.ivu-input-group-prepend .ivu-btn {
   box-shadow: none;
 }
 
@@ -148,7 +149,7 @@
   width: 100%;
   height: 100%;
   z-index: 3;
-  background-color: hsla(0,50%,100%,.9);
+  background-color: hsla(0, 50%, 100%, 0.9);
 }
 
 /* 表格 */
@@ -198,7 +199,7 @@
   border-radius: 5px;
   overflow: hidden;
 }
-.ive-upload .imgList li img{
+.ive-upload .imgList li img {
   width: 80px;
   height: 80px;
 }
@@ -209,7 +210,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(0,0,0,.6);
+  background: rgba(0, 0, 0, 0.6);
   text-align: center;
   line-height: 80px;
 }
@@ -234,9 +235,141 @@
   cursor: not-allowed;
   color: #818a91;
 }
-.ctx-menu.ctx-menu-left > li > a:hover, .ctx-menu.ctx-menu-left > li > a:focus {
+.ctx-menu.ctx-menu-left > li > a:hover,
+.ctx-menu.ctx-menu-left > li > a:focus {
   background-color: #f2f2f2;
 }
 .ctx-menu.ctx-menu-left > li.disabled > a:hover {
   background-color: #fff;
+}
+
+/* 相册预览 */
+/* iview */
+.album-modal .ivu-modal-close {
+  z-index: 2;
+}
+.album-modal .ivu-modal-close i {
+  color: #fff;
+}
+.album-modal .ivu-modal-body {
+  padding: 0;
+}
+.album-modal .content-wrapper {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.album-modal .content-wrapper .title {
+  line-height: 46px;
+  text-indent: 40px;
+  background: #515a6e;
+  color: #fff;
+  position: relative;
+  z-index: 1;
+}
+.album-modal .content-wrapper .title .rotate-wrapper i {
+  cursor: pointer;
+  color: #fff;
+  font-size: 18px;
+}
+.album-modal .content-wrapper .preview-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1;
+  margin: 20px;
+  border: 5px solid #ccc;
+  padding: 10px;
+  overflow: hidden;
+}
+.album-modal .content-wrapper .preview-wrapper i {
+  position: relative;
+  font-size: 40px;
+  background: #fff;
+  border-radius: 4px;
+  margin: 10px;
+  z-index: 1;
+  opacity: .5;
+  cursor: pointer;
+}
+.album-modal .content-wrapper .preview-wrapper i:hover {
+ opacity: 1;
+}
+.album-modal .content-wrapper .preview-wrapper .img-wrapper {
+  flex: 1;
+  height: 100%;
+  position: relative;
+}
+.album-modal .content-wrapper .preview-wrapper .img-wrapper img {
+  position: absolute;
+  max-width: 100%;
+  max-height: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  -webkit-user-drag: none;
+  user-select: none;
+}
+.album-modal .content-wrapper #imgList-wrapper {
+  flex: 0 0 120px;
+  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 20px;
+  background: #515a6e;
+}
+.album-modal .content-wrapper #imgList-wrapper i {
+  font-size: 40px;
+  color: #fff;
+  cursor: pointer;
+}
+.album-modal .content-wrapper #imgList-wrapper .inner-wrapper {
+  flex: 1;
+  height: 80px;
+  width: 100%;
+  overflow: hidden;
+  margin: 0 10px;
+  position: relative;
+}
+.album-modal .content-wrapper #imgList-wrapper .inner-wrapper ul {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  transition: all .3s;
+  user-select: none;
+  height: 80px;
+}
+.album-modal .content-wrapper #imgList-wrapper .inner-wrapper ul li {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 10px;
+  cursor: pointer;
+  transition: all .3s;
+}
+.album-modal .content-wrapper #imgList-wrapper .inner-wrapper ul li:last-child {
+  margin-right: 0;
+}
+.album-modal .content-wrapper #imgList-wrapper .inner-wrapper ul li.active {
+  border: 5px solid #000;
+}
+.album-modal .content-wrapper #imgList-wrapper .inner-wrapper ul li span.number {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  background: #fff;
+  padding: 0 5px;
+  border-radius: 50%;
+  font-weight: bold;
+  border: 1px solid #000;
+}
+.album-modal .content-wrapper #imgList-wrapper .inner-wrapper ul li img {
+  width: 100%;
+  height: 100%;
 }

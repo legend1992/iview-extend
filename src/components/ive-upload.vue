@@ -22,7 +22,7 @@
         <li v-for="(item, index) in fileList" :key="item">
           <img :src="item" :alt="item || `图片${index}`">
           <div class="cover">
-            <i class="ivu-icon ivu-icon-ios-eye-outline"></i>
+            <i class="ivu-icon ivu-icon-ios-eye-outline" @click="preview(index)"></i>
             <i class="ivu-icon ivu-icon-ios-trash-outline" @click="remove(index)"></i>
           </div>
         </li>
@@ -31,6 +31,7 @@
         <li v-for="item in fileList" :key="item">{{item}}</li>
       </ul>
     </Row>
+    <ive-preview-modal v-model="previewModal" @input="selectedIdx = 0" :selectedIdx="selectedIdx" :fileList="previewFileList" />
   </div>
 </template>
 <script>
@@ -106,11 +107,19 @@ export default {
     return {
       loading: false,
       fileList: [],
+      previewModal: false,
+      selectedIdx: -1,
     };
   },
   computed: {
     isImg() {
       return this.format.join() === ['jpg', 'png', 'jpeg'].join();
+    },
+    previewFileList() {
+      return this.fileList.map((item) => ({
+        src: item,
+        smsrc: item,
+      }));
     },
   },
   watch: {
@@ -245,6 +254,10 @@ export default {
       this.fileList.splice(index, 1);
       let value = this.fileList.length ? this.fileList : '';
       this.$emit('input', value);
+    },
+    preview(index) {
+      this.previewModal = true;
+      this.selectedIdx = index;
     },
   },
   created() {
