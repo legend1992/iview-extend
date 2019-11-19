@@ -52,7 +52,7 @@ export default {
             formatValue.push(this.formatDate(item));
           });
         } else {
-          formatValue = ['', ''];
+          formatValue = [null, null];
         }
       }
 
@@ -94,7 +94,14 @@ export default {
       return formatValue;
     },
     handleInput($event) {
-      const value = $event || null;
+      let value = $event || null;
+      if (Array.isArray(value)) {
+        value[0] = value[0] ? value[0] : null;
+        value[1] = value[1] ? value[1] : null;
+        if (!value[0] && !value[1]) {
+          value = null;
+        }
+      }
       this.$emit('input', value);
     },
   },
