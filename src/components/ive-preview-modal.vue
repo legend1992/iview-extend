@@ -219,7 +219,7 @@ export default {
         left: '50%',
       });
     },
-    closeModal() {
+    closeModal($event) {
       this.$emit('input', $event);
       this.selectedIndex = 0;
     },
