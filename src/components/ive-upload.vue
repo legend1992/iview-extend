@@ -102,6 +102,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    limit: {
+      type: Number,
+      default: 5,
+    },
   },
   data() {
     return {
@@ -109,6 +113,7 @@ export default {
       fileList: [],
       previewModal: false,
       selectedIdx: -1,
+      totalPicked: 0,
     };
   },
   computed: {
@@ -194,19 +199,27 @@ export default {
           if (this.resolutionRatio) {
             const result = await this.checkResolutionRatio(file);
             if (!result) {
-              this.loading = true;
-              this.$refs.upload.post(file);
+              this.upload(file);
             } else {
               this.$Message.warning(result);
               this.$emit('resolution-ratio-error', result);
             }
           } else {
-            this.loading = true;
-            this.$refs.upload.post(file);
+            this.upload(file);
           }
         }
       })();
       return false;
+    },
+    upload(file) {
+      this.totalPicked++;
+      if (this.totalPicked > this.limit) {
+        this.$Message.warning(`最多可上传${this.limit}份文件`);
+        this.$emit('on-exceeded-limit', this.limit);
+        return;
+      }
+      this.loading = true;
+      this.$refs.upload.post(file);
     },
     handleError($event) {
       this.loading = false;
@@ -229,6 +242,7 @@ export default {
       } else {
         this.fileList = [result];
       }
+      this.totalPicked = this.fileList.length;
       this.$emit('input', value);
       this.$emit('on-success', value);
     },
@@ -249,10 +263,12 @@ export default {
       } else {
         this.fileList = [];
       }
+      this.totalPicked = this.fileList.length;
     },
     remove(index) {
       this.fileList.splice(index, 1);
       let value = this.fileList.length ? this.fileList : '';
+      this.totalPicked = this.fileList.length;
       this.$emit('input', value);
     },
     preview(index) {
