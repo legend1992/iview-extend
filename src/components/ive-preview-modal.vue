@@ -1,5 +1,5 @@
 <template>
-  <Modal class="album-modal" :value="value" @input="$emit('input', $event); selectedIndex=0" fullscreen footer-hide>
+  <Modal class="album-modal" :value="value" @input="closeModal" fullscreen footer-hide>
     <div v-if="fileList.length" class="content-wrapper">
       <h3 class="title">
         <span class="rotate-wrapper">
@@ -100,8 +100,10 @@ export default {
     windowResize() {
       this.getOuterWidth();
       window.onresize = ()=> {
-        this.getOuterWidth();
-        this.resetImg();
+        if (this.value) {
+          this.getOuterWidth();
+          this.resetImg();
+        }
       }
     },
     //移动向左
@@ -216,7 +218,11 @@ export default {
         top: '50%',
         left: '50%',
       });
-    }
+    },
+    closeModal() {
+      this.$emit('input', $event);
+      this.selectedIndex = 0;
+    },
   },
   mounted() {
     this.windowResize();
