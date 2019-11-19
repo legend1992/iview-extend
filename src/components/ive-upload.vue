@@ -131,6 +131,9 @@ export default {
     value(value) {
       this.formatImgList(value);
     },
+    'fileList.length': function (e) {
+      this.totalPicked = e;
+    },
   },
   methods: {
     checkFormat(file) {
@@ -242,7 +245,6 @@ export default {
       } else {
         this.fileList = [result];
       }
-      this.totalPicked = this.fileList.length;
       this.$emit('input', value);
       this.$emit('on-success', value);
     },
