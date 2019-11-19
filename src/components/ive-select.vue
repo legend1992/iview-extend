@@ -8,6 +8,7 @@
     :disabled="disabled"
     :max-tag-count="maxTagCount"
     :max-tag-placeholder="maxTagPlaceholder"
+    :placement="placement"
     @input="handleInput"
     @on-query-change="queryChanged"
   >
@@ -68,6 +69,10 @@ export default {
     },
     maxTagSelect: {
       type: Number,
+    },
+    placement: {
+      type: String,
+      default: 'bottom',
     },
   },
   data() {
