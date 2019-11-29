@@ -248,9 +248,19 @@ export default {
       this.$emit('input', value);
       this.$emit('on-success', value);
     },
+    formatSize() {
+      let { maxSize } = this;
+      if (maxSize < 1024) {
+        maxSize = `${maxSize} KB`;
+      } else {
+        maxSize = `${(maxSize / 1024).toFixed(2)} MB`;
+      }
+      return maxSize;
+    },
     handleExceededSize($event) {
       this.loading = false;
-      this.$Message.warning('图片尺寸超出限制');
+      const maxSize = this.formatSize();
+      this.$Message.warning(`文件大小限制在 ${maxSize} 以内`);
       this.$emit('on-exceeded-size', $event);
     },
     formatImgList(value) {
