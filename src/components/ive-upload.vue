@@ -65,7 +65,7 @@ export default {
     // 分辨率
     resolutionRatio: {
       type: Object,
-      default: () => ({}),
+      default: null,
       validator(val) {
         let result = true;
         if (val) {
