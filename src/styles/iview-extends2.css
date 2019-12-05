@@ -200,8 +200,8 @@
   overflow: hidden;
 }
 .ive-upload .imgList li img {
-  width: 80px;
-  height: 80px;
+  max-width: 300px;
+  max-height: 80px;
 }
 .ive-upload .imgList li .cover {
   display: none;
@@ -211,11 +211,11 @@
   left: 0;
   right: 0;
   background: rgba(0, 0, 0, 0.6);
-  text-align: center;
-  line-height: 80px;
+  justify-content: center;
+  align-items: center;
 }
 .ive-upload .imgList li:hover .cover {
-  display: block;
+  display: flex;
 }
 .ive-upload .imgList li .cover i {
   color: #fff;

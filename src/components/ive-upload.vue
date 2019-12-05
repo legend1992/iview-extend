@@ -28,7 +28,9 @@
         </li>
       </ul>
       <ul v-else>
-        <li v-for="item in fileList" :key="item">{{item}}</li>
+        <li v-for="item in fileList" :key="item">
+          <a :href="item" target="_blank">{{item}}</a>
+        </li>
       </ul>
     </Row>
     <ive-preview-modal v-model="previewModal" @input="selectedIdx = 0" :selectedIdx="selectedIdx" :fileList="previewFileList" />
