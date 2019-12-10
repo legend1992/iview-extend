@@ -1,3 +1,4 @@
+
 <template>
   <div class="ive-date-range">
     <DatePicker
@@ -36,6 +37,10 @@ export default {
     disabledDate: {
       default: () => new Date(new Date() - 24 * 60 * 60 * 1000),
     },
+    disabledDateFnArr: {
+      type: Array,
+      default: null,
+    }
   },
   data() {
     return {
@@ -44,12 +49,15 @@ export default {
   },
   computed: {
     startOptions() {
-      return {
-        disabledDate: (date) => {
+      let disabledDateFn;
+      const minValue = new Date(this.currentValue[1]);
+      if (this.disabledDateFnArr[0] instanceof Function) {
+        disabledDateFn = this.disabledDateFnArr[0](minValue);
+      } else {
+        disabledDateFn = date => {
           let disabledDate;
           if (date) {
             const value = date && date.valueOf();
-            const minValue = new Date(this.currentValue[1]);
             if (this.disabledDate && this.disabledDate instanceof Date) {
               disabledDate = value > minValue || value < this.disabledDate;
             } else {
@@ -58,16 +66,22 @@ export default {
           }
 
           return disabledDate;
-        },
+        };
+      }
+      return {
+        disabledDate: disabledDateFn,
       };
     },
     endOptions() {
-      return {
-        disabledDate: (date) => {
+      let disabledDateFn;
+      const maxValue = new Date(this.currentValue[0]);
+      if (this.disabledDateFnArr[1] instanceof Function) {
+        disabledDateFn = this.disabledDateFnArr[1](maxValue);
+      } else {
+        disabledDateFn = date => {
           let disabledDate;
           if (date) {
             const value = date && date.valueOf();
-            const maxValue = new Date(this.currentValue[0]);
             if (this.disabledDate && this.disabledDate instanceof Date) {
               disabledDate = value < maxValue || value < this.disabledDate;
             } else {
@@ -76,7 +90,10 @@ export default {
           }
 
           return disabledDate;
-        },
+        };
+      }
+      return {
+        disabledDate: disabledDateFn,
       };
     },
   },
