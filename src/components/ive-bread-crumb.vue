@@ -7,14 +7,17 @@
 <script>
 export default {
   name: 'ive-bread-crumb',
-  computed: {
-    titleList() {
-      const titleList = [];
-      this.$route.matched.forEach((route) => {
-        titleList.push(route.meta.title || route.path);
-      });
-      return titleList;
-    },
+  props: {
+    titleList: {
+      type: Array,
+      default() {
+        const titleList = [];
+        this.$route && this.$route.matched.forEach((route) => {
+          titleList.push(route.meta.title || route.path);
+        });
+        return titleList;
+      }
+    }
   },
 };
 </script>
