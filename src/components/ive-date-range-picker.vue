@@ -51,7 +51,7 @@ export default {
     startOptions() {
       let disabledDateFn;
       const minValue = new Date(this.currentValue[1]);
-      if (this.disabledDateFnArr[0] instanceof Function) {
+      if (this.disabledDateFnArr && this.disabledDateFnArr[0] instanceof Function) {
         disabledDateFn = this.disabledDateFnArr[0](minValue);
       } else {
         disabledDateFn = date => {
@@ -75,7 +75,7 @@ export default {
     endOptions() {
       let disabledDateFn;
       const maxValue = new Date(this.currentValue[0]);
-      if (this.disabledDateFnArr[1] instanceof Function) {
+      if (this.disabledDateFnArr && this.disabledDateFnArr[1] instanceof Function) {
         disabledDateFn = this.disabledDateFnArr[1](maxValue);
       } else {
         disabledDateFn = date => {
