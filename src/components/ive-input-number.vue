@@ -1,14 +1,18 @@
 <template>
-  <InputNumber
-    :max="max"
-    :min="min"
-    :step="step"
-    :value="cValue"
-    :placeholder="placeholder"
-    :formatter="formatter"
-    :parser="parser || intParser"
-    @input="$emit('input', $event)"
-  />
+  <div class="ive-input-number-wrapper">
+    <slot name="prepend" />
+    <InputNumber
+      :max="max"
+      :min="min"
+      :step="step"
+      :value="cValue"
+      :placeholder="placeholder"
+      :formatter="formatter"
+      :parser="parser || intParser"
+      @input="$emit('input', $event)"
+    />
+    <slot name="append" />
+  </div>
 </template>
 <script>
 export default {
