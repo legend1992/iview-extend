@@ -99,7 +99,7 @@ export default {
         value[0] = value[0] ? value[0] : null;
         value[1] = value[1] ? value[1] : null;
         if (!value[0] && !value[1]) {
-          value = null;
+          value = undefined;
         }
       }
       this.$emit('input', value);
