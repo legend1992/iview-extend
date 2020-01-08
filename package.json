@@ -1,6 +1,6 @@
 {
   "name": "iview-extends2",
-  "version": "1.0.60",
+  "version": "1.0.61",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -15,7 +15,7 @@
     "iview": "^3.4.2",
     "lodash": "^4.17.14",
     "markdown-it-github-headings": "^1.1.2",
-    "mavon-editor": "^2.7.6",
+    "mavon-editor-lmlife": "^2.7.7-2",
     "moment": "^2.24.0",
     "vue": "^2.6.10",
     "vue-context-menu": "^2.0.6"
