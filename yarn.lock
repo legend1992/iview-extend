@@ -6685,10 +6685,10 @@ markdown-it@^8.4.1:
     mdurl "^1.0.1"
     uc.micro "^1.0.5"
 
-mavon-editor@^2.7.6:
-  version "2.7.6"
-  resolved "https://registry.yarnpkg.com/mavon-editor/-/mavon-editor-2.7.6.tgz#82426e8afc0d14fc646a8cc6cced0814723a98ff"
-  integrity sha512-s5RpdpXG9WFvQZf5ckCgNzwgoTfxxm9estwMyE5dbUcrip96vrtdsEQOFTMCATKpbQ2cam4kTjX0ZTTw5rDrBw==
+mavon-editor-lmlife@2.7.7-2:
+  version "2.7.7-2"
+  resolved "https://registry.yarnpkg.com/mavon-editor-lmlife/-/mavon-editor-lmlife-2.7.7-2.tgz#95c7f697ec0ee6e8d4c63d5bc51c56aa32441d11"
+  integrity sha512-bS54xbGyic7QBdN1eJAqlIR6olcVd5Wz5vnh//hUMkLFlExTvlrunEKBdNZyKEYeOP+laiO8F6aOMSZLu3y0PA==
   dependencies:
     highlight.js "^9.11.0"
     highlight.js-async-webpack "^1.0.4"

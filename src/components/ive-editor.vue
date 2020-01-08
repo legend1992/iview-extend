@@ -14,8 +14,8 @@
   />
 </template>
 <script>
-import { mavonEditor } from 'mavon-editor';
-import 'mavon-editor/dist/css/index.css';
+import { mavonEditor } from 'mavon-editor-lmlife';
+import 'mavon-editor-lmlife/dist/css/index.css';
 import headings from 'markdown-it-github-headings';
 
 export default {
