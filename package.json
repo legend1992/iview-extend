@@ -13,7 +13,7 @@
     "@vue/cli-service": "^3.9.0",
     "core-js": "^2.6.5",
     "iview": "^3.4.2",
-    "lodash": "^4.17.14",
+    "lodash": "^4.17.21",
     "markdown-it-github-headings": "^1.1.2",
     "mavon-editor-lmlife": "2.7.7-2",
     "moment": "^2.24.0",
