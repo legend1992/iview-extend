@@ -32,7 +32,7 @@
     "eslint": "^6.2.2",
     "eslint-plugin-vue": "^5.2.3",
     "flush-promises": "^1.0.2",
-    "karma": "^4.3.0",
+    "karma": "^6.3.14",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^3.1.0",
     "karma-coverage": "^2.0.1",
